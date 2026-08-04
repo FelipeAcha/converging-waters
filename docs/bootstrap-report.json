@@ -1,0 +1,12 @@
+{
+  "imported_loader": true,
+  "chunk_count": 11,
+  "source_repository": "FelipeAcha/uno",
+  "source_branch": "converging-waters-public-site",
+  "decompressed_bytes": 116897,
+  "decompressed_sha256": "f7844a9432b64c559230ec858009775055856e7fa72005fb8f7edb039ab48ebb",
+  "contains_purpose_led_measurement": false,
+  "contains_legal_readiness": true,
+  "contains_pavel_marmanillo": true,
+  "contains_bartolome_de_las_casas": true
+}
