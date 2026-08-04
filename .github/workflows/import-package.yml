@@ -5,6 +5,8 @@ on:
     branches: [main]
     paths:
       - 'converging-waters-repository-ready.zip'
+      - '.github/import-trigger'
+      - '.github/workflows/import-package.yml'
   workflow_dispatch:
 
 permissions:
@@ -13,7 +15,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: pages
+  group: cw-v13-import
   cancel-in-progress: false
 
 jobs:
@@ -30,37 +32,39 @@ jobs:
           fetch-depth: 0
 
       - name: Verify uploaded package
+        id: verify
+        continue-on-error: true
         run: |
           set -euo pipefail
           test -f converging-waters-repository-ready.zip
           echo 'cf0a0e2f78ccf0ca370735c285cb1cbe19515c44bffabbb87424a0cda7efafb1  converging-waters-repository-ready.zip' | sha256sum --check --strict
 
       - name: Extract package incrementally
+        id: extract
+        if: steps.verify.outcome == 'success'
+        continue-on-error: true
         run: |
           set -euo pipefail
           rm -rf /tmp/converging-waters-package
           mkdir -p /tmp/converging-waters-package
           unzip -q converging-waters-repository-ready.zip -d /tmp/converging-waters-package
-
-          # Replace only the controlled website candidates. Preserve repository
-          # history and files outside these governed paths.
           rm -rf docs/releases/v13 docs/preview
           mkdir -p docs/releases docs
           rsync -a /tmp/converging-waters-package/ ./
-          rm converging-waters-repository-ready.zip
+          rm -f converging-waters-repository-ready.zip .github/import-trigger
 
       - name: Validate website and repository structure
+        id: validate
+        if: steps.extract.outcome == 'success'
+        continue-on-error: true
         run: |
           set -euo pipefail
           python scripts/validate_site.py
           python - <<'PY'
           from pathlib import Path
           required = [
-              Path('README.md'),
-              Path('GOVERNANCE.md'),
-              Path('CHANGELOG.md'),
-              Path('docs/index.html'),
-              Path('docs/preview/index.html'),
+              Path('README.md'), Path('GOVERNANCE.md'), Path('CHANGELOG.md'),
+              Path('docs/index.html'), Path('docs/preview/index.html'),
               Path('docs/releases/v13/index.html'),
               Path('docs/releases/v13/asset-manifest.json'),
               Path('docs-governance/DECISIONS.md'),
@@ -73,6 +77,9 @@ jobs:
           PY
 
       - name: Commit imported package
+        id: commit_import
+        if: steps.validate.outcome == 'success'
+        continue-on-error: true
         run: |
           set -euo pipefail
           git config user.name 'github-actions[bot]'
@@ -84,18 +91,29 @@ jobs:
           fi
 
       - name: Configure GitHub Pages
+        id: configure
+        if: steps.commit_import.outcome == 'success'
+        continue-on-error: true
         uses: actions/configure-pages@v5
 
       - name: Upload validated Pages artifact
+        id: upload
+        if: steps.configure.outcome == 'success'
+        continue-on-error: true
         uses: actions/upload-pages-artifact@v4
         with:
           path: docs
 
       - name: Deploy validated site to GitHub Pages
         id: deployment
+        if: steps.upload.outcome == 'success'
+        continue-on-error: true
         uses: actions/deploy-pages@v4
 
       - name: Smoke-test public URLs
+        id: smoke
+        if: steps.deployment.outcome == 'success'
+        continue-on-error: true
         env:
           ROOT_URL: https://felipeacha.github.io/converging-waters/
           PREVIEW_URL: https://felipeacha.github.io/converging-waters/preview/
@@ -104,16 +122,75 @@ jobs:
           set -euo pipefail
           for url in "$ROOT_URL" "$PREVIEW_URL" "$RELEASE_URL"; do
             code='000'
-            for attempt in $(seq 1 30); do
+            for attempt in $(seq 1 36); do
               code=$(curl -L --silent --show-error --output /tmp/page.html --write-out '%{http_code}' "$url" || true)
               if [ "$code" = '200' ]; then
                 break
               fi
               sleep 5
             done
-            if [ "$code" != '200' ]; then
-              echo "Public URL failed after retries: $url (HTTP $code)" >&2
-              exit 1
-            fi
+            test "$code" = '200'
+            test -s /tmp/page.html
             echo "PASS: $url"
           done
+
+      - name: Record import and deployment diagnostics
+        if: always()
+        env:
+          VERIFY_OUTCOME: ${{ steps.verify.outcome }}
+          EXTRACT_OUTCOME: ${{ steps.extract.outcome }}
+          VALIDATE_OUTCOME: ${{ steps.validate.outcome }}
+          COMMIT_OUTCOME: ${{ steps.commit_import.outcome }}
+          CONFIGURE_OUTCOME: ${{ steps.configure.outcome }}
+          UPLOAD_OUTCOME: ${{ steps.upload.outcome }}
+          DEPLOY_OUTCOME: ${{ steps.deployment.outcome }}
+          SMOKE_OUTCOME: ${{ steps.smoke.outcome }}
+          PAGE_URL: ${{ steps.deployment.outputs.page_url }}
+          RUN_ID: ${{ github.run_id }}
+          RUN_ATTEMPT: ${{ github.run_attempt }}
+          COMMIT_SHA: ${{ github.sha }}
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          report = {
+              'source_commit_sha': os.environ.get('COMMIT_SHA'),
+              'run_id': os.environ.get('RUN_ID'),
+              'run_attempt': os.environ.get('RUN_ATTEMPT'),
+              'verify_outcome': os.environ.get('VERIFY_OUTCOME'),
+              'extract_outcome': os.environ.get('EXTRACT_OUTCOME'),
+              'validate_outcome': os.environ.get('VALIDATE_OUTCOME'),
+              'commit_outcome': os.environ.get('COMMIT_OUTCOME'),
+              'configure_outcome': os.environ.get('CONFIGURE_OUTCOME'),
+              'upload_outcome': os.environ.get('UPLOAD_OUTCOME'),
+              'deploy_outcome': os.environ.get('DEPLOY_OUTCOME'),
+              'smoke_outcome': os.environ.get('SMOKE_OUTCOME'),
+              'page_url': os.environ.get('PAGE_URL') or None,
+          }
+          Path('.github/import-status.json').write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')
+          print(json.dumps(report, indent=2))
+          PY
+
+      - name: Commit diagnostics
+        if: always()
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add .github/import-status.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'Record v13 import and deployment status'
+            git push origin HEAD:main
+          fi
+
+      - name: Require successful import and public validation
+        if: always()
+        run: |
+          test '${{ steps.verify.outcome }}' = 'success'
+          test '${{ steps.extract.outcome }}' = 'success'
+          test '${{ steps.validate.outcome }}' = 'success'
+          test '${{ steps.commit_import.outcome }}' = 'success'
+          test '${{ steps.configure.outcome }}' = 'success'
+          test '${{ steps.upload.outcome }}' = 'success'
+          test '${{ steps.deployment.outcome }}' = 'success'
+          test '${{ steps.smoke.outcome }}' = 'success'
