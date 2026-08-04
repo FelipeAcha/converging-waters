@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -26,17 +26,71 @@ jobs:
     steps:
       - name: Checkout independent repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Configure GitHub Pages
+        id: configure
+        continue-on-error: true
         uses: actions/configure-pages@v5
         with:
           enablement: true
 
       - name: Upload Pages artifact
+        id: upload
+        if: steps.configure.outcome == 'success'
+        continue-on-error: true
         uses: actions/upload-pages-artifact@v4
         with:
           path: docs
 
       - name: Deploy to GitHub Pages
         id: deployment
+        if: steps.upload.outcome == 'success'
+        continue-on-error: true
         uses: actions/deploy-pages@v4
+
+      - name: Record deployment diagnostics
+        if: always()
+        env:
+          CONFIGURE_OUTCOME: ${{ steps.configure.outcome }}
+          UPLOAD_OUTCOME: ${{ steps.upload.outcome }}
+          DEPLOY_OUTCOME: ${{ steps.deployment.outcome }}
+          PAGE_URL: ${{ steps.deployment.outputs.page_url }}
+          RUN_ID: ${{ github.run_id }}
+          RUN_ATTEMPT: ${{ github.run_attempt }}
+          COMMIT_SHA: ${{ github.sha }}
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          report = {
+              'commit_sha': os.environ.get('COMMIT_SHA'),
+              'run_id': os.environ.get('RUN_ID'),
+              'run_attempt': os.environ.get('RUN_ATTEMPT'),
+              'configure_outcome': os.environ.get('CONFIGURE_OUTCOME'),
+              'upload_outcome': os.environ.get('UPLOAD_OUTCOME'),
+              'deploy_outcome': os.environ.get('DEPLOY_OUTCOME'),
+              'page_url': os.environ.get('PAGE_URL') or None,
+          }
+          Path('.github/pages-deployment-status.json').write_text(
+              json.dumps(report, indent=2) + '\n', encoding='utf-8'
+          )
+          print(json.dumps(report, indent=2))
+          PY
+
+      - name: Commit deployment diagnostics
+        if: always()
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add .github/pages-deployment-status.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'Record GitHub Pages deployment status'
+            git push origin HEAD:main
+          fi
+
+      - name: Fail when deployment did not succeed
+        if: always() && steps.deployment.outcome != 'success'
+        run: exit 1
