@@ -1,0 +1,9 @@
+{
+  "commit_sha": "b03c47109b0b564a3da58110feecb08860dc5056",
+  "run_id": "30945438295",
+  "run_attempt": "1",
+  "configure_outcome": "failure",
+  "upload_outcome": "skipped",
+  "deploy_outcome": "skipped",
+  "page_url": null
+}
