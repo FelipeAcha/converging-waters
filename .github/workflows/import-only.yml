@@ -1,0 +1,44 @@
+name: Import reviewed Converging Waters v13
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/import-only-trigger'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Import and validate package
+        run: |
+          set -euo pipefail
+          test -f converging-waters-repository-ready.zip
+          echo 'cf0a0e2f78ccf0ca370735c285cb1cbe19515c44bffabbb87424a0cda7efafb1  converging-waters-repository-ready.zip' | sha256sum --check --strict
+          rm -rf /tmp/cw-package
+          mkdir -p /tmp/cw-package
+          unzip -q converging-waters-repository-ready.zip -d /tmp/cw-package
+          rm -rf docs/releases/v13 docs/preview
+          mkdir -p docs/releases docs
+          rsync -a /tmp/cw-package/ ./
+          rm -f converging-waters-repository-ready.zip .github/import-only-trigger .github/import-trigger .github/run-v13-import
+          python scripts/validate_site.py
+          test -f docs/index.html
+          test -f docs/preview/index.html
+          test -f docs/releases/v13/index.html
+          test -f docs/releases/v13/asset-manifest.json
+      - name: Commit imported package
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git commit -m 'Import reviewed Converging Waters v13'
+          git push origin HEAD:main
