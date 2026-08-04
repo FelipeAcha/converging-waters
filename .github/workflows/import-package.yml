@@ -1,4 +1,4 @@
-name: Import repository-ready package
+name: Import and deploy repository-ready package
 
 on:
   push:
@@ -9,13 +9,18 @@ on:
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
 
 concurrency:
-  group: import-repository-package
+  group: pages
   cancel-in-progress: false
 
 jobs:
-  import:
+  import-validate-deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout independent repository
@@ -68,3 +73,17 @@ jobs:
           git add -A
           git commit -m 'Import optimized Converging Waters v13 package'
           git push origin HEAD:main
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
+      - name: Upload validated Pages artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: docs
+
+      - name: Deploy validated site to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
