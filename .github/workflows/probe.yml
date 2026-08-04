@@ -1,0 +1,27 @@
+name: Actions probe
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/probe-trigger'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Write probe result
+        run: |
+          printf 'success\nrun_id=%s\nsha=%s\n' "$GITHUB_RUN_ID" "$GITHUB_SHA" > .github/probe-status.txt
+      - name: Commit probe result
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add .github/probe-status.txt
+          git commit -m 'Record GitHub Actions probe result'
+          git push origin HEAD:main
