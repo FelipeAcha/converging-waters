@@ -1,10 +1,10 @@
-name: Import and deploy repository-ready package
+name: Import, validate and deploy Converging Waters v13
 
 on:
   push:
     branches: [main]
     paths:
-      - 'package-upload.ready'
+      - 'converging-waters-repository-ready.zip'
   workflow_dispatch:
 
 permissions:
@@ -22,19 +22,17 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout independent repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Reconstruct and verify repository package
+      - name: Verify uploaded package
         run: |
           set -euo pipefail
-          test -f package-upload.ready
-          test -d .package-upload
-          test "$(find .package-upload -maxdepth 1 -type f -name 'part-*.b64' | wc -l)" -gt 0
-          cat .package-upload/part-*.b64 | base64 --decode > converging-waters-repository-ready.zip
+          test -f converging-waters-repository-ready.zip
           echo 'cf0a0e2f78ccf0ca370735c285cb1cbe19515c44bffabbb87424a0cda7efafb1  converging-waters-repository-ready.zip' | sha256sum --check --strict
 
       - name: Extract package incrementally
@@ -45,27 +43,30 @@ jobs:
           unzip -q converging-waters-repository-ready.zip -d /tmp/converging-waters-package
 
           # Replace only the controlled website candidates. Preserve repository
-          # history, personal workflows and governance files outside these paths.
+          # history and files outside these governed paths.
           rm -rf docs/releases/v13 docs/preview
           mkdir -p docs/releases docs
           rsync -a /tmp/converging-waters-package/ ./
-          rm -rf converging-waters-repository-ready.zip .package-upload package-upload.ready
+          rm converging-waters-repository-ready.zip
 
-      - name: Validate website and repository package
+      - name: Validate website and repository structure
         run: |
           set -euo pipefail
           python scripts/validate_site.py
           python - <<'PY'
           from pathlib import Path
           required = [
-              Path('README.md'), Path('GOVERNANCE.md'), Path('CHANGELOG.md'),
-              Path('docs/index.html'), Path('docs/preview/index.html'),
+              Path('README.md'),
+              Path('GOVERNANCE.md'),
+              Path('CHANGELOG.md'),
+              Path('docs/index.html'),
+              Path('docs/preview/index.html'),
               Path('docs/releases/v13/index.html'),
               Path('docs/releases/v13/asset-manifest.json'),
               Path('docs-governance/DECISIONS.md'),
               Path('docs-governance/standards/WEB_PREVIEW_AND_PUBLISHING.md'),
           ]
-          missing = [str(p) for p in required if not p.exists()]
+          missing = [str(path) for path in required if not path.exists()]
           if missing:
               raise SystemExit('Missing required files: ' + ', '.join(missing))
           print('PASS: repository package structure')
@@ -77,13 +78,13 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add -A
-          git commit -m 'Import optimized Converging Waters v13 package'
-          git push origin HEAD:main
+          if ! git diff --cached --quiet; then
+            git commit -m 'Import optimized Converging Waters v13 package'
+            git push origin HEAD:main
+          fi
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
-        with:
-          enablement: true
 
       - name: Upload validated Pages artifact
         uses: actions/upload-pages-artifact@v4
@@ -93,3 +94,26 @@ jobs:
       - name: Deploy validated site to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: Smoke-test public URLs
+        env:
+          ROOT_URL: https://felipeacha.github.io/converging-waters/
+          PREVIEW_URL: https://felipeacha.github.io/converging-waters/preview/
+          RELEASE_URL: https://felipeacha.github.io/converging-waters/releases/v13/
+        run: |
+          set -euo pipefail
+          for url in "$ROOT_URL" "$PREVIEW_URL" "$RELEASE_URL"; do
+            code='000'
+            for attempt in $(seq 1 30); do
+              code=$(curl -L --silent --show-error --output /tmp/page.html --write-out '%{http_code}' "$url" || true)
+              if [ "$code" = '200' ]; then
+                break
+              fi
+              sleep 5
+            done
+            if [ "$code" != '200' ]; then
+              echo "Public URL failed after retries: $url (HTTP $code)" >&2
+              exit 1
+            fi
+            echo "PASS: $url"
+          done
