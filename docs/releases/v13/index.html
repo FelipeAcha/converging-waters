@@ -7,46 +7,41 @@
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" content="#174d39">
 <style>
-html,body{height:100%;margin:0}body{display:grid;place-items:center;background:#f5efe6;color:#10261d;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.loading{max-width:36rem;padding:2rem;text-align:center}.spinner{width:2.5rem;height:2.5rem;margin:0 auto 1rem;border:.25rem solid #d8c9ad;border-top-color:#174d39;border-radius:50%;animation:spin .8s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+html,body{height:100%;margin:0}body{display:grid;place-items:center;background:#f5efe6;color:#10261d;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.loading{max-width:38rem;padding:2rem;text-align:center}.spinner{width:2.5rem;height:2.5rem;margin:0 auto 1rem;border:.25rem solid #d8c9ad;border-top-color:#174d39;border-radius:50%;animation:spin .8s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}.error{max-width:42rem;padding:2rem;text-align:left}.error code{overflow-wrap:anywhere}
 </style>
+<script src="https://cdn.jsdelivr.net/npm/fflate@0.8.3/umd/index.js"></script>
 </head>
 <body>
-<div class="loading"><div class="spinner" aria-hidden="true"></div><strong>Loading Converging Waters v13…</strong><p>Reconstructing the reviewed website and optimized visual assets.</p></div>
+<div class="loading"><div class="spinner" aria-hidden="true"></div><strong>Loading Converging Waters v13…</strong><p>Verifying and opening the reviewed website with its optimized visual assets.</p></div>
 <script>
 (async()=>{
-  if (!("DecompressionStream" in window)) throw new Error("This browser does not support the required decompression API. Please use a current browser.");
-  const files=Array.from({length:34},(_,i)=>`chunks/${String(i).padStart(3,"0")}.txt`);
-  const parts=await Promise.all(files.map(async url=>{const r=await fetch(url,{cache:"no-store"});if(!r.ok)throw new Error(`Missing release asset: ${url}`);return r.text();}));
-  const packed=parts.join("").trim();
-  const compressed=Uint8Array.from(atob(packed),c=>c.charCodeAt(0));
-  const expected="80ec793fa69e9248feeb03e0512ee8674399e03c4987c36ae6e306a92bdb9291";
-  const digest=[...new Uint8Array(await crypto.subtle.digest("SHA-256",compressed))].map(b=>b.toString(16).padStart(2,"0")).join("");
-  if(digest!==expected) throw new Error("Release integrity check failed.");
-  const tar=new Uint8Array(await new Response(new Blob([compressed]).stream().pipeThrough(new DecompressionStream("gzip"))).arrayBuffer());
+  const ZIP_URL='https://raw.githubusercontent.com/FelipeAcha/converging-waters/main/converging-waters-repository-ready.zip';
+  const EXPECTED_SHA256='cf0a0e2f78ccf0ca370735c285cb1cbe19515c44bffabbb87424a0cda7efafb1';
+  const response=await fetch(ZIP_URL,{cache:'no-store'});
+  if(!response.ok) throw new Error(`Unable to fetch reviewed package: HTTP ${response.status}`);
+  const zipBytes=new Uint8Array(await response.arrayBuffer());
+  const digest=[...new Uint8Array(await crypto.subtle.digest('SHA-256',zipBytes))].map(b=>b.toString(16).padStart(2,'0')).join('');
+  if(digest!==EXPECTED_SHA256) throw new Error('Reviewed package integrity check failed.');
+  if(!window.fflate) throw new Error('The decompression library did not load.');
+  const entries=fflate.unzipSync(zipBytes);
   const decoder=new TextDecoder();
-  const entries=new Map();
-  const octal=bytes=>parseInt(decoder.decode(bytes).replace(/\0.*$/s,"").trim()||"0",8);
-  for(let off=0;off+512<=tar.length;){
-    const header=tar.subarray(off,off+512);
-    if(header.every(b=>b===0)) break;
-    const name=decoder.decode(header.subarray(0,100)).replace(/\0.*$/s,"");
-    const size=octal(header.subarray(124,136));
-    const start=off+512;
-    entries.set(name,tar.slice(start,start+size));
-    off=start+Math.ceil(size/512)*512;
+  const htmlPath='docs/releases/v13/index.html';
+  if(!entries[htmlPath]) throw new Error('The reviewed package does not contain the v13 HTML file.');
+  let html=decoder.decode(entries[htmlPath]);
+  const assetPrefix='docs/releases/v13/assets/';
+  for(const [path,bytes] of Object.entries(entries)){
+    if(!path.startsWith(assetPrefix)) continue;
+    const name=path.slice(assetPrefix.length);
+    const ext=name.split('.').pop().toLowerCase();
+    const mime=ext==='svg'?'image/svg+xml':ext==='webp'?'image/webp':'application/octet-stream';
+    const objectUrl=URL.createObjectURL(new Blob([bytes],{type:mime}));
+    html=html.split(`assets/${name}`).join(objectUrl);
   }
-  if(!entries.has("index.html")) throw new Error("The release bundle does not contain index.html.");
-  let html=decoder.decode(entries.get("index.html"));
-  for(const [name,bytes] of entries){
-    if(!name.startsWith("assets/")) continue;
-    const ext=name.split(".").pop().toLowerCase();
-    const mime=ext==="svg"?"image/svg+xml":ext==="webp"?"image/webp":"application/octet-stream";
-    const url=URL.createObjectURL(new Blob([bytes],{type:mime}));
-    html=html.split(name).join(url);
-  }
-  document.open();document.write(html);document.close();
+  document.open();
+  document.write(html);
+  document.close();
 })().catch(error=>{
-  document.body.innerHTML='<main class="loading"><h1>Unable to load the v13 review release</h1><p>'+String(error.message||error)+'</p></main>';
+  document.body.innerHTML='<main class="error"><h1>Unable to load the reviewed website</h1><p>'+String(error.message||error)+'</p><p><code>https://github.com/FelipeAcha/converging-waters</code></p></main>';
   console.error(error);
 });
 </script>
