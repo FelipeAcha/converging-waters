@@ -1,9 +1,14 @@
 {
-  "commit_sha": "402160b4a68a9d2db38386c4d61f23a3832625ca",
-  "run_id": "30949880516",
+  "commit_sha": "4f86abb11b17c5d6f7b7666a890124a3edfaf7cf",
+  "run_id": "30950028830",
   "run_attempt": "1",
+  "local_validate_outcome": "success",
   "configure_outcome": "success",
   "upload_outcome": "success",
   "deploy_outcome": "success",
-  "page_url": "https://felipeacha.github.io/converging-waters/"
+  "smoke_outcome": "success",
+  "page_url": "https://felipeacha.github.io/converging-waters/",
+  "root_url": "https://felipeacha.github.io/converging-waters/",
+  "preview_url": "https://felipeacha.github.io/converging-waters/preview/",
+  "release_url": "https://felipeacha.github.io/converging-waters/releases/v13/"
 }
