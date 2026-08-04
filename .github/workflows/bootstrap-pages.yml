@@ -1,4 +1,4 @@
-name: Deploy GitHub Pages
+name: Deploy and validate GitHub Pages
 
 on:
   push:
@@ -29,8 +29,21 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Validate repository website structure
+        id: local_validate
+        continue-on-error: true
+        run: |
+          set -euo pipefail
+          test -f docs/index.html
+          test -f docs/preview/index.html
+          test -f docs/releases/v13/index.html
+          test -f converging-waters-repository-ready.zip
+          echo 'cf0a0e2f78ccf0ca370735c285cb1cbe19515c44bffabbb87424a0cda7efafb1  converging-waters-repository-ready.zip' | sha256sum --check --strict
+          unzip -tq converging-waters-repository-ready.zip
+
       - name: Configure GitHub Pages
         id: configure
+        if: steps.local_validate.outcome == 'success'
         continue-on-error: true
         uses: actions/configure-pages@v5
         with:
@@ -50,12 +63,104 @@ jobs:
         continue-on-error: true
         uses: actions/deploy-pages@v4
 
+      - name: Validate public routes and rendered website
+        id: smoke
+        if: steps.deployment.outcome == 'success'
+        continue-on-error: true
+        env:
+          ROOT_URL: https://felipeacha.github.io/converging-waters/
+          PREVIEW_URL: https://felipeacha.github.io/converging-waters/preview/
+          RELEASE_URL: https://felipeacha.github.io/converging-waters/releases/v13/
+          ZIP_URL: https://raw.githubusercontent.com/FelipeAcha/converging-waters/main/converging-waters-repository-ready.zip
+          FFLATE_URL: https://cdn.jsdelivr.net/npm/fflate@0.8.3/umd/index.js
+        run: |
+          set -euo pipefail
+
+          check_url() {
+            url="$1"
+            output="$2"
+            code=000
+            for attempt in $(seq 1 36); do
+              code=$(curl -L --silent --show-error --output "$output" --write-out '%{http_code}' "$url" || true)
+              if [ "$code" = 200 ] && [ -s "$output" ]; then
+                break
+              fi
+              sleep 5
+            done
+            test "$code" = 200
+            test -s "$output"
+            echo "PASS HTTP 200 $url"
+          }
+
+          check_url "$ROOT_URL" /tmp/root.html
+          check_url "$PREVIEW_URL" /tmp/preview.html
+          check_url "$RELEASE_URL" /tmp/release-loader.html
+          check_url "$ZIP_URL" /tmp/reviewed-package.zip
+          check_url "$FFLATE_URL" /tmp/fflate.js
+
+          echo 'cf0a0e2f78ccf0ca370735c285cb1cbe19515c44bffabbb87424a0cda7efafb1  /tmp/reviewed-package.zip' | sha256sum --check --strict
+          unzip -tq /tmp/reviewed-package.zip
+          grep -q 'fflate@0.8.3' /tmp/release-loader.html
+          grep -q 'EXPECTED_SHA256' /tmp/release-loader.html
+
+          chrome=$(command -v google-chrome || command -v google-chrome-stable || command -v chromium || command -v chromium-browser || true)
+          test -n "$chrome"
+          "$chrome" \
+            --headless=new \
+            --no-sandbox \
+            --disable-gpu \
+            --disable-dev-shm-usage \
+            --virtual-time-budget=25000 \
+            --dump-dom \
+            "$RELEASE_URL" > /tmp/rendered.html
+
+          grep -q 'Protect and regenerate living waters' /tmp/rendered.html
+          grep -q 'Different strengths' /tmp/rendered.html
+          if grep -q 'Unable to load the reviewed website' /tmp/rendered.html; then
+            echo 'Rendered page displayed the loader error state.' >&2
+            exit 1
+          fi
+
+          python - <<'PY'
+          from html.parser import HTMLParser
+          from pathlib import Path
+
+          class Audit(HTMLParser):
+              def __init__(self):
+                  super().__init__()
+                  self.images = []
+                  self.links = []
+              def handle_starttag(self, tag, attrs):
+                  data = dict(attrs)
+                  if tag == 'img':
+                      self.images.append(data.get('src', ''))
+                  elif tag == 'a':
+                      self.links.append(data.get('href', ''))
+
+          html = Path('/tmp/rendered.html').read_text(encoding='utf-8', errors='replace')
+          audit = Audit()
+          audit.feed(html)
+          if len(audit.images) < 15:
+              raise SystemExit(f'Expected at least 15 rendered images, found {len(audit.images)}')
+          missing = [src for src in audit.images if not src]
+          if missing:
+              raise SystemExit('One or more rendered images have an empty src')
+          invalid = [src for src in audit.images if not src.startswith(('blob:', 'data:', 'https://', 'http://'))]
+          if invalid:
+              raise SystemExit('Unexpected rendered image sources: ' + ', '.join(invalid[:5]))
+          if len(audit.links) < 20:
+              raise SystemExit(f'Expected at least 20 links, found {len(audit.links)}')
+          print(f'PASS rendered DOM: {len(audit.images)} images and {len(audit.links)} links')
+          PY
+
       - name: Record deployment diagnostics
         if: always()
         env:
+          LOCAL_VALIDATE_OUTCOME: ${{ steps.local_validate.outcome }}
           CONFIGURE_OUTCOME: ${{ steps.configure.outcome }}
           UPLOAD_OUTCOME: ${{ steps.upload.outcome }}
           DEPLOY_OUTCOME: ${{ steps.deployment.outcome }}
+          SMOKE_OUTCOME: ${{ steps.smoke.outcome }}
           PAGE_URL: ${{ steps.deployment.outputs.page_url }}
           RUN_ID: ${{ github.run_id }}
           RUN_ATTEMPT: ${{ github.run_attempt }}
@@ -68,10 +173,15 @@ jobs:
               'commit_sha': os.environ.get('COMMIT_SHA'),
               'run_id': os.environ.get('RUN_ID'),
               'run_attempt': os.environ.get('RUN_ATTEMPT'),
+              'local_validate_outcome': os.environ.get('LOCAL_VALIDATE_OUTCOME'),
               'configure_outcome': os.environ.get('CONFIGURE_OUTCOME'),
               'upload_outcome': os.environ.get('UPLOAD_OUTCOME'),
               'deploy_outcome': os.environ.get('DEPLOY_OUTCOME'),
+              'smoke_outcome': os.environ.get('SMOKE_OUTCOME'),
               'page_url': os.environ.get('PAGE_URL') or None,
+              'root_url': 'https://felipeacha.github.io/converging-waters/',
+              'preview_url': 'https://felipeacha.github.io/converging-waters/preview/',
+              'release_url': 'https://felipeacha.github.io/converging-waters/releases/v13/',
           }
           Path('.github/pages-deployment-status.json').write_text(
               json.dumps(report, indent=2) + '\n', encoding='utf-8'
@@ -87,10 +197,15 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add .github/pages-deployment-status.json
           if ! git diff --cached --quiet; then
-            git commit -m 'Record GitHub Pages deployment status'
+            git commit -m 'Record GitHub Pages deployment and browser validation status'
             git push origin HEAD:main
           fi
 
-      - name: Fail when deployment did not succeed
-        if: always() && steps.deployment.outcome != 'success'
-        run: exit 1
+      - name: Require successful deployment and browser validation
+        if: always()
+        run: |
+          test '${{ steps.local_validate.outcome }}' = success
+          test '${{ steps.configure.outcome }}' = success
+          test '${{ steps.upload.outcome }}' = success
+          test '${{ steps.deployment.outcome }}' = success
+          test '${{ steps.smoke.outcome }}' = success
