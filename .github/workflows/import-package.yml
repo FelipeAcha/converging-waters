@@ -32,6 +32,11 @@ jobs:
           rm -rf /tmp/converging-waters-package
           mkdir -p /tmp/converging-waters-package
           unzip -q converging-waters-repository-ready.zip -d /tmp/converging-waters-package
+
+          # Replace only the controlled website candidates. Preserve repository
+          # history, personal workflows and governance files outside these paths.
+          rm -rf docs/releases/v13 docs/preview
+          mkdir -p docs/releases docs
           rsync -a /tmp/converging-waters-package/ ./
           rm converging-waters-repository-ready.zip
 
