@@ -1,0 +1,4 @@
+Load and follow the current Converging Waters handoff at:
+https://github.com/FelipeAcha/converging-waters/blob/main/docs-governance/handoffs/2026-08-05/HANDOFF.md
+
+Continue from `CW-G1 / CW-PRES-01`. Work incrementally, keep Converging Waters fully separate from Norte Solar, and do not modify the current presentation or roadmap until you first present the exact insertion plan and gate criteria.
