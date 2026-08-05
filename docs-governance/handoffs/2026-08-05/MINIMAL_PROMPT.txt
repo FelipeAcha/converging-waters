@@ -1,4 +1,4 @@
-Load and follow the current Converging Waters handoff at:
+Carga y sigue el handoff vigente de Converging Waters en:
 https://github.com/FelipeAcha/converging-waters/blob/main/docs-governance/handoffs/2026-08-05/HANDOFF.md
 
-Continue from `CW-G1 / CW-PRES-01`. Work incrementally, keep Converging Waters fully separate from Norte Solar, and do not modify the current presentation or roadmap until you first present the exact insertion plan and gate criteria.
+Continúa desde `CW-G1 / CW-PRES-01`. Trabaja de forma incremental, mantén Converging Waters completamente separado de Norte Solar y no modifiques todavía la presentación ni el roadmap: primero presenta el plan exacto de inserción y los criterios del gate.
