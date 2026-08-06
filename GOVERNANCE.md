@@ -8,6 +8,7 @@ The governance area is **not inside `docs/`**.
 ## Canonical references
 
 - [Project technical memory](docs-governance/PROJECT_TECHNICAL_MEMORY.md)
+- [Technical-memory addendum — 2026-08-06](docs-governance/PROJECT_TECHNICAL_MEMORY_ADDENDUM_2026-08-06.md)
 - [Project gate control](docs-governance/PROJECT_GATE_CONTROL.md)
 - [Governance directory index](docs-governance/README.md)
 - [Current handoff](docs-governance/handoffs/2026-08-05/HANDOFF.md)
@@ -15,6 +16,7 @@ The governance area is **not inside `docs/`**.
 - [Drive artifact versioning policy](docs-governance/standards/DRIVE_ARTIFACT_VERSIONING_POLICY.md)
 - [Asset register bootstrap](docs-governance/registries/ASSET_REGISTER_BOOTSTRAP.csv)
 - [Version ledger bootstrap](docs-governance/registries/VERSION_LEDGER_BOOTSTRAP.csv)
+- [Automation-first and path-clarity learning](docs-governance/learning/WL-AUTOMATION-FIRST-PATH-CLARITY-001.md)
 
 ## Authority boundary
 
