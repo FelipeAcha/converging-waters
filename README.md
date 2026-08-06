@@ -24,6 +24,9 @@ Temporary import, probe and recovery workflows must be removed after an incident
 
 ## Canonical operating references
 
+- Project technical memory: [`docs-governance/PROJECT_TECHNICAL_MEMORY.md`](docs-governance/PROJECT_TECHNICAL_MEMORY.md)
+- Project gate control: [`docs-governance/PROJECT_GATE_CONTROL.md`](docs-governance/PROJECT_GATE_CONTROL.md)
+- Current handoff: [`docs-governance/handoffs/2026-08-05/HANDOFF.md`](docs-governance/handoffs/2026-08-05/HANDOFF.md)
 - Fast path: [`docs-governance/standards/WEB_PREVIEW_PUBLISHING_FAST_PATH.md`](docs-governance/standards/WEB_PREVIEW_PUBLISHING_FAST_PATH.md)
 - Verified learning record: [`docs-governance/learning/WL-WEB-PREVIEW-001.md`](docs-governance/learning/WL-WEB-PREVIEW-001.md)
 - Deployment evidence: [`.github/pages-deployment-status.json`](.github/pages-deployment-status.json)
