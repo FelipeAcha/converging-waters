@@ -1,0 +1,25 @@
+Asset ID,Project,Title,Drive File ID,Master URL,Current File Name,Artifact Class,Authoritative System,Lifecycle Status,Current Version Label,Retention Tier,Readback Status,Inventory Scope,Notes
+CW-PRES-001,Converging Waters,Converging Waters Tentative 60 Day Roadmap — Presentation,,,Converging_Waters_Tentative_60_Day_Roadmap_v06_bullets_only.pptx,MASTER_BLOB,Google Drive,REVIEW,v06,WORKING,BLOCKED,HANDOFF_OBSERVED,Drive ID pending audit
+CW-PRES-002,Converging Waters,Converging Waters Tentative 60 Day Roadmap — Presentation PDF,,,Converging_Waters_Tentative_60_Day_Roadmap_v06_bullets_only.pdf,DERIVATIVE_CURRENT,Google Drive,REVIEW,v06,WORKING,BLOCKED,HANDOFF_OBSERVED,Export of CW-PRES-001
+CW-ROAD-001,Converging Waters,Converging Waters Tentative 60 Day Roadmap — Document,,,Converging_Waters_Tentative_60_Day_Roadmap_v05.docx,MASTER_BLOB,Google Drive,REVIEW,v05,WORKING,BLOCKED,HANDOFF_OBSERVED,Drive ID pending audit
+CW-ROAD-002,Converging Waters,Converging Waters Tentative 60 Day Roadmap — Document PDF,,,Converging_Waters_Tentative_60_Day_Roadmap_Document_v05.pdf,DERIVATIVE_CURRENT,Google Drive,REVIEW,v05,WORKING,BLOCKED,HANDOFF_OBSERVED,Export of CW-ROAD-001
+CW-WEB-001,Converging Waters,Converging Waters Web Synthesis,,,Converging_Waters_Final_Preview_v13.html,MASTER_BLOB,GitHub + Google Drive,REVIEW,v13,APPROVED,BLOCKED,HANDOFF_OBSERVED,GitHub is source/deployment authority; Drive archival identity pending
+CW-VIS-001,Converging Waters,Medición y regeneración de aguas vivas,,,medición_y_regeneración_de_aguas_vivas.png,MASTER_BLOB,Google Drive,REVIEW,v01,APPROVED,BLOCKED,LOCAL_AND_HANDOFF,Primary infographic
+CW-VIS-002,Converging Waters,Lógica de proceso y mapa colaborativo,,,lógica_de_proceso_y_mapa_colaborativo.png,MASTER_BLOB,Google Drive,DRAFT,v01,WORKING,BLOCKED,LOCAL_STAGING,Drive identity pending
+CW-VIS-003,Converging Waters,Colaboración estratégica en proceso,,,colaboración_estratégica_en_proceso.png,MASTER_BLOB,Google Drive,DRAFT,v01,WORKING,BLOCKED,LOCAL_STAGING,Drive identity pending
+CW-HTML-001,Converging Waters,Measurement Purpose Visual Section,,,Measurement_Purpose_Visual_Section.html,VARIANT,Google Drive,DRAFT,v01,WORKING,BLOCKED,LOCAL_STAGING,Select canonical HTML master
+CW-HTML-002,Converging Waters,Measurement Purpose Visual Section v2,,,Measurement_Purpose_Visual_Section_v2.html,VARIANT,Google Drive,DRAFT,v02,WORKING,BLOCKED,LOCAL_STAGING,Select canonical HTML master
+CW-HTML-003,Converging Waters,Measurement Purpose Visual Section v3,,,Measurement_Purpose_Visual_Section_v3.html,VARIANT,Google Drive,DRAFT,v03,WORKING,BLOCKED,LOCAL_STAGING,Select canonical HTML master
+CW-HTML-004,Converging Waters,Measurement Purpose Visual Section v3 Interactive,,,Measurement_Purpose_Visual_Section_v3_Interactive.html,VARIANT,Google Drive,REVIEW,v03,WORKING,BLOCKED,LOCAL_STAGING,Interactive variant
+CW-WEB-002,Converging Waters,Willkamayu embedded preview v0.8,,,willkamayu-v0.8-embedded-preview.html,VARIANT,GitHub + Google Drive,DRAFT,v08,WORKING,BLOCKED,LOCAL_STAGING,Historical web variant
+CW-WEB-003,Converging Waters,Willkamayu embedded preview v0.10,,,willkamayu-v0.10-embedded-preview.html,VARIANT,GitHub + Google Drive,REVIEW,v10,WORKING,BLOCKED,LOCAL_STAGING,Historical web variant
+CW-WEB-004,Converging Waters,Willkamayu Netlify package v5,,,willkamayu-netlify-v5.zip,RELEASE_SNAPSHOT,GitHub + Google Drive,ARCHIVED,v05,APPROVED,BLOCKED,LOCAL_STAGING,Package/archive
+CW-SRC-001,Converging Waters,Amazonas Sagrada Proposal,,,Amazonas_Sagrada_Proposal (1).pdf,REFERENCE,Google Drive,REVIEW,v01,WORKING,BLOCKED,LOCAL_STAGING,Project source
+CW-SRC-002,Converging Waters,Patrick Portfolio,,,PORTAFOLIO PATRICK.pdf,REFERENCE,Google Drive,REVIEW,v01,WORKING,BLOCKED,LOCAL_STAGING,Participant source
+CW-SRC-003,Converging Waters,Patrick CV English,,,PATRICK QV CV.pdf,REFERENCE,Google Drive,REVIEW,v01,WORKING,BLOCKED,LOCAL_STAGING,Participant source
+CW-SRC-004,Converging Waters,Patrick CV Spanish,,,CV PATRICK QV (1).pdf,REFERENCE,Google Drive,REVIEW,v01,WORKING,BLOCKED,LOCAL_STAGING,Participant source
+CW-SRC-005,Converging Waters,María Gracia CV English,,,CV-MG (english ene 2026).pdf,REFERENCE,Google Drive,REVIEW,v01,WORKING,BLOCKED,LOCAL_STAGING,Participant source
+CW-SRC-006,Converging Waters,JRVS Definition of Roles Draft,,,JRVS Definicion Roles BORRADOR.md,REFERENCE,Google Drive,ARCHIVED,v01,WORKING,BLOCKED,LOCAL_STAGING,Precedent only; JRVS inactive
+CW-SRC-007,Converging Waters,Reference Websites Principles and Storytelling,,,Webs-de-Referencia-Principios-y-Storytelling.txt,REFERENCE,Google Drive,REVIEW,v01,WORKING,BLOCKED,LOCAL_STAGING,Reference list
+CW-SRC-008,Converging Waters,Master Synthesis and Web Branch,,,Rama Síntesis maestra y web - Converging Waters.txt,REFERENCE,Google Drive,REVIEW,v01,WORKING,BLOCKED,LOCAL_STAGING,Conversation export
+CW-LOCAL-UNMAPPED,Converging Waters,Unmapped generated PNG group,,,Multiple UUID-named PNG files,MASTER_BLOB,Google Drive,DRAFT,v01,WORKING,BLOCKED,LOCAL_STAGING_PARTIAL,Visual/context mapping required before assigning stable conceptual asset IDs
