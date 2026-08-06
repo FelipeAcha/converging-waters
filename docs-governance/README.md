@@ -4,11 +4,12 @@ This directory is the durable governance and continuity layer for Converging Wat
 
 ## Core records
 
-- `PROJECT_TECHNICAL_MEMORY.md` — canonical decisions, corrections, boundaries, open questions, and rejected interpretations.
+- `PROJECT_TECHNICAL_MEMORY.md` — parent canonical decisions, corrections, boundaries, open questions, and rejected interpretations.
+- `PROJECT_TECHNICAL_MEMORY_ADDENDUM_2026-08-06.md` — active canonical addendum for Drive artifact governance and CW-G1 continuation until consolidated into the parent memory.
 - `PROJECT_GATE_CONTROL.md` — active gate, commitments, transition criteria, and execution controls.
 - `handoffs/` — dated continuation packets and archive references.
 - `standards/` — project-specific operating standards.
-- `learning/` — verified process failures and prevention rules.
+- `learning/` — process failures, corrections, and prevention rules.
 - `validation/` — packets requiring participant or owner confirmation.
 - `registries/` — staged or canonical operational registers, clearly labeled by authority state.
 
@@ -32,3 +33,7 @@ Bootstrap records awaiting Drive reconciliation:
 
 - [`registries/ASSET_REGISTER_BOOTSTRAP.csv`](registries/ASSET_REGISTER_BOOTSTRAP.csv)
 - [`registries/VERSION_LEDGER_BOOTSTRAP.csv`](registries/VERSION_LEDGER_BOOTSTRAP.csv)
+
+Relevant learning record:
+
+- [`learning/WL-AUTOMATION-FIRST-PATH-CLARITY-001.md`](learning/WL-AUTOMATION-FIRST-PATH-CLARITY-001.md)
