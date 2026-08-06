@@ -1,0 +1,25 @@
+Version Record ID,Asset ID,Version Label,Drive File ID,Drive Revision ID,Previous Revision ID,Timestamp,Change Type,Change Summary,Lifecycle Status,Retention Tier,Named Version Status,Keep Forever Status,Same File ID,Side-by-Side Reason,Readback Status,Rollback Revision ID,Notes
+CW-VR-0001,CW-PRES-001,v06,,,,2026-08-06T12:38:00Z,CREATE,Bootstrap record from current handoff,REVIEW,WORKING,UNVERIFIED,UNVERIFIED,,,BLOCKED,,Drive identity and revision pending reconciliation
+CW-VR-0002,CW-PRES-002,v06,,,,2026-08-06T12:38:00Z,CREATE,Bootstrap record for current presentation PDF export,REVIEW,WORKING,NOT_REQUIRED,UNVERIFIED,,,BLOCKED,,Link to CW-PRES-001 pending Drive audit
+CW-VR-0003,CW-ROAD-001,v05,,,,2026-08-06T12:38:00Z,CREATE,Bootstrap record from current handoff,REVIEW,WORKING,UNVERIFIED,UNVERIFIED,,,BLOCKED,,Drive identity and revision pending reconciliation
+CW-VR-0004,CW-ROAD-002,v05,,,,2026-08-06T12:38:00Z,CREATE,Bootstrap record for roadmap PDF export,REVIEW,WORKING,NOT_REQUIRED,UNVERIFIED,,,BLOCKED,,Link to CW-ROAD-001 pending Drive audit
+CW-VR-0005,CW-WEB-001,v13,,,,2026-08-06T12:38:00Z,CREATE,Bootstrap record for reviewed web synthesis,REVIEW,APPROVED,NOT_REQUIRED,REQUIRED_NOT_EXECUTED,,,BLOCKED,,GitHub source exists; Drive revision pending
+CW-VR-0006,CW-VIS-001,v01,,,,2026-08-06T12:38:00Z,CREATE,Bootstrap record for primary infographic,REVIEW,APPROVED,NOT_REQUIRED,REQUIRED_NOT_EXECUTED,,,BLOCKED,,Local bytes and handoff reference observed
+CW-VR-0007,CW-VIS-002,v01,,,,2026-08-06T12:38:00Z,CREATE,Local staging record,DRAFT,WORKING,NOT_REQUIRED,NOT_REQUIRED,,,BLOCKED,,Drive identity pending
+CW-VR-0008,CW-VIS-003,v01,,,,2026-08-06T12:38:00Z,CREATE,Local staging record,DRAFT,WORKING,NOT_REQUIRED,NOT_REQUIRED,,,BLOCKED,,Drive identity pending
+CW-VR-0009,CW-HTML-001,v01,,,,2026-08-06T12:38:00Z,VARIANT_CREATE,HTML iteration observed locally,DRAFT,WORKING,NOT_REQUIRED,NOT_REQUIRED,FALSE,Historical design iteration,BLOCKED,,Canonical master pending selection
+CW-VR-0010,CW-HTML-002,v02,,,,2026-08-06T12:38:00Z,VARIANT_CREATE,HTML iteration observed locally,DRAFT,WORKING,NOT_REQUIRED,NOT_REQUIRED,FALSE,Historical design iteration,BLOCKED,,Canonical master pending selection
+CW-VR-0011,CW-HTML-003,v03,,,,2026-08-06T12:38:00Z,VARIANT_CREATE,HTML iteration observed locally,DRAFT,WORKING,NOT_REQUIRED,NOT_REQUIRED,FALSE,Historical design iteration,BLOCKED,,Canonical master pending selection
+CW-VR-0012,CW-HTML-004,v03,,,,2026-08-06T12:38:00Z,VARIANT_CREATE,Interactive HTML iteration observed locally,REVIEW,WORKING,NOT_REQUIRED,NOT_REQUIRED,FALSE,Interactive comparison variant,BLOCKED,,Canonical master pending selection
+CW-VR-0013,CW-WEB-002,v08,,,,2026-08-06T12:38:00Z,VARIANT_CREATE,Historical embedded preview,DRAFT,WORKING,NOT_REQUIRED,NOT_REQUIRED,FALSE,Historical web version,BLOCKED,,Drive identity pending
+CW-VR-0014,CW-WEB-003,v10,,,,2026-08-06T12:38:00Z,VARIANT_CREATE,Historical embedded preview,REVIEW,WORKING,NOT_REQUIRED,NOT_REQUIRED,FALSE,Historical web version,BLOCKED,,Drive identity pending
+CW-VR-0015,CW-WEB-004,v05,,,,2026-08-06T12:38:00Z,RELEASE_SNAPSHOT,Local Netlify package observed,ARCHIVED,APPROVED,NOT_REQUIRED,REQUIRED_NOT_EXECUTED,FALSE,Immutable package/archive,BLOCKED,,Drive identity and retention pending
+CW-VR-0016,CW-SRC-001,v01,,,,2026-08-06T12:38:00Z,CREATE,Project reference source observed locally,REVIEW,WORKING,NOT_REQUIRED,NOT_REQUIRED,FALSE,Reference source,BLOCKED,,Drive identity pending
+CW-VR-0017,CW-SRC-002,v01,,,,2026-08-06T12:38:00Z,CREATE,Participant portfolio observed locally,REVIEW,WORKING,NOT_REQUIRED,NOT_REQUIRED,FALSE,Reference source,BLOCKED,,Drive identity pending
+CW-VR-0018,CW-SRC-003,v01,,,,2026-08-06T12:38:00Z,CREATE,Participant CV observed locally,REVIEW,WORKING,NOT_REQUIRED,NOT_REQUIRED,FALSE,Reference source,BLOCKED,,Drive identity pending
+CW-VR-0019,CW-SRC-004,v01,,,,2026-08-06T12:38:00Z,CREATE,Participant CV observed locally,REVIEW,WORKING,NOT_REQUIRED,NOT_REQUIRED,FALSE,Reference source,BLOCKED,,Drive identity pending
+CW-VR-0020,CW-SRC-005,v01,,,,2026-08-06T12:38:00Z,CREATE,Participant CV observed locally,REVIEW,WORKING,NOT_REQUIRED,NOT_REQUIRED,FALSE,Reference source,BLOCKED,,Drive identity pending
+CW-VR-0021,CW-SRC-006,v01,,,,2026-08-06T12:38:00Z,CREATE,JRVS precedent source observed locally,ARCHIVED,WORKING,NOT_REQUIRED,NOT_REQUIRED,FALSE,Reference source,BLOCKED,,JRVS is inactive and source remains precedent only
+CW-VR-0022,CW-SRC-007,v01,,,,2026-08-06T12:38:00Z,CREATE,Reference website list observed locally,REVIEW,WORKING,NOT_REQUIRED,NOT_REQUIRED,FALSE,Reference source,BLOCKED,,Drive identity pending
+CW-VR-0023,CW-SRC-008,v01,,,,2026-08-06T12:38:00Z,CREATE,Conversation export observed locally,REVIEW,WORKING,NOT_REQUIRED,NOT_REQUIRED,FALSE,Reference source,BLOCKED,,Drive identity pending
+CW-VR-0024,CW-LOCAL-UNMAPPED,v01,,,,2026-08-06T12:38:00Z,CREATE,Multiple UUID-named generated PNGs detected,DRAFT,WORKING,NOT_REQUIRED,NOT_REQUIRED,,,BLOCKED,,Visual/context mapping required before version migration
