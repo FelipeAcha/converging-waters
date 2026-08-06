@@ -4,6 +4,7 @@ Status: ACTIVE
 Owner: Felipe Acha
 Scope: Converging Waters / Willkamayu / related collaboration work
 Repository: `FelipeAcha/converging-waters`
+Canonical technical memory: `docs-governance/PROJECT_TECHNICAL_MEMORY.md`
 Separation rule: This governance layer is independent from Norte Solar. Only generic methods or lessons may be reused elsewhere; project content, data, people, decisions, repositories, credentials, and operational records remain separate unless explicitly approved.
 
 ## 1. Operating principles
@@ -18,6 +19,7 @@ Separation rule: This governance layer is independent from Norte Solar. Only gen
 8. **Visual QA is mandatory.** Images use contain/fit rather than crop; tables have internal padding; slide text uses bullets or numbering with sufficient spacing; no completion claim is made before PPTX and PDF review.
 9. **Reversible delivery.** Each material version is separately named and preserved. Prior approved versions remain available for rollback.
 10. **Learning closure.** Any omission, visual failure, broken link, unsupported claim, or repeated correction must produce a reusable prevention rule.
+11. **Canonical decision memory.** Confirmed decisions, corrected interpretations, proposals, exploratory items and open questions are maintained in `PROJECT_TECHNICAL_MEMORY.md` using stable `CW-D###` identifiers. AI_OS conversation-architecture work remains outside this project memory.
 
 ## 2. Governance layers
 
@@ -152,6 +154,7 @@ Exit criteria:
 | CW-C06 | Treat all roles and contributions as provisional until each person confirms capacity, time, resources, and interest. | Each participant | CW-G1 | OPEN | Explicit participant confirmation. |
 | CW-C07 | Complete field-readiness essentials before the mid-September visit. | Core participants | CW-G2 | OPEN | Field Readiness Package and go/no-go record. |
 | CW-C08 | Defer nonessential or unrealistic 60-day work to the following 30-day gate. | Core participants | CW-G5 | OPEN | Prioritized deferred-work register. |
+| CW-C09 | Maintain the canonical technical memory and keep AI_OS conversation-architecture work outside Converging Waters project content. | Felipe / documentation workflow | All | ACTIVE | `PROJECT_TECHNICAL_MEMORY.md`, README reference and readback. |
 
 ## 6. Decision and evidence labels
 
