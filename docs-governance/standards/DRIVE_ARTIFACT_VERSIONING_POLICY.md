@@ -145,7 +145,7 @@ Required evidence:
 - Drive versioning policy: implemented in GitHub.
 - Asset Register and Version Ledger workbook: prepared locally with an initial 45-asset staging inventory.
 - Google Drive register creation, folder audit, file-ID reconciliation, and revision migration: `BLOCKED` because the Google Drive connector is unavailable in the current execution environment.
-- Any proposed reusable Skill or automation is an AI_OS / Start Digital transfer candidate, not an implementation state or deliverable of Converging Waters.
+- Any proposed reusable Skill or automation is an Optimización Stack Digital / AI_OS transfer candidate, not an implementation state or deliverable of Converging Waters.
 
 No file is represented as uploaded, versioned, retained, or registered in Drive until connector or UI evidence confirms it.
 
