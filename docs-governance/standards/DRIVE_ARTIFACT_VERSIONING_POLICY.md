@@ -143,9 +143,9 @@ Required evidence:
 - GitHub governance indexes: implemented.
 - CW-G1 validation packet: implemented and awaiting human validation.
 - Drive versioning policy: implemented in GitHub.
-- Generic `drive-artifact-governance` Skill: prepared, validated, and packaged; installation and post-install behavior testing remain open.
 - Asset Register and Version Ledger workbook: prepared locally with an initial 45-asset staging inventory.
 - Google Drive register creation, folder audit, file-ID reconciliation, and revision migration: `BLOCKED` because the Google Drive connector is unavailable in the current execution environment.
+- Any proposed reusable Skill or automation is an AI_OS / Start Digital transfer candidate, not an implementation state or deliverable of Converging Waters.
 
 No file is represented as uploaded, versioned, retained, or registered in Drive until connector or UI evidence confirms it.
 
@@ -166,4 +166,4 @@ Review this policy when:
 - legal or funder retention requirements arise;
 - more than one master is detected for the same logical asset;
 - a generated artifact is delivered without Drive persistence or ledger registration;
-- the generic Skill is updated or superseded.
+- AI_OS returns a verified reusable control that Felipe explicitly approves for use in Converging Waters.
