@@ -16,18 +16,17 @@ This addendum forms part of the canonical Converging Waters technical memory unt
 | CW-D023 | The project will maintain one `Converging Waters — Asset Register & Version Ledger` with `Assets`, `Versions`, `Relationships`, `Exceptions`, and `Controlled Values` tabs. The register uses Drive file IDs as identity and logs change summaries, revision IDs, retention, source, readback, and rollback. | CONFIRMED |
 | CW-D024 | Review, approved, published, submitted, and legal-record milestones require explicit retention evidence: named versions for native Google files when supported, and `Keep forever` for material uploaded-file revisions when supported. Provider-default blob history is not treated as permanent archival retention. | CONFIRMED |
 | CW-D025 | No Drive persistence, revision, retention, or registration may be claimed without connector or UI evidence. When Drive access is unavailable, artifacts and ledger rows remain `PREPARED` or `BLOCKED`, with exact migration and readback work preserved. | CONFIRMED |
+| CW-D026 | All work concerning Skills — including comparison, design, improvement, creation, packaging, installation, release, testing, or verification of `Conversation Branch Organizer` and any other reusable Skill — belongs to Start Digital / AI_OS. Converging Waters may identify requirements, failure modes, or improvement candidates and prepare a transfer note, but must not treat Skill development or lifecycle as a Converging Waters deliverable. | CONFIRMED |
 
-## Skill overlap decision
+## Skill-routing correction
 
-The installed Skill review produced this boundary:
+The substantive project requirements remain valid, but Skill implementation is out of scope here.
 
-- `norte-solar-document-governance` contains useful patterns but is hard-coded to Norte Solar organization codes, families, correlatives, states, and folders. It must not govern Converging Waters directly.
-- `workstream-governance` owns Projects, workstreams, conversations, routing, and inventory topology; it does not own file revision history.
-- `incremental-control` owns authorization, gates, readback, rollback, and canonical impact; it does not define Drive artifact identity or version semantics.
-- `workflow-learning` owns failure classification and prevention after an omitted or incorrect save/version action.
-- `skill-release-assurance` owns Skill package lifecycle, not project documents.
-
-Decision: create a separate generic Skill, `drive-artifact-governance`, and keep Converging Waters-specific policy and inventory in this project. The generic Skill is prepared, validated, and packaged; it is not yet installed, invoked, behavior-tested, or verified.
+- The `Conversation Branch Organizer` discussion and any proposed evolution toward conversation architecture must be transferred to Start Digital / AI_OS.
+- Any future proposal for a reusable Drive-governance Skill must likewise be reviewed, designed, packaged, installed, and tested in Start Digital / AI_OS.
+- Converging Waters may state what behavior it needs from a future Skill, but the canonical project memory records only the project requirement and the transfer destination.
+- No Skill is represented here as prepared, packaged, delivered, installed, invoked, behavior-tested, or verified.
+- The Converging Waters Drive policy, asset register, version ledger, and CW-G1 validation packet remain project records independent of whether AI_OS later supplies reusable automation.
 
 ## Current implementation evidence
 
@@ -37,7 +36,6 @@ Decision: create a separate generic Skill, `drive-artifact-governance`, and keep
 - Drive policy created at `docs-governance/standards/DRIVE_ARTIFACT_VERSIONING_POLICY.md`.
 - Bootstrap asset and version CSVs created under `docs-governance/registries/`.
 - A local XLSX register was prepared with an initial 45-asset staging inventory and 45 initial version records.
-- The generic Skill package passed Skill Creator validation, its positive record test passed, its invalid duplicate-master test was rejected, the release packet validated, and the package tree contains one Skill.
 
 ## Current blockers and open work
 
@@ -46,7 +44,8 @@ Decision: create a separate generic Skill, `drive-artifact-governance`, and keep
 - Existing files have not yet been reconciled to Drive file IDs, revision IDs, ownership, parent folders, or retention states.
 - UUID-named generated PNGs require visual/context mapping before they receive stable conceptual asset IDs.
 - The XLSX register is prepared but not yet imported as the Drive-native Google Sheet.
-- The `drive-artifact-governance` Skill is not yet installed or behavior-tested.
+
+Skill work is not a Converging Waters blocker. Any Skill-related next step must be transferred to Start Digital / AI_OS.
 
 ## CW-G1 continuation
 
