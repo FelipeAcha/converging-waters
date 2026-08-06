@@ -20,6 +20,7 @@ Separation rule: This governance layer is independent from Norte Solar. Only gen
 9. **Reversible delivery.** Each material version is separately named and preserved. Prior approved versions remain available for rollback.
 10. **Learning closure.** Any omission, visual failure, broken link, unsupported claim, or repeated correction must produce a reusable prevention rule.
 11. **Canonical decision memory.** Confirmed decisions, corrected interpretations, proposals, exploratory items and open questions are maintained in `PROJECT_TECHNICAL_MEMORY.md` using stable `CW-D###` identifiers. AI_OS conversation-architecture work remains outside this project memory.
+12. **Native in-chat review by default.** Preliminary versions are reviewed through ChatGPT native viewers, inline attachments, or individual stable links. ZIP files, duplicate export bundles, and regenerated copies are prohibited unless Felipe explicitly requests them or a documented external handoff requires multiple files to travel together.
 
 ## 2. Governance layers
 
@@ -140,7 +141,9 @@ Exit criteria:
 - PDF;
 - updated roadmap document if affected;
 - concise change log;
-- no internal workflow or private-conversation content.
+- no internal workflow or private-conversation content;
+- preliminary review delivered through ChatGPT native viewers or individual stable links;
+- no ZIP or duplicate export bundle unless explicitly requested by Felipe or required for a documented external handoff.
 
 ## 5. Commitment ledger
 
@@ -155,6 +158,7 @@ Exit criteria:
 | CW-C07 | Complete field-readiness essentials before the mid-September visit. | Core participants | CW-G2 | OPEN | Field Readiness Package and go/no-go record. |
 | CW-C08 | Defer nonessential or unrealistic 60-day work to the following 30-day gate. | Core participants | CW-G5 | OPEN | Prioritized deferred-work register. |
 | CW-C09 | Maintain the canonical technical memory and keep AI_OS conversation-architecture work outside Converging Waters project content. | Felipe / documentation workflow | All | ACTIVE | `PROJECT_TECHNICAL_MEMORY.md`, README reference and readback. |
+| CW-C10 | Review preliminary artifacts inside ChatGPT without unrequested ZIPs, duplicate bundles, or unnecessary regeneration. | Production workflow | All review gates | ACTIVE | Native-viewer links, individual artifacts, and `WL-REVIEW-EVIDENCE-001.md`. |
 
 ## 6. Decision and evidence labels
 
@@ -192,4 +196,4 @@ Transition criteria:
 - existing full-slide infographic is selected;
 - the new river-protection/regeneration/downstream/replication visual architecture is approved for production.
 
-Last activated: 2026-08-05
+Last activated: 2026-08-06
