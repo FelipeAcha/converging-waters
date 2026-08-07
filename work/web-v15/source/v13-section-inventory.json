@@ -1,0 +1,2166 @@
+{
+  "zip_sha256": "cf0a0e2f78ccf0ca370735c285cb1cbe19515c44bffabbb87424a0cda7efafb1",
+  "html_sha256": "fcb857aa61635a800f2faef512e9a14c3d53445ec996a03603ffa939dbd4ca11",
+  "html_size": 141916,
+  "section_count": 42,
+  "asset_count": 16,
+  "wga_sections": [
+    {
+      "index": 8,
+      "id": "stanley-update",
+      "kickers": [
+        "New since v0.1 · Stanley / WGA"
+      ],
+      "headings": [
+        {
+          "tag": "h2",
+          "text": "A more tangible field-and-data possibility"
+        },
+        {
+          "tag": "h3",
+          "text": "Sample + sequence"
+        },
+        {
+          "tag": "h3",
+          "text": "Context + verify"
+        },
+        {
+          "tag": "h3",
+          "text": "Learn + steward"
+        },
+        {
+          "tag": "h3",
+          "text": "Concrete examples already on the table"
+        },
+        {
+          "tag": "h3",
+          "text": "Key pages already mentioned in the conversation"
+        },
+        {
+          "tag": "h3",
+          "text": "Turn the references into one technical next step"
+        },
+        {
+          "tag": "h3",
+          "text": "What the group still needs to clarify"
+        }
+      ],
+      "raw_sha256": "d22889e1b98d8f49d3ea09f74092e97273d06964852e19b20c0aebd26d5525e1",
+      "raw_length": 10029,
+      "image_count": 13,
+      "link_count": 17,
+      "images": [
+        {
+          "src": "assets/asset-925e0999fc1b.webp",
+          "alt": "World Genome Academy illustration of students collecting samples and using portable sequencing equipment"
+        },
+        {
+          "src": "assets/asset-4eb7e31bb6ca.webp",
+          "alt": "Students collecting freshwater samples in the Sacred Valley"
+        },
+        {
+          "src": "assets/asset-b04a22bc7864.webp",
+          "alt": "Science Stanley rare disease storytelling illustration"
+        },
+        {
+          "src": "assets/asset-89b5baa66258.webp",
+          "alt": "Ecosystem atlas and metagenome patterns"
+        },
+        {
+          "src": "assets/asset-94d56c31456b.webp",
+          "alt": "Small field computers"
+        },
+        {
+          "src": "assets/asset-e92857647d5c.webp",
+          "alt": "Compact sensor and field-computing node shared by Stanley"
+        },
+        {
+          "src": "assets/asset-731976ddf41b.webp",
+          "alt": "BirdNET Live bioacoustic identification app in the field"
+        },
+        {
+          "src": "assets/asset-534f40aa7faf.webp",
+          "alt": "Autonomous field systems"
+        },
+        {
+          "src": "assets/asset-925e0999fc1b.webp",
+          "alt": "Portable sequencing in context"
+        },
+        {
+          "src": "assets/asset-94d56c31456b.webp",
+          "alt": "WGA public site"
+        },
+        {
+          "src": "assets/asset-89b5baa66258.webp",
+          "alt": "WGA data portal"
+        },
+        {
+          "src": "assets/asset-925e0999fc1b.webp",
+          "alt": "World Genome Academy"
+        },
+        {
+          "src": "assets/asset-44764fa22380.webp",
+          "alt": "Science Stanley rare-disease storytelling portrait"
+        }
+      ],
+      "links": [
+        {
+          "href": "https://wga-site.vercel.app/"
+        },
+        {
+          "href": "https://simonaaw.github.io/world-genome/"
+        },
+        {
+          "href": "https://www.stanley.science/rare-disease/"
+        },
+        {
+          "href": "https://wga-site.vercel.app/data-portal"
+        },
+        {
+          "href": "https://wga-site.vercel.app/"
+        },
+        {
+          "href": "https://wga-site.vercel.app/"
+        },
+        {
+          "href": "https://birdnet.cornell.edu/live-app/"
+        },
+        {
+          "href": "https://wga-site.vercel.app/"
+        },
+        {
+          "href": "https://simonaaw.github.io/world-genome/"
+        },
+        {
+          "href": "https://wga-site.vercel.app/"
+        },
+        {
+          "href": "https://wga-site.vercel.app/data-portal"
+        },
+        {
+          "href": "https://simonaaw.github.io/world-genome/"
+        },
+        {
+          "href": "https://www.stanley.science/rare-disease/"
+        },
+        {
+          "href": "https://wga-site.vercel.app/"
+        },
+        {
+          "href": "https://simonaaw.github.io/world-genome/"
+        },
+        {
+          "href": "https://www.weforum.org/publications/making-rare-diseases-count-how-better-data-can-unlock-a-multitrillion-dollar-opportunity/"
+        },
+        {
+          "href": "https://www.stanley.science/rare-disease/"
+        }
+      ]
+    },
+    {
+      "index": 12,
+      "id": "people",
+      "kickers": [
+        "03 · Who is in the room"
+      ],
+      "headings": [
+        {
+          "tag": "h2",
+          "text": "Six people, three project lenses, one possible convergence"
+        },
+        {
+          "tag": "h3",
+          "text": "Stanley / WGA"
+        },
+        {
+          "tag": "h3",
+          "text": "Simona / WGA"
+        },
+        {
+          "tag": "h3",
+          "text": "Chelsea / Amazonas Sagrada"
+        },
+        {
+          "tag": "h3",
+          "text": "Patrick / Amazonas Sagrada"
+        },
+        {
+          "tag": "h3",
+          "text": "María Gracia"
+        },
+        {
+          "tag": "h3",
+          "text": "Felipe"
+        }
+      ],
+      "raw_sha256": "fb47795aefc4e36e63be6c6c87ed5fe0cf09663fe511ab817875eb570ffd29b0",
+      "raw_length": 2238,
+      "image_count": 0,
+      "link_count": 0,
+      "images": [],
+      "links": []
+    },
+    {
+      "index": 21,
+      "id": "purpose-mrv",
+      "kickers": [
+        "06 · Purpose-led measurement and collaboration map",
+        "Collaboration map"
+      ],
+      "headings": [
+        {
+          "tag": "h2",
+          "text": "Protect and regenerate living waters"
+        },
+        {
+          "tag": "h3",
+          "text": "Purpose before technology"
+        },
+        {
+          "tag": "h3",
+          "text": "Build the evidence, baseline and learning needed for protection, recovery and long-term regeneration."
+        },
+        {
+          "tag": "h3",
+          "text": "Protection, restoration, guardianship and accountability for the river"
+        },
+        {
+          "tag": "h3",
+          "text": "Explore the protections that strengthen its own territorial model"
+        },
+        {
+          "tag": "h3",
+          "text": "Different strengths, one shared purpose"
+        }
+      ],
+      "raw_sha256": "1bfa87828b46cb35ca14b07d736fdaf42d19b598e5d21b2dc3a8e01ea46d3527",
+      "raw_length": 8298,
+      "image_count": 1,
+      "link_count": 0,
+      "images": [
+        {
+          "src": "assets/asset-be0fa6e11454.webp",
+          "alt": "Purpose-led measurement and collaboration map connecting legal protection, remediation, regeneration, WGA, Amazonas Sagrada, Willkamayu and future guardians"
+        }
+      ],
+      "links": []
+    },
+    {
+      "index": 27,
+      "id": "finance",
+      "kickers": [
+        "12 · Green finance track"
+      ],
+      "headings": [
+        {
+          "tag": "h2",
+          "text": "Funding is part of the hypothesis"
+        },
+        {
+          "tag": "h3",
+          "text": "For Willkamayu"
+        },
+        {
+          "tag": "h3",
+          "text": "For Amazonas Sagrada"
+        },
+        {
+          "tag": "h3",
+          "text": "Questions for Simona"
+        }
+      ],
+      "raw_sha256": "aaab342823bf3434f8311557aa4b3e5f03e976159dffe19b8f1a1fcf962e3188",
+      "raw_length": 1366,
+      "image_count": 0,
+      "link_count": 0,
+      "images": [],
+      "links": []
+    },
+    {
+      "index": 28,
+      "id": "allies",
+      "kickers": [
+        "13 · Alliance architecture"
+      ],
+      "headings": [
+        {
+          "tag": "h2",
+          "text": "Map present collaborators, newly explored relationships and future mandate-bearing allies"
+        }
+      ],
+      "raw_sha256": "25f88553bd2857c652ae5d07f2b5397b8f293384887854976ccb0a69a955a171",
+      "raw_length": 6852,
+      "image_count": 0,
+      "link_count": 4,
+      "images": [],
+      "links": [
+        {
+          "href": "https://cbc.org.pe/"
+        },
+        {
+          "href": "https://vallesagradoverde.org/"
+        },
+        {
+          "href": "https://spda.org.pe/"
+        },
+        {
+          "href": "https://www.earthlawcenter.org/latam-program"
+        }
+      ]
+    },
+    {
+      "index": 36,
+      "id": "upside",
+      "kickers": [
+        "21 · Upside for present actors"
+      ],
+      "headings": [
+        {
+          "tag": "h2",
+          "text": "Participation should create real value"
+        },
+        {
+          "tag": "h3",
+          "text": "WGA / Stanley + Simona"
+        },
+        {
+          "tag": "h3",
+          "text": "Amazonas Sagrada"
+        },
+        {
+          "tag": "h3",
+          "text": "María Gracia"
+        },
+        {
+          "tag": "h3",
+          "text": "Felipe"
+        },
+        {
+          "tag": "h3",
+          "text": "Future guardians"
+        }
+      ],
+      "raw_sha256": "d55c959d638eb8fcaa908ef1158a33fee2f2cba58fe343a32a926444ec5ab417",
+      "raw_length": 1380,
+      "image_count": 0,
+      "link_count": 0,
+      "images": [],
+      "links": []
+    },
+    {
+      "index": 38,
+      "id": "validation",
+      "kickers": [
+        "23 · Learning agenda"
+      ],
+      "headings": [
+        {
+          "tag": "h2",
+          "text": "What we are ready to validate"
+        }
+      ],
+      "raw_sha256": "fdc2cb212eb0ffe43986c8ad7afe973297f4480480a62449c553a695400ca88d",
+      "raw_length": 2717,
+      "image_count": 0,
+      "link_count": 0,
+      "images": [],
+      "links": []
+    },
+    {
+      "index": 41,
+      "id": "sources",
+      "kickers": [
+        "26 · Source and evidence register"
+      ],
+      "headings": [
+        {
+          "tag": "h2",
+          "text": "Primary external references and internal source basis"
+        }
+      ],
+      "raw_sha256": "f74059ee3c1e40bff637450562bd14fc0b266cfeb32308696a4125fef4ac3a8c",
+      "raw_length": 2884,
+      "image_count": 0,
+      "link_count": 8,
+      "images": [],
+      "links": [
+        {
+          "href": "https://www.earthlawcenter.org/latam-program"
+        },
+        {
+          "href": "https://www.pj.gob.pe/wps/wcm/connect/corte%2Bsuperior%2Bloreto%2Bpj/s_csj_loreto_nuevo/as_inicio/as_imagen_prensa/as_noticias/csjlo_n_corte%2Bde%2Bloreto%2Breconoce%2Bderechos%2Bal%2Brio%2Bmaranon%2By%2Bratifica%2Bmedidas%2Bpara%2Bsu%2Bproteccion"
+        },
+        {
+          "href": "https://cbc.org.pe/cusco/"
+        },
+        {
+          "href": "https://cbc.org.pe/who-we-are/"
+        },
+        {
+          "href": "https://scr.sunarp.gob.pe/constitucion-de-asociacion-por-pasos/"
+        },
+        {
+          "href": "https://www.gob.pe/institucion/apci/pages/9076-inscribir-tu-organizacion-no-gubernamental-de-desarrollo-ongd"
+        },
+        {
+          "href": "https://wga-site.vercel.app/"
+        },
+        {
+          "href": "https://simonaaw.github.io/world-genome/"
+        }
+      ]
+    }
+  ],
+  "sections": [
+    {
+      "start": 36890,
+      "id": "",
+      "class": "hero",
+      "images": [],
+      "links": [],
+      "headings": [
+        {
+          "tag": "h1",
+          "text": "Converging Waters"
+        },
+        {
+          "tag": "h3",
+          "text": "Detailed synthesis for continued conversation"
+        }
+      ],
+      "kickers": [
+        "Integrated internal research synthesis · Updated after Simona catch-up",
+        "Current review status"
+      ],
+      "end": 38393,
+      "raw_length": 1503,
+      "raw_sha256": "7416d6349df8ccbde146fef0da5f43264e4d950b486f246f0f3a2e59aace838d",
+      "text_length": 853,
+      "text": "Integrated internal research synthesis · Updated after Simona catch-up Converging Waters An evolving collaboration architecture connecting WGA, Amazonas Sagrada and Willkamayu while preserving the autonomy, priorities and mandate of each initiative and territory. Citizen science Regenerative enterprise Green finance Guardian-led Evidence-first Visibility when ready Guardians carry the credit Current review status Detailed synthesis for continued conversation Catch-up Felipe and Simona spoke on 3 August 2026. Purpose This expanded brief is being shared for detailed review and correction. Scope It consolidates earlier research plus later work on MRV, legal readiness, governance and allies. Status No role, partner, legal pathway, pilot or institutional relationship is treated as confirmed. Use this as an internal map, not a public announcement.",
+      "index": 1
+    },
+    {
+      "start": 38393,
+      "id": "current-session",
+      "class": "section current-session first-section",
+      "images": [],
+      "links": [],
+      "headings": [
+        {
+          "tag": "h2",
+          "text": "From exploration to a detailed working synthesis"
+        },
+        {
+          "tag": "h3",
+          "text": "Reconnect with the map"
+        },
+        {
+          "tag": "h3",
+          "text": "Examine what emerged"
+        },
+        {
+          "tag": "h3",
+          "text": "Correct and validate"
+        },
+        {
+          "tag": "h3",
+          "text": "Select one next outcome"
+        }
+      ],
+      "kickers": [
+        "00 · Current sharing status"
+      ],
+      "end": 40014,
+      "raw_length": 1621,
+      "raw_sha256": "5c46b1e7e2229c4b1b790d5b586929cd392b122ae552f02622d52a67410e8881",
+      "text_length": 950,
+      "text": "00 · Current sharing status From exploration to a detailed working synthesis Felipe and Simona completed their catch-up on 3 August 2026. No further collective decision has been made. This version assembles the full research, visual work and open questions for correction by Simona and the wider team. 01 Reconnect with the map Review the complete synthesis and how it evolved from the first brief. Review 02 Examine what emerged Look at WGA possibilities, the two territorial pathways, legal readiness and the ally map. Explore 03 Correct and validate Flag inaccuracies, missing context, boundaries and assumptions that should not be carried forward. Correct 04 Select one next outcome Decide whether to shape a bounded 60–90 day Scoping & Readiness phase. Decide Infrastructure boundary: the next repository and project controls are being staged under Felipe’s personal scope. Nothing in this preview has been republished or migrated in GitHub yet.",
+      "index": 2
+    },
+    {
+      "start": 40014,
+      "id": "changed-since",
+      "class": "section compact-section",
+      "images": [],
+      "links": [],
+      "headings": [
+        {
+          "tag": "h2",
+          "text": "From an initial map to an emerging shared possibility"
+        },
+        {
+          "tag": "h3",
+          "text": "What remains"
+        },
+        {
+          "tag": "h3",
+          "text": "What has expanded"
+        },
+        {
+          "tag": "h3",
+          "text": "What comes next"
+        }
+      ],
+      "kickers": [
+        "00 · What has changed since v0.1"
+      ],
+      "end": 41072,
+      "raw_length": 1058,
+      "raw_sha256": "65dbb443bf9f3d850f0c9cf863d4432e4832f63c56a5f75b16353310c43e1cd8",
+      "text_length": 668,
+      "text": "00 · What has changed since v0.1 From an initial map to an emerging shared possibility This integrated version preserves the original foundation while making visible what has emerged since the first conversation: more people, clearer technical possibilities, stronger territorial links and clearer decisions still needed. What remains The original vision, working thesis and careful evidence-first pathway remain valid. What has expanded The people involved, the technical possibilities, the two-territory opportunity and the possible mutual value. What comes next Correct the synthesis, choose a first shared outcome and clarify participation, limits and feasibility.",
+      "index": 3
+    },
+    {
+      "start": 41072,
+      "id": "where-now",
+      "class": "section compact-section",
+      "images": [],
+      "links": [],
+      "headings": [
+        {
+          "tag": "h2",
+          "text": "Two pathways now need to be distinguished"
+        },
+        {
+          "tag": "h3",
+          "text": "Explore → Synthesize → Decide → Commit → Act → Learn"
+        },
+        {
+          "tag": "h3",
+          "text": "Listen → Measure → Train → Pilot → Mandate → File or legislate"
+        }
+      ],
+      "kickers": [
+        "01 · Where we are now"
+      ],
+      "end": 42216,
+      "raw_length": 1144,
+      "raw_sha256": "45d00620de4f6feb70be2ac0373839a20f6c7b8e6bdfdb58a464454ab92b80c4",
+      "text_length": 727,
+      "text": "01 · Where we are now Two pathways now need to be distinguished The original sequence still works, but it refers mostly to territorial protection work. The collaboration itself is on a different path and needs its own clarity. Collaboration pathway · we are here now Explore → Synthesize → Decide → Commit → Act → Learn Now: synthesize what has emerged across the conversations—including the catch-up with Simona—then confirm the first shared outcome before defining commitments and action. Territorial pathway · original logic remains Listen → Measure → Train → Pilot → Mandate → File or legislate Measurement should happen once the group is clearer about what the evidence needs to help understand, protect, decide or unlock.",
+      "index": 4
+    },
+    {
+      "start": 42216,
+      "id": "shared-direction",
+      "class": "section compact-section",
+      "images": [],
+      "links": [],
+      "headings": [
+        {
+          "tag": "h2",
+          "text": "An initial direction to confirm, correct or reject"
+        },
+        {
+          "tag": "h3",
+          "text": "WGA"
+        },
+        {
+          "tag": "h3",
+          "text": "Amazonas Sagrada"
+        },
+        {
+          "tag": "h3",
+          "text": "Willkamayu"
+        }
+      ],
+      "kickers": [
+        "02 · What appears to be shared"
+      ],
+      "end": 43405,
+      "raw_length": 1189,
+      "raw_sha256": "fce18c2f6c269368d26afb69f904bb98669a2e5d96a26b5c7e79eb297b835c47",
+      "text_length": 798,
+      "text": "02 · What appears to be shared An initial direction to confirm, correct or reject The emerging possibility is not one project replacing the others. It is a selective collaboration among three distinct initiatives that may become stronger through reciprocal cooperation. WGA A scientific, technological and learning infrastructure supporting biodiversity observation, environmental intelligence, field participation and responsible data stewardship. Amazonas Sagrada A regenerative territorial enterprise connecting livelihoods, community benefit, water and sanitation, conservation, biodiversity, tourism and practical innovation. Willkamayu A guardian-led pathway connecting river protection, territorial listening, evidence, restoration, legal recognition, financing and long-term accountability.",
+      "index": 5
+    },
+    {
+      "start": 43405,
+      "id": "collaboration-layer",
+      "class": "section compact-section",
+      "images": [],
+      "links": [],
+      "headings": [
+        {
+          "tag": "h2",
+          "text": "Collaboration without absorption"
+        },
+        {
+          "tag": "h3",
+          "text": "Autonomy"
+        },
+        {
+          "tag": "h3",
+          "text": "Reciprocity"
+        },
+        {
+          "tag": "h3",
+          "text": "Explicit consent"
+        },
+        {
+          "tag": "h3",
+          "text": "Appropriate credit"
+        },
+        {
+          "tag": "h3",
+          "text": "Data stewardship"
+        },
+        {
+          "tag": "h3",
+          "text": "Selective convergence"
+        }
+      ],
+      "kickers": [
+        "03 · Three autonomous projects, one possible collaboration layer"
+      ],
+      "end": 44769,
+      "raw_length": 1364,
+      "raw_sha256": "7dda779385f66d3509f8b696dd735bb80490574463bf2ca9348a0b36062fc6aa",
+      "text_length": 837,
+      "text": "03 · Three autonomous projects, one possible collaboration layer Collaboration without absorption WGA, Amazonas Sagrada and Willkamayu remain distinct initiatives. Converging Waters is currently an exploratory collaboration layer — not an umbrella organization and not a merger. Autonomy Each project retains its own identity, priorities and freedom of action. Reciprocity Shared work should create visible value for every participating project. Explicit consent No role, resource, commitment or public association is assumed without confirmation. Appropriate credit Contributions, communities and territorial actors should receive fair recognition. Data stewardship Collection, access, use and benefit should follow agreed consent and governance. Selective convergence Some work may be shared; other work should remain project-specific.",
+      "index": 6
+    },
+    {
+      "start": 44769,
+      "id": "emerged-since-call",
+      "class": "section compact-section",
+      "images": [],
+      "links": [],
+      "headings": [
+        {
+          "tag": "h2",
+          "text": "New possibilities, now connected more explicitly"
+        },
+        {
+          "tag": "h3",
+          "text": "WGA's expanded field possibility"
+        },
+        {
+          "tag": "h3",
+          "text": "Two connected territories"
+        },
+        {
+          "tag": "h3",
+          "text": "Shared learning possibility"
+        },
+        {
+          "tag": "h3",
+          "text": "From data to action"
+        }
+      ],
+      "kickers": [
+        "04 · What has emerged through the exploration"
+      ],
+      "end": 46003,
+      "raw_length": 1234,
+      "raw_sha256": "9893b34196bef93c9c9886e969117e1cae762ebae2e1e7e63f0bff16de34992b",
+      "text_length": 779,
+      "text": "04 · What has emerged through the exploration New possibilities, now connected more explicitly The goal is not simply to collect data, but to connect question, evidence, shared understanding and practical action across two linked territories. WGA's expanded field possibility Portable eDNA, metagenomic observation, environmental metadata, field nodes, provenance, federated environmental data and bioacoustics. Two connected territories Willkamayu and Amazonas Sagrada can function as two distinct ecosystems for learning, piloting and comparison. Shared learning possibility Two different ecosystems may help reveal what can be shared and what must remain locally specific. From data to action Question → Evidence → Shared understanding → Decision → Protection or regeneration.",
+      "index": 7
+    },
+    {
+      "start": 46003,
+      "id": "stanley-update",
+      "class": "section stanley-update",
+      "images": [
+        {
+          "src": "assets/asset-925e0999fc1b.webp",
+          "alt": "World Genome Academy illustration of students collecting samples and using portable sequencing equipment"
+        },
+        {
+          "src": "assets/asset-4eb7e31bb6ca.webp",
+          "alt": "Students collecting freshwater samples in the Sacred Valley"
+        },
+        {
+          "src": "assets/asset-b04a22bc7864.webp",
+          "alt": "Science Stanley rare disease storytelling illustration"
+        },
+        {
+          "src": "assets/asset-89b5baa66258.webp",
+          "alt": "Ecosystem atlas and metagenome patterns"
+        },
+        {
+          "src": "assets/asset-94d56c31456b.webp",
+          "alt": "Small field computers"
+        },
+        {
+          "src": "assets/asset-e92857647d5c.webp",
+          "alt": "Compact sensor and field-computing node shared by Stanley"
+        },
+        {
+          "src": "assets/asset-731976ddf41b.webp",
+          "alt": "BirdNET Live bioacoustic identification app in the field"
+        },
+        {
+          "src": "assets/asset-534f40aa7faf.webp",
+          "alt": "Autonomous field systems"
+        },
+        {
+          "src": "assets/asset-925e0999fc1b.webp",
+          "alt": "Portable sequencing in context"
+        },
+        {
+          "src": "assets/asset-94d56c31456b.webp",
+          "alt": "WGA public site"
+        },
+        {
+          "src": "assets/asset-89b5baa66258.webp",
+          "alt": "WGA data portal"
+        },
+        {
+          "src": "assets/asset-925e0999fc1b.webp",
+          "alt": "World Genome Academy"
+        },
+        {
+          "src": "assets/asset-44764fa22380.webp",
+          "alt": "Science Stanley rare-disease storytelling portrait"
+        }
+      ],
+      "links": [
+        {
+          "href": "https://wga-site.vercel.app/"
+        },
+        {
+          "href": "https://simonaaw.github.io/world-genome/"
+        },
+        {
+          "href": "https://www.stanley.science/rare-disease/"
+        },
+        {
+          "href": "https://wga-site.vercel.app/data-portal"
+        },
+        {
+          "href": "https://wga-site.vercel.app/"
+        },
+        {
+          "href": "https://wga-site.vercel.app/"
+        },
+        {
+          "href": "https://birdnet.cornell.edu/live-app/"
+        },
+        {
+          "href": "https://wga-site.vercel.app/"
+        },
+        {
+          "href": "https://simonaaw.github.io/world-genome/"
+        },
+        {
+          "href": "https://wga-site.vercel.app/"
+        },
+        {
+          "href": "https://wga-site.vercel.app/data-portal"
+        },
+        {
+          "href": "https://simonaaw.github.io/world-genome/"
+        },
+        {
+          "href": "https://www.stanley.science/rare-disease/"
+        },
+        {
+          "href": "https://wga-site.vercel.app/"
+        },
+        {
+          "href": "https://simonaaw.github.io/world-genome/"
+        },
+        {
+          "href": "https://www.weforum.org/publications/making-rare-diseases-count-how-better-data-can-unlock-a-multitrillion-dollar-opportunity/"
+        },
+        {
+          "href": "https://www.stanley.science/rare-disease/"
+        }
+      ],
+      "headings": [
+        {
+          "tag": "h2",
+          "text": "A more tangible field-and-data possibility"
+        },
+        {
+          "tag": "h3",
+          "text": "Sample + sequence"
+        },
+        {
+          "tag": "h3",
+          "text": "Context + verify"
+        },
+        {
+          "tag": "h3",
+          "text": "Learn + steward"
+        },
+        {
+          "tag": "h3",
+          "text": "Concrete examples already on the table"
+        },
+        {
+          "tag": "h3",
+          "text": "Key pages already mentioned in the conversation"
+        },
+        {
+          "tag": "h3",
+          "text": "Turn the references into one technical next step"
+        },
+        {
+          "tag": "h3",
+          "text": "What the group still needs to clarify"
+        }
+      ],
+      "kickers": [
+        "New since v0.1 · Stanley / WGA"
+      ],
+      "end": 56032,
+      "raw_length": 10029,
+      "raw_sha256": "d22889e1b98d8f49d3ea09f74092e97273d06964852e19b20c0aebd26d5525e1",
+      "text_length": 3675,
+      "text": "New since v0.1 · Stanley / WGA A more tangible field-and-data possibility Stanley's contributions made WGA's possible role more concrete. Simona's review is now invited to correct the framing, availability and boundaries. These remain emerging possibilities, not confirmed commitments. Sample + sequence Portable eDNA and metagenomic observation across water, soil and other environmental samples. Context + verify Sensors, GPS, time, metadata, field nodes and traceable provenance around each observation. Learn + steward Bioacoustics, a federated atlas and community participation with appropriate data stewardship. Portable field science Sample → sequence → map → discover. Sacred Valley possibility Place-based learning and river observation. A design principle People closest to a fragmented system should help build its infrastructure. Stanley references at a glance Concrete examples already on the table A compact, visual checklist of the ideas, tools and reference examples Stanley has already shared, now with cleaner crops and click-through links on every card. Ecosystem atlas / metagenome patterns Data aggregation across ecosystem signals to understand relationships, shifts and changing conditions over time. Open reference Small field computers Raspberry Pi or Jetson-style micro-computers integrated into low-footprint biomonitoring operations. Open reference Sensor + metadata nodes Compact hardware for collecting environmental metadata such as temperature, pressure, wind and water pH. Open reference Citizen science bioacoustics BirdNET and Merlin-style sound identification as proof that distributed community data can create powerful monitoring systems. Open reference Autonomous field systems Raspberry Pi-powered marine robots as a concrete example of rugged, affordable sensing systems in real environments. Open reference Portable sequencing in context WGA field imagery that helps the group visualize how sampling, portable equipment and local participation could come together. Open reference Reference links worth opening Key pages already mentioned in the conversation These are the main public or semi-public links already referenced, now shown as visual cards so the group can open them directly from the page. WGA public site Best quick overview of WGA's current public positioning, capabilities and framing. Open site WGA data portal Useful for grounding the conversation in monitoring, data patterns and environmental observation logic. Open site World Genome Academy A more field-facing narrative about learning, portable science and local participation. Open site Stanley storytelling reference A narrative reference for how Stanley frames lived experience, data and story in a compelling way. Open site Use during team review Turn the references into one technical next step The purpose is not only to admire the possibilities, but to identify what is relevant, realistic and worth scoping first. 1. Match Which capability serves a priority question for Willkamayu, Amazonas Sagrada or both? 2. Classify What is available now, adaptable with work, or only a reference example? 3. Select Choose one low-risk option for a 30-day technical scoping note. 4. Define Name the lead, site, equipment, permissions, data needs, cost questions and review date. Review outcome: one shortlisted technical pathway, one named lead and a precise list of what Stanley / WGA still needs to confirm. What the group still needs to clarify Equipment, technical support, costs, timing, field requirements, data governance and what is realistic for each territory. WGA public site WGA working site WEF infrastructure reference Stanley's storytelling reference",
+      "index": 8
+    },
+    {
+      "start": 56033,
+      "id": "agenda",
+      "class": "section first-section",
+      "images": [],
+      "links": [],
+      "headings": [
+        {
+          "tag": "h2",
+          "text": "Start with autonomy, then purpose, then the conditions for responsible action"
+        },
+        {
+          "tag": "h3",
+          "text": "Context and autonomy"
+        },
+        {
+          "tag": "h3",
+          "text": "Purpose-led measurement"
+        },
+        {
+          "tag": "h3",
+          "text": "Legal and organizational readiness"
+        },
+        {
+          "tag": "h3",
+          "text": "Alliances and next workstreams"
+        },
+        {
+          "tag": "h3",
+          "text": "Working-document note"
+        }
+      ],
+      "kickers": [
+        "01 · How to read this synthesis"
+      ],
+      "end": 57730,
+      "raw_length": 1697,
+      "raw_sha256": "c4c12c0b84877d9fc30838a40c5fd0accf50823afad6b2a3e2de112b08650640",
+      "text_length": 1074,
+      "text": "01 · How to read this synthesis Start with autonomy, then purpose, then the conditions for responsible action The page moves from the existing collaboration thesis into purpose-led measurement, legal and organizational readiness, allies and next-stage workstreams. 01 Context and autonomy Understand the three initiatives, the people and what must remain distinct. Foundation 02 Purpose-led measurement Connect listening, baseline, MRV, remediation and adaptive learning. Evidence 03 Legal and organizational readiness Design mandate, legal strategy and the right operating structure before escalation. Readiness 04 Alliances and next workstreams Validate potential allies and choose a careful 60–90 day path. Next stage Working-document note The original internal brief has been preserved and extended incrementally. Later visual work is preserved both as the original consolidated image and as native HTML/CSS for accessibility and future editing. This version follows the catch-up with Simona and is intended to support continued review, not to imply collective approval.",
+      "index": 9
+    },
+    {
+      "start": 57731,
+      "id": "thesis",
+      "class": "section",
+      "images": [],
+      "links": [],
+      "headings": [
+        {
+          "tag": "h2",
+          "text": "The thesis we need to prove"
+        },
+        {
+          "tag": "h3",
+          "text": "Working thesis"
+        }
+      ],
+      "kickers": [
+        "02 · Core working thesis"
+      ],
+      "end": 59485,
+      "raw_length": 1754,
+      "raw_sha256": "17642c5283aa0cecea77a9b5843fddc5e8ac64c404c7e8fe7017b1b44367af2d",
+      "text_length": 1188,
+      "text": "02 · Core working thesis The thesis we need to prove The work can demonstrate need, feasibility and fundability. Working thesis Converging Waters can become a useful collaboration layer between three autonomous initiatives. Willkamayu may develop into a guardian-led, evidence-based river-protection and regeneration pathway. Amazonas Sagrada may strengthen its own regenerative-enterprise, conservation, community and territorial priorities. WGA may contribute scientific infrastructure, citizen-science methods, data governance, storytelling and enabling partnerships. The convergence becomes credible only if purpose, mandate, evidence, legal design, responsibilities and financing are developed before public escalation. Need Both territories face water, biodiversity, livelihood, stewardship and institutional questions that require grounded responses. Feasibility The collaboration brings complementary scientific, technical, entrepreneurial, territorial and alliance-building capacities. Readiness A phased scoping process can test mandate, evidence, legal routes, pilot options and fundability without overcommitting. Listen → Measure → Train → Pilot → Mandate → File or legislate",
+      "index": 10
+    },
+    {
+      "start": 59486,
+      "id": "context",
+      "class": "section compact-section",
+      "images": [],
+      "links": [],
+      "headings": [
+        {
+          "tag": "h3",
+          "text": "This is a new moment"
+        }
+      ],
+      "kickers": [
+        "Context note"
+      ],
+      "end": 59996,
+      "raw_length": 510,
+      "raw_sha256": "9d95d300c1f56c13db7190efd6fdd2c709dc93dc1495d4fe8d22da83c19de000",
+      "text_length": 263,
+      "text": "Context note This is a new moment The 2025 JRVS process generated useful early framing. It is currently paused. A new legal vehicle can be designed when the ground is ready. Felipe and María Gracia now explore independently. A legal vehicle remains to be defined.",
+      "index": 11
+    },
+    {
+      "start": 59997,
+      "id": "people",
+      "class": "section",
+      "images": [],
+      "links": [],
+      "headings": [
+        {
+          "tag": "h2",
+          "text": "Six people, three project lenses, one possible convergence"
+        },
+        {
+          "tag": "h3",
+          "text": "Stanley / WGA"
+        },
+        {
+          "tag": "h3",
+          "text": "Simona / WGA"
+        },
+        {
+          "tag": "h3",
+          "text": "Chelsea / Amazonas Sagrada"
+        },
+        {
+          "tag": "h3",
+          "text": "Patrick / Amazonas Sagrada"
+        },
+        {
+          "tag": "h3",
+          "text": "María Gracia"
+        },
+        {
+          "tag": "h3",
+          "text": "Felipe"
+        }
+      ],
+      "kickers": [
+        "03 · Who is in the room"
+      ],
+      "end": 62235,
+      "raw_length": 2238,
+      "raw_sha256": "fb47795aefc4e36e63be6c6c87ed5fe0cf09663fe511ab817875eb570ffd29b0",
+      "text_length": 1286,
+      "text": "03 · Who is in the room Six people, three project lenses, one possible convergence These are proposed contribution areas for reflection; no fixed roles are assumed. Stanley / WGA Technical architecture. Environmental sensing and sequencing. Field-node and metadata systems. Data provenance. Evidence-based storytelling. Simona / WGA Citizen science and participation. Data governance and quality. International partnerships. MRV and green-finance framing. Role, availability and Peru timeline: to confirm. Chelsea / Amazonas Sagrada Producer and entrepreneur. Conservationist. Sustainable operations. Brand and production discipline. Regenerative business model. Patrick / Amazonas Sagrada Environmental engineering. Water and sanitation pilots. GIS and remote sensing. Bioremediation thinking. Headwater protection. María Gracia Independent. Climate science. Glacier systems. Community science. Scientific credibility. Felipe Independent convener and synthesizer. Alliance architecture. Protection and legal-readiness framing. Fundraising and partnership development. Collaboration design and documentation. Contribution areas remain provisional and should be corrected by each person. Future guardians and communities must become structural participants, not peripheral beneficiaries.",
+      "index": 12
+    },
+    {
+      "start": 62235,
+      "id": "collaboration-framework",
+      "class": "section compact-section collab-framework",
+      "images": [],
+      "links": [],
+      "headings": [
+        {
+          "tag": "h2",
+          "text": "Enough alignment to act — and enough action to learn"
+        },
+        {
+          "tag": "h3",
+          "text": "Minimum viable alignment"
+        },
+        {
+          "tag": "h3",
+          "text": "Visible participation"
+        },
+        {
+          "tag": "h3",
+          "text": "Operating rule"
+        }
+      ],
+      "kickers": [
+        "06 · Collaboration framework"
+      ],
+      "end": 64088,
+      "raw_length": 1853,
+      "raw_sha256": "6a07125b7018eedc22c6b1322cb321fe3ba3ba8f2b8e291881590ad22e829351",
+      "text_length": 1078,
+      "text": "06 · Collaboration framework Enough alignment to act — and enough action to learn The group does not need perfect agreement before moving. It needs a light, visible process that protects autonomy, prevents assumptions and closes every conversation with a next step. 1 · Synthesize Felipe prepares a concrete draft from what has already emerged. 2 · Correct Each person flags inaccuracies, boundaries and missing value. 3 · Decide The group selects one shared outcome — not many parallel ambitions. 4 · Commit Names, contributions, limits, ownership and dates become explicit. 5 · Act + learn A small reversible action is reviewed before expanding the scope. Minimum viable alignment Shared purpose, one 60–90 day result, realistic contributions, clear boundaries and an agreed review date. Visible participation Working circle, specific contributor, advisor or informed ally. Silence means no active commitment yet — not consent and not rejection. Operating rule Deep preparation, light proposal, explicit consent, documented decisions and one named owner for every next action.",
+      "index": 13
+    },
+    {
+      "start": 64088,
+      "id": "project-value",
+      "class": "section compact-section",
+      "images": [],
+      "links": [],
+      "headings": [
+        {
+          "tag": "h2",
+          "text": "Collaboration should strengthen every project"
+        },
+        {
+          "tag": "h3",
+          "text": "WGA may unlock"
+        },
+        {
+          "tag": "h3",
+          "text": "Amazonas Sagrada may unlock"
+        },
+        {
+          "tag": "h3",
+          "text": "Willkamayu may unlock"
+        },
+        {
+          "tag": "h3",
+          "text": "Shared value"
+        }
+      ],
+      "kickers": [
+        "07 · Value for each initiative"
+      ],
+      "end": 65721,
+      "raw_length": 1633,
+      "raw_sha256": "5f0085851885aa3fb64b94b85eee8c9ab23b385fb8a291b8bf6b0093b38b9a76",
+      "text_length": 1037,
+      "text": "07 · Value for each initiative Collaboration should strengthen every project The collaboration layer is useful only where it creates identifiable value for WGA, Amazonas Sagrada, Willkamayu and the territories and communities involved. WGA may unlock Two complementary Peruvian field environments. Environmental and community use cases. Field validation of scientific and data architecture. A possible green-finance and scaling case. Amazonas Sagrada may unlock Biodiversity and water evidence. Scientific support for conservation and traceability. Stronger grant, visitor and investment narratives. Shared technical and financing capabilities. Willkamayu may unlock Ecological and water baselines. Citizen-guardian capacity and scientific credibility. Evidence for restoration and legal recognition. A fundable river-protection pathway. Shared value Common learning infrastructure, protocols where appropriate, cross-territorial storytelling, selected joint funding opportunities and a replicable collaboration method for living waters.",
+      "index": 14
+    },
+    {
+      "start": 65721,
+      "id": "open-decisions",
+      "class": "section compact-section",
+      "images": [],
+      "links": [],
+      "headings": [
+        {
+          "tag": "h2",
+          "text": "Important possibilities are not yet commitments"
+        },
+        {
+          "tag": "h3",
+          "text": "Shared purpose + first result"
+        },
+        {
+          "tag": "h3",
+          "text": "Shared vs. separate work"
+        },
+        {
+          "tag": "h3",
+          "text": "WGA feasibility"
+        },
+        {
+          "tag": "h3",
+          "text": "Territorial priorities"
+        },
+        {
+          "tag": "h3",
+          "text": "Consent, data + community"
+        },
+        {
+          "tag": "h3",
+          "text": "Resources + participation"
+        }
+      ],
+      "kickers": [
+        "08 · What remains open"
+      ],
+      "end": 67064,
+      "raw_length": 1343,
+      "raw_sha256": "a14e8508e5f1879fff7efdb9e53d68408ded83171cae4d404c5281aa819e88cf",
+      "text_length": 837,
+      "text": "08 · What remains open Important possibilities are not yet commitments The meeting should distinguish enthusiasm from feasibility and turn the most important unknowns into explicit decisions or follow-up questions. Shared purpose + first result What exactly should the collaboration produce during the first 90 days? Shared vs. separate work What belongs to the collaboration layer, and what remains entirely within each project? WGA feasibility Which equipment, time, support, training and data capabilities are realistically available? Territorial priorities What does each territory most need to understand, protect or unlock first? Consent, data + community Who participates, who decides, who accesses the data and who benefits? Resources + participation What is voluntary, professional or funded, and who is available at each level?",
+      "index": 15
+    },
+    {
+      "start": 67064,
+      "id": "first-outcome",
+      "class": "section compact-section",
+      "images": [],
+      "links": [],
+      "headings": [
+        {
+          "tag": "h2",
+          "text": "Converging Waters Scoping & Readiness Brief"
+        },
+        {
+          "tag": "h3",
+          "text": "Move from possibility to field readiness"
+        }
+      ],
+      "kickers": [
+        "09 · Proposed first 60–90 day outcome"
+      ],
+      "end": 68229,
+      "raw_length": 1165,
+      "raw_sha256": "9e7c8c3c72684583c8435a5ce4ae3bdfd0f8a23245a972d426cdbdcfcbea62b3",
+      "text_length": 803,
+      "text": "09 · Proposed first 60–90 day outcome Converging Waters Scoping & Readiness Brief A single jointly reviewed brief can convert the exploratory convergence into a credible basis for field action without prematurely locking the group into a pilot. Purpose Move from possibility to field readiness Clarify the collaboration, the two territorial learning agendas, WGA feasibility and one realistic preliminary pilot path per territory. Shared purpose, principles, boundaries and decision process. Willkamayu and Amazonas Sagrada priority questions and intended uses of evidence. WGA equipment, support, field requirements, training and data architecture. One preliminary pilot option per territory and any useful shared layer. Visit options, community participation, budget, funding and go / no-go questions.",
+      "index": 16
+    },
+    {
+      "start": 68229,
+      "id": "what-we-need-now",
+      "class": "section compact-section",
+      "images": [],
+      "links": [],
+      "headings": [
+        {
+          "tag": "h2",
+          "text": "Short reactions, clear boundaries and visible participation"
+        },
+        {
+          "tag": "h3",
+          "text": "Accuracy"
+        },
+        {
+          "tag": "h3",
+          "text": "Boundaries"
+        },
+        {
+          "tag": "h3",
+          "text": "Value"
+        },
+        {
+          "tag": "h3",
+          "text": "Participation"
+        }
+      ],
+      "kickers": [
+        "10 · What we need from each person now"
+      ],
+      "end": 69240,
+      "raw_length": 1011,
+      "raw_sha256": "07a72a092e427d7ae4c2db81794cd6f8479f196c81e0dcf537aaaee1377072f2",
+      "text_length": 570,
+      "text": "10 · What we need from each person now Short reactions, clear boundaries and visible participation The goal is to review the synthesis efficiently: correct the map, state boundaries, identify real value and clarify the level of participation each person actually wants. Accuracy What is inaccurate, missing or overstated? Boundaries What should not be assumed about your project, role or resources? Value What would make this collaboration genuinely useful for your project? Participation Working circle, specific contributor, advisor / ally or staying informed for now?",
+      "index": 17
+    },
+    {
+      "start": 69241,
+      "id": "three-paths",
+      "class": "section",
+      "images": [],
+      "links": [
+        {
+          "href": "https://wga-site.vercel.app/"
+        },
+        {
+          "href": "https://wga-site.vercel.app/data-portal"
+        }
+      ],
+      "headings": [
+        {
+          "tag": "h2",
+          "text": "Three paths, shared potential"
+        },
+        {
+          "tag": "h3",
+          "text": "WGA"
+        },
+        {
+          "tag": "h3",
+          "text": "Amazonas Sagrada"
+        },
+        {
+          "tag": "h3",
+          "text": "Sacred River Protection"
+        }
+      ],
+      "kickers": [
+        "04 · Three paths in the room"
+      ],
+      "end": 71072,
+      "raw_length": 1831,
+      "raw_sha256": "3d3c62f7371d3f960c97dec39072de19ca2b13dc71c1925abe987c5da38d2712",
+      "text_length": 786,
+      "text": "04 · Three paths in the room Three paths, shared potential The value may emerge through selective, respectful convergence. WGA Citizen science and eDNA infrastructure. Portable sequencing. Water and soil samples. GPS-tagged field data. Federated atlas. Students and partners as data creators. WGA site Data portal Amazonas Sagrada Patrick and Chelsea’s sister model. Regenerative enterprise. Indigenous tourism infrastructure. Water and sanitation R&D. Superfoods and traceability. Conservation as economic alternative. User-provided portfolio Santa Clara de Ojeal Sacred River Protection Felipe and María Gracia’s exploratory pathway. Willkamayu as pilot case. Guardian-led protection. Legal route design. Evidence and mandate first. Careful coalition building. Pre-exploratory concept",
+      "index": 18
+    },
+    {
+      "start": 71073,
+      "id": "willkamayu",
+      "class": "section image-section",
+      "images": [
+        {
+          "src": "assets/asset-7c470eba074a.svg",
+          "alt": "Abstract Willkamayu river system illustration"
+        }
+      ],
+      "links": [],
+      "headings": [
+        {
+          "tag": "h2",
+          "text": "A sacred river with systemic leverage"
+        }
+      ],
+      "kickers": [
+        "05 · Why the Willkamayu"
+      ],
+      "end": 72189,
+      "raw_length": 1116,
+      "raw_sha256": "ceff60650dd0774b09b159fc8bb06f6bc8090c22de7a4a31d9a15a4ac4896b8d",
+      "text_length": 507,
+      "text": "05 · Why the Willkamayu A sacred river with systemic leverage The river connects water, food, culture, tourism, health and downstream justice. Protection would create a chain reaction. That is the opportunity. It asks for wise timing. Ecological Water quality, biodiversity, tributaries, riparian restoration. Cultural Willkamayu as sacred river and living relational system. Economic Tourism, agriculture, river recreation and local livelihoods. Legal A concrete case for guardianship and rights of nature.",
+      "index": 19
+    },
+    {
+      "start": 72189,
+      "id": "citizen-science",
+      "class": "section",
+      "images": [],
+      "links": [],
+      "headings": [
+        {
+          "tag": "h2",
+          "text": "Before legal guardianship exists, people can learn to observe"
+        },
+        {
+          "tag": "h3",
+          "text": "Core idea"
+        },
+        {
+          "tag": "h3",
+          "text": "Legal guardians"
+        },
+        {
+          "tag": "h3",
+          "text": "Citizen guardians"
+        },
+        {
+          "tag": "h3",
+          "text": "Technical guardians"
+        },
+        {
+          "tag": "h3",
+          "text": "Financial allies"
+        }
+      ],
+      "kickers": [
+        "06 · Citizen science as guardianship infrastructure"
+      ],
+      "end": 74351,
+      "raw_length": 2162,
+      "raw_sha256": "8343bbbfb88c45d8655ef59558ed5956ffa769bb246b24f03d74a78afbef5861",
+      "text_length": 1057,
+      "text": "06 · Citizen science as guardianship infrastructure Before legal guardianship exists, people can learn to observe This may be WGA’s most important contribution. Core idea Citizen science can train the social body that may later sustain guardianship. Future guardians, students, collectives and volunteers can learn to sample, map and report. The evidence can support restoration, public policy, funding and future legal action. Citizen Science Loop Collect Water, soil and riparian samples. Sequence eDNA with portable tools. Map GPS-tagged river data. Learn Students and guardians interpret results. Report Evidence becomes public-interest knowledge. Protect Data informs restoration and law. Atlas Vivo del Willkamayu + Community Data Protocol Legal guardians Mandated representatives. Community legitimacy. Formal voice for the river. Citizen guardians Students and volunteers. Sampling and reporting. River literacy. Technical guardians Scientists. Lawyers. Engineers. Universities. Financial allies Tourism. Green finance. Philanthropy. Impact capital.",
+      "index": 20
+    },
+    {
+      "start": 74352,
+      "id": "purpose-mrv",
+      "class": "section",
+      "images": [
+        {
+          "src": "assets/asset-be0fa6e11454.webp",
+          "alt": "Purpose-led measurement and collaboration map connecting legal protection, remediation, regeneration, WGA, Amazonas Sagrada, Willkamayu and future guardians"
+        }
+      ],
+      "links": [],
+      "headings": [
+        {
+          "tag": "h2",
+          "text": "Protect and regenerate living waters"
+        },
+        {
+          "tag": "h3",
+          "text": "Purpose before technology"
+        },
+        {
+          "tag": "h3",
+          "text": "Build the evidence, baseline and learning needed for protection, recovery and long-term regeneration."
+        },
+        {
+          "tag": "h3",
+          "text": "Protection, restoration, guardianship and accountability for the river"
+        },
+        {
+          "tag": "h3",
+          "text": "Explore the protections that strengthen its own territorial model"
+        },
+        {
+          "tag": "h3",
+          "text": "Different strengths, one shared purpose"
+        }
+      ],
+      "kickers": [
+        "06 · Purpose-led measurement and collaboration map",
+        "Collaboration map"
+      ],
+      "end": 82650,
+      "raw_length": 8298,
+      "raw_sha256": "1bfa87828b46cb35ca14b07d736fdaf42d19b598e5d21b2dc3a8e01ea46d3527",
+      "text_length": 4830,
+      "text": "06 · Purpose-led measurement and collaboration map Protect and regenerate living waters Measurement is not the goal. It serves protection, remediation, recovery, stewardship and better collective decisions. Consolidated visual from the prior iteration This exact graphic is now preserved in the page. The native HTML/CSS framework that follows expands the same logic for accessibility, editing and detailed review. Native HTML reconstruction of the later visual iterations Purpose before technology Before selecting sensors, sequencing tools or field methods, the collaboration should agree on what it needs to learn, for whom, and what ecological, legal, territorial or funding decision the evidence should unlock. Ultimate purpose Build the evidence, baseline and learning needed for protection, recovery and long-term regeneration. For Willkamayu this includes an explicit legal-protection and guardianship horizon. For Amazonas Sagrada, the appropriate territorial, community, ecosystem and legal opportunities must be explored autonomously and without imposing the Willkamayu route. Protection Strengthen legal, territorial, institutional and community pathways. Remediation + recovery Guide cleanup, restoration, sanitation and recovery actions. Regeneration + stewardship Support fertile lands, biodiversity, livelihoods and long-term care. Willkamayu legal North Star Protection, restoration, guardianship and accountability for the river Build territorial legitimacy, legally useful evidence, monitoring capacity and a credible multitrack pathway capable of preventing harm, supporting remediation and sustaining care. Amazonas Sagrada legal opportunity scan Explore the protections that strengthen its own territorial model Possible areas include territorial security, community rights, water and sanitation, conservation agreements, biodiversity and data governance, benefit-sharing and protection of a defined ecosystem. Rights of Nature is a possibility to assess, not a predetermined objective. Most strategic work happens before fieldwork 01 Listen Hear territorial priorities, rights, risks and lived knowledge. 02 Align Agree on purpose, values, outcomes and decision authority. 03 Ask Define the scientific, territorial and legal questions. 04 Baseline + MRV plan Set indicators, protocols, reporting, verification and legal evidence needs. 05 Measure + verify Collect traceable data using shared quality standards. 06 Interpret Triangulate scientific, territorial, legal and economic evidence. 07 Decide Select protection, institutional and remediation actions. 08 Act / remediate Implement practical, legal, institutional or community responses. 09 Monitor recovery Track ecological, social and compliance outcomes over time. 10 Learn + adapt Improve questions, methods, safeguards and responsibilities. ↺ Return to listening and alignment with better evidence, clearer responsibilities and stronger questions. ⚖ Legal & Institutional Strategy — from day one Defines the protection objective, representation and mandate, evidence requirements, permits, safeguards, institutional pathways, remedies and compliance monitoring. Legal scoping → Evidence protocol → Protection pathway → Compliance monitoring Early alignment Builds trust, clarity and stronger decisions. Baseline + MRV Creates the evidence base for protection and accountability. Remediation Turns knowledge into action on the ground. Monitoring Shows whether recovery and compliance are actually happening. Collaboration map Different strengths, one shared purpose The shared layer connects capacities without collapsing the autonomy of each person, initiative or territory. Stanley / WGA Technical architecture Field validation Sensing, sequencing and provenance Simona / WGA Citizen science Data governance and quality Partnerships, MRV and green finance Chelsea / Amazonas Sagrada Regenerative enterprise Operations and storytelling Community-facing value Patrick / Amazonas Sagrada Water and sanitation engineering GIS and bioremediation Controlled technical pilots María Gracia / Willkamayu Climate and ecological science Community engagement Territorial interpretation and validation Shared purpose Define what to measure, build credible evidence, support appropriate protection, guide remediation and monitor recovery. Felipe / Willkamayu Alliance architecture Strategy and fundraising Synthesis and collaboration design Future guardians & communities Territorial voice · lived knowledge · mandate · care · long-term stewardship Legal Strategy Lead / Advisory Circle Environmental, water and administrative law Indigenous and territorial rights Evidence, safeguards and institutional pathways All roles are working hypotheses for review. Communities and guardians cannot be represented or committed without legitimate territorial processes.",
+      "index": 21
+    },
+    {
+      "start": 82651,
+      "id": "system",
+      "class": "section",
+      "images": [],
+      "links": [
+        {
+          "href": "https://www.gob.pe/institucion/sunass/noticias/1205134-sunass-fiscaliza-planta-de-tratamiento-de-aguas-residuales-en-cusco-para-verificar-calidad-del-vertimiento-al-rio-huatanay"
+        },
+        {
+          "href": "https://www.gob.pe/institucion/proinversion/noticias/820703-se-ampliara-y-mejorara-la-ptar-san-jeronimo-de-cusco-con-una-inversion-estimada-de-us-46-millones"
+        },
+        {
+          "href": "#validation"
+        }
+      ],
+      "headings": [
+        {
+          "tag": "h2",
+          "text": "Protect the river as a connected basin"
+        },
+        {
+          "tag": "h3",
+          "text": "Known link"
+        },
+        {
+          "tag": "h3",
+          "text": "Capacity pressure"
+        },
+        {
+          "tag": "h3",
+          "text": "Learning question"
+        }
+      ],
+      "kickers": [
+        "07 · River system"
+      ],
+      "end": 84507,
+      "raw_length": 1856,
+      "raw_sha256": "aedd76f8bf0888c8482453c3f289d840a22ca8dd2309dea213fc7de475392075",
+      "text_length": 692,
+      "text": "07 · River system Protect the river as a connected basin Upstream responsibility. Downstream justice. Headwaters La Raya / Alto Vilcanota. Communities to validate. flows Sacred Valley Pisac, Calca, Urubamba, Yucay, Ollantaytambo. receives Cusco–Huatanay node Urban wastewater interface. Validate scale. accumulates Lower Urubamba Downstream receivers and Amazonian continuity. Known link San Jerónimo PTAR treats Cusco wastewater before discharge to the Huatanay. SUNASS inspection note Capacity pressure ProInversión reported expansion needs and an estimated US$46M project. ProInversión source Learning question What is the real downstream impact on the Vilcanota? Add to validation backlog",
+      "index": 22
+    },
+    {
+      "start": 84508,
+      "id": "convergence",
+      "class": "section",
+      "images": [],
+      "links": [],
+      "headings": [
+        {
+          "tag": "h2",
+          "text": "Where the paths may meet"
+        }
+      ],
+      "kickers": [
+        "08 · Convergence map"
+      ],
+      "end": 85664,
+      "raw_length": 1156,
+      "raw_sha256": "0a599d4bbe696871f5f9957798d42f1c3115622b5ce962283750057271367ae9",
+      "text_length": 565,
+      "text": "08 · Convergence map Where the paths may meet Convergence must create value for every actor. Willkamayu pilot Citizen science WGA and local collectives. Technical pilots Amazonas Sagrada. Legal pathway Peruvian counsel, SPDA and a possible Earth Law Center advisory relationship — all to validate. Green finance Simona’s expertise, to confirm. Restoration Valle Sagrado Verde and others. Tourism sector Hotels, guilds and operators. External support has high potential and awaits confirmation. Partner names and logos can be used carefully after written permission.",
+      "index": 23
+    },
+    {
+      "start": 85665,
+      "id": "chelsea",
+      "class": "section",
+      "images": [],
+      "links": [],
+      "headings": [
+        {
+          "tag": "h2",
+          "text": "Operations, production, brand discipline and regenerative enterprise"
+        },
+        {
+          "tag": "h3",
+          "text": "Production discipline"
+        },
+        {
+          "tag": "h3",
+          "text": "Sustainability operations"
+        },
+        {
+          "tag": "h3",
+          "text": "Crisis leadership"
+        },
+        {
+          "tag": "h3",
+          "text": "Regenerative business lens"
+        }
+      ],
+      "kickers": [
+        "09 · Chelsea’s contribution"
+      ],
+      "end": 86956,
+      "raw_length": 1291,
+      "raw_sha256": "af1da803ed157fb6b62eb5006a9f5ee67a0d0138449cabb3bd4a551da2fb18b5",
+      "text_length": 647,
+      "text": "09 · Chelsea’s contribution Operations, production, brand discipline and regenerative enterprise Chelsea strengthens the execution and visibility side. Production discipline Two decades in production. 10 years at Maes Studio. High-end brand environments. Operational reliability. Sustainability operations Founder of Crafty Chicago. Sustainable craft services. Composting and recycling. Organic and local sourcing. Crisis leadership COVID compliance experience. Testing coordination. Safety protocols. Discretion and trust. Regenerative business lens Founder of Amazonas Sagrada. VeggieTrip platform. Plant-based travel. Amazon conservation focus.",
+      "index": 24
+    },
+    {
+      "start": 86957,
+      "id": "amazonas",
+      "class": "section",
+      "images": [],
+      "links": [],
+      "headings": [
+        {
+          "tag": "h2",
+          "text": "Conservation becomes stronger when livelihoods improve"
+        },
+        {
+          "tag": "h3",
+          "text": "Transferable insight"
+        },
+        {
+          "tag": "h3",
+          "text": "From Amazonas Sagrada"
+        },
+        {
+          "tag": "h3",
+          "text": "For Willkamayu"
+        },
+        {
+          "tag": "h3",
+          "text": "Shared funding opportunity"
+        }
+      ],
+      "kickers": [
+        "10 · Amazonas Sagrada as sister model"
+      ],
+      "end": 88353,
+      "raw_length": 1396,
+      "raw_sha256": "a177debab7e150425ef04dbc7f2cdf1a343613b6da0bf575e08491352720baac",
+      "text_length": 802,
+      "text": "10 · Amazonas Sagrada as sister model Conservation becomes stronger when livelihoods improve Use the logic and adapt the model wisely. Transferable insight The Amazon needs protection policies and strong economic alternatives. It needs economic alternatives that make conservation rational. The Sacred Valley needs the same logic around water. From Amazonas Sagrada Multi-revenue model. Community benefit. Tourism infrastructure. Products and traceability. Conservation economics. For Willkamayu River protection fund. Citizen science tourism. Responsible hotel participation. Restoration sponsorship. Water accountability standards. Shared funding opportunity Green finance strategy. Grant and impact capital mix. One Peru regenerative portfolio. Two complementary pilots. Evidence before fundraising.",
+      "index": 25
+    },
+    {
+      "start": 88354,
+      "id": "technical",
+      "class": "section",
+      "images": [],
+      "links": [],
+      "headings": [
+        {
+          "tag": "h2",
+          "text": "Patrick’s portfolio becomes a controlled pilot menu"
+        },
+        {
+          "tag": "h3",
+          "text": "Validated from portfolio"
+        },
+        {
+          "tag": "h3",
+          "text": "Water and sanitation"
+        },
+        {
+          "tag": "h3",
+          "text": "User-provided R&D lead"
+        },
+        {
+          "tag": "h3",
+          "text": "Pilot discipline"
+        }
+      ],
+      "kickers": [
+        "11 · Technical pilot track"
+      ],
+      "end": 89674,
+      "raw_length": 1320,
+      "raw_sha256": "e125343ec1020a42fac3477f0c9641bff546389659513ed29ea8e3e3c2eb61cf",
+      "text_length": 692,
+      "text": "11 · Technical pilot track Patrick’s portfolio becomes a controlled pilot menu Nothing should be promised before testing. Validated from portfolio Environmental engineering. Spatial analysis. Satellite assessment. Data modeling. Watershed headwaters. Water and sanitation Alternative wastewater systems. Effluent purification. Moringa-based clarification. Native species bioremediation. Community-scale design. User-provided R&D lead Plasmatic oxygen water cleaning. Simple deployment claim. Low-cost potential. Needs specs. Needs lab validation. Pilot discipline Start in controlled site. Measure before and after. Document cost and energy. Check regulation. Compare to nature-based options.",
+      "index": 26
+    },
+    {
+      "start": 89675,
+      "id": "finance",
+      "class": "section",
+      "images": [],
+      "links": [],
+      "headings": [
+        {
+          "tag": "h2",
+          "text": "Funding is part of the hypothesis"
+        },
+        {
+          "tag": "h3",
+          "text": "For Willkamayu"
+        },
+        {
+          "tag": "h3",
+          "text": "For Amazonas Sagrada"
+        },
+        {
+          "tag": "h3",
+          "text": "Questions for Simona"
+        }
+      ],
+      "kickers": [
+        "12 · Green finance track"
+      ],
+      "end": 91041,
+      "raw_length": 1366,
+      "raw_sha256": "aaab342823bf3434f8311557aa4b3e5f03e976159dffe19b8f1a1fcf962e3188",
+      "text_length": 762,
+      "text": "12 · Green finance track Funding is part of the hypothesis WGA may help connect evidence, data governance, partnerships and financing logic; specific roles remain to be confirmed. For Willkamayu River baseline grants. Biodiversity monitoring. Guardian training. Legal strategy support. Restoration fund design. For Amazonas Sagrada Impact investment. Regenerative infrastructure. Traceable products. Indigenous tourism. Community benefit model. Questions for Simona What funder category fits each layer? What evidence is needed first? What should remain grant-funded? What can be investable? What introductions are realistic? Any description of Simona’s background, WGA capabilities or availability must be corrected and confirmed directly by Simona and Stanley.",
+      "index": 27
+    },
+    {
+      "start": 91042,
+      "id": "allies",
+      "class": "section",
+      "images": [],
+      "links": [
+        {
+          "href": "https://cbc.org.pe/"
+        },
+        {
+          "href": "https://vallesagradoverde.org/"
+        },
+        {
+          "href": "https://spda.org.pe/"
+        },
+        {
+          "href": "https://www.earthlawcenter.org/latam-program"
+        }
+      ],
+      "headings": [
+        {
+          "tag": "h2",
+          "text": "Map present collaborators, newly explored relationships and future mandate-bearing allies"
+        }
+      ],
+      "kickers": [
+        "13 · Alliance architecture"
+      ],
+      "end": 97894,
+      "raw_length": 6852,
+      "raw_sha256": "25f88553bd2857c652ae5d07f2b5397b8f293384887854976ccb0a69a955a171",
+      "text_length": 4715,
+      "text": "13 · Alliance architecture Map present collaborators, newly explored relationships and future mandate-bearing allies The matrix distinguishes current participation, user-reported interest and still-unvalidated institutional possibilities. Actor Possible contribution Status Validation needed WGA / Stanley + Simona Technical architecture, citizen science, data governance, partnerships, storytelling and possible green-finance framing. Current Current relationship; Simona catch-up completed and this brief is being shared. Correct the description of WGA capabilities, define availability, scope, costs and decision authority. Amazonas Sagrada / Chelsea + Patrick Regenerative enterprise, community benefit, water and sanitation, engineering, GIS, bioremediation and pilot feasibility. Current Current collaboration participants; territory-specific priorities remain autonomous. Confirm the value of Converging Waters for Amazonas Sagrada and what should or should not be shared. Willkamayu / Felipe + María Gracia River-protection vision, climate and ecological science, alliances, synthesis, citizen engagement and territorial exploration. Current Current Willkamayu exploration. Clarify mandate, governance, workload, compensation, legal structure and community participation. Centro Bartolomé de Las Casas (CBC) New focus Territorial governance, intercultural dialogue, community processes, water and soil governance, climate resilience and rights. Exploratory Previously identified and now highlighted for renewed exploration; no institutional commitment assumed. Identify the relevant team or program, mutual value, scope, safeguards and formal point of contact. Pavel Marmanillo New focus Environmental and social activism, professional local communication, community relationships and Sacred Valley reach. Exploratory Newly highlighted potential ally based on Felipe’s local knowledge. Confirm interest, preferred role, availability, constituencies represented and boundaries of representation. Carlos — local environmental and ecotourism professional New focus Local environmental and ecotourism knowledge, territorial context, possible team support and alliance development. Exploratory Has expressed interest in becoming involved; role not defined. Complete profile, clarify expected contribution, time, affiliation, compensation and decision authority. Valle Sagrado Verde / Joaquín Randall Restoration, brigades, reforestation and community work. Unconfirmed Warm access and prior informal interest. Formal conversation, fit with river work, capacity and scope. SPDA Peruvian environmental law, public policy and institutional strategy. Unconfirmed High-value prospective legal ally; support unconfirmed. Interest, scope, conflicts, resources and lead contact. Earth Law Center Rights of Nature, river guardianship, comparative law, legal education and strategic advisory experience in Peru. Unconfirmed Prospective early legal-design adviser; no formal support or role assumed. Readiness for outreach, requested role, local counsel model, timing and conditions. Municipality of Calca Local coordination, public policy, possible ordinance pathway and access to municipal actors. Unconfirmed Perceived potential alignment only. Political and technical validation, competences, continuity and nonpartisan safeguards. UNSAAC and qualified laboratories Scientific validation, students, sampling methods, accredited analysis and independent review. Unconfirmed To be approached. Faculty champions, laboratory capacity, accreditation, costs and chain-of-custody requirements. Tourism and hotel organizations Water responsibility, co-funding, visitor education, restoration sponsorship and sector standards. Unconfirmed Potential sector allies. Willingness to accept measurable obligations, local-benefit rules and anti-greenwashing safeguards. Green Heroes and other local collectives Cleanup, education, volunteers, citizen science and communications. Unconfirmed To be mapped and validated. Capacity, continuity, governance fit, safeguarding and quality-control needs. Communities, water-user organizations and local authorities Territorial knowledge, legitimacy, mandate, monitoring, stewardship and accountability. Unconfirmed Essential future participants; no representation should be presumed. Consent, assemblies, representative structures, priorities, risks and benefit-sharing. Schools, youth monitors and universities Education, long-term river literacy, citizen-science participation and continuity. Unconfirmed Future possibility. Permissions, safeguarding, training, data quality and institutional partners. Centro Bartolomé de Las Casas Valle Sagrado Verde SPDA Earth Law Center — Latin America",
+      "index": 28
+    },
+    {
+      "start": 97895,
+      "id": "governance",
+      "class": "section",
+      "images": [],
+      "links": [],
+      "headings": [
+        {
+          "tag": "h2",
+          "text": "Organize enough to collaborate, without prematurely building the wrong institution"
+        },
+        {
+          "tag": "h3",
+          "text": "Converging Waters"
+        },
+        {
+          "tag": "h3",
+          "text": "Willkamayu"
+        },
+        {
+          "tag": "h3",
+          "text": "Amazonas Sagrada"
+        },
+        {
+          "tag": "h3",
+          "text": "Recommended sequence"
+        },
+        {
+          "tag": "h2",
+          "text": "A short agreement before external representation"
+        },
+        {
+          "tag": "h3",
+          "text": "Whole collaboration decides"
+        },
+        {
+          "tag": "h3",
+          "text": "Willkamayu circle decides"
+        },
+        {
+          "tag": "h3",
+          "text": "Small legal-organizational team prepares"
+        },
+        {
+          "tag": "h2",
+          "text": "Choose capacity by function, not by institutional instinct"
+        }
+      ],
+      "kickers": [
+        "14 · Governance and organizational readiness",
+        "Initial Collaboration Accord v0.1",
+        "Vehicle decision"
+      ],
+      "end": 104601,
+      "raw_length": 6706,
+      "raw_sha256": "54b608592fd4d3a5111ea31902236d9cbbacbf3470b2133caa2f9d8929053bde",
+      "text_length": 4738,
+      "text": "14 · Governance and organizational readiness Organize enough to collaborate, without prematurely building the wrong institution The immediate need is a clear agreement of will, decision rights and representation—not necessarily a new legal entity. Converging Waters A collaboration layer among autonomous projects and people. It can coordinate shared learning, evidence, partnerships and selected initiatives without absorbing WGA, Amazonas Sagrada or Willkamayu. Willkamayu The pathway with an explicit river-protection, remediation, guardianship and legal-readiness horizon. It may eventually require its own vehicle, but that decision should follow mandate and operational need. Amazonas Sagrada An autonomous regenerative enterprise and territorial project. Participation in shared capacities must support its own priorities, community relationships and governance rather than impose the Willkamayu model. Recommended sequence First: close a basic agreement of will and organization. Second: obtain early legal and institutional design advice. Third: decide whether Willkamayu needs a legal entity, a temporary host or continued collective operation. Initial Collaboration Accord v0.1 A short agreement before external representation Two to four pages can create sufficient clarity without pretending the collaboration is fully designed. Purpose What the collaboration is exploring and why. Autonomy Identity, leadership, resources, data and obligations remain with each project. Method Listen → align → ask → baseline/legal/MRV plan → measure → decide → act → monitor → learn. Commitments Review, correct, state availability and choose one 60–90 day output. Representation No one commits another project, person or ally without authorization. Data + credit Consent, provenance, community rights, access and attribution. Decision rights Clarify what the full group, each project and specialist cells can decide. Review + exit Define how the agreement changes and how participants step back. Whole collaboration decides Shared purpose and boundaries. Joint public communication. First shared output. Data, consent and credit principles. Who may represent the convergence externally. Willkamayu circle decides River legal objective and territorial scope. Guardianship and mandate pathway. Legal allies and financing. Vehicle options. Administrative, legislative or judicial strategy. Small legal-organizational team prepares Personality and liability options. Contracts, funding and tax questions. Equipment and data ownership. Insurance, permits and risk. Recommendations for decision—not unilateral decisions. Vehicle decision Choose capacity by function, not by institutional instinct The question is not simply whether to incorporate, but what capacity is needed, by when, and under whose governance. Scenario When it works Advantages Main risks Adoption signal Organized informal collective Exploration, design, voluntary research and early relationships. Flexible, low-cost and reversible. Personal liability, weak contracting capacity, unclear ownership and continuity. Appropriate while no material funds, contracts, staff, equipment or field liability are involved. Temporary host organization First grant, contract, equipment purchase or pilot that needs an existing counterparty. Faster operational capacity without immediate incorporation. Dependence, administrative costs, identity dilution and loss-of-control risks. Use only with clear agreements on money, data, equipment, identity, obligations and exit. Own nonprofit association Sustained protection program, funding, hiring, contracting, monitoring and guardianship. Autonomy, continuity, bankability and formal governance. Premature membership, wrong statutes, administrative burden and weak territorial representation. Adopt when mandate, stable team, recurring obligations and a fit-for-purpose governance model exist. Commercial vehicle for a defined activity Specific revenue-generating services or products separated from the protection mission. Can isolate commercial operations and investment. Mission drift and inappropriate ownership of common or community value. Only when a clearly bounded commercial function genuinely requires it. Provisional recommendation: organized collective + short written agreement + possible host for specific needs, while undertaking legal and organizational scoping. Independent knowledge infrastructure remains an open requirement. Any future Drive, canonical memory, AI OS, GitHub repository or automation should be established specifically for Converging Waters / Willkamayu and kept separate from Norte Solar’s corporate systems, ownership and canonical memory unless an explicit, documented arrangement is later approved.",
+      "index": 29
+    },
+    {
+      "start": 104602,
+      "id": "guardians",
+      "class": "section",
+      "images": [],
+      "links": [],
+      "headings": [
+        {
+          "tag": "h2",
+          "text": "Start with existing mandate-bearing actors"
+        }
+      ],
+      "kickers": [
+        "15 · Possible future guardians"
+      ],
+      "end": 106562,
+      "raw_length": 1960,
+      "raw_sha256": "4692dd61dee15df7fec53803ebcdf12773a2bd05a8b3fd1d7dd5ab7ffedc028d",
+      "text_length": 1333,
+      "text": "15 · Possible future guardians Start with existing mandate-bearing actors This candidate map can mature through listening and mandate. Candidate group Potential role What must be validated Alto Vilcanota communities Headwater and source protection. Exact communities, legal status and assembly mandate. La Raya / Canchis / Canas / Quispicanchi actors Source-area legitimacy. Precise basin link and local willingness. Communities near Ausangate / Sibinacocha High-mountain water stewardship. Direct hydrological relevance and mandate. Q’ero / paqo lineages Cultural and spiritual guidance. Territorial link, consent and community authorization. Sacred Valley communities Middle-basin monitoring and local legitimacy. Local priorities and representative mechanism. Women-led groups Care-centered governance and public legitimacy. Whether an existing network can lead. Youth monitors Sampling, data and storytelling continuity. Schools, permissions and training capacity. Juntas de usuarios / irrigation groups Water-use legitimacy and practical hydrology. Alignment with ecological rights language. Lower Urubamba communities Downstream impact representation. Representative organizations and consent. Citizen science collectives Monitoring, restoration and reporting. They can support while legal representation remains mandate-based.",
+      "index": 30
+    },
+    {
+      "start": 106563,
+      "id": "tourism",
+      "class": "section",
+      "images": [],
+      "links": [],
+      "headings": [
+        {
+          "tag": "h2",
+          "text": "A healthier river can unlock a stronger regenerative economy"
+        },
+        {
+          "tag": "h3",
+          "text": "Tourism credibility"
+        },
+        {
+          "tag": "h3",
+          "text": "Future river use"
+        },
+        {
+          "tag": "h3",
+          "text": "Funding mechanisms"
+        },
+        {
+          "tag": "h3",
+          "text": "Guardrails"
+        }
+      ],
+      "kickers": [
+        "16 · Tourism and river economy upside"
+      ],
+      "end": 107756,
+      "raw_length": 1193,
+      "raw_sha256": "8b9f12a29543060ed60912db8ffe144e2800a8386101d18e380691ef9870bb7f",
+      "text_length": 581,
+      "text": "16 · Tourism and river economy upside A healthier river can unlock a stronger regenerative economy Recreation must follow restoration. Tourism credibility Sacred Valley brand integrity. Hotel water responsibility. Visitor education. Regenerative standards. Future river use Rafting. Stand-up paddle. Fishing. Low-impact interpretation. Funding mechanisms Hotel levy. Adopt a monitoring station. River restoration fund. Corporate sponsorship. Guardrails Safety before recreation. Sacred relation before commercialization. Measurable standards over greenwashing. Local benefit first.",
+      "index": 31
+    },
+    {
+      "start": 107757,
+      "id": "legal",
+      "class": "section",
+      "images": [],
+      "links": [
+        {
+          "href": "https://www.earthlawcenter.org/latam-program"
+        },
+        {
+          "href": "https://www.earthlawcenter.org/blog-entries/2024/3/perus-maran-river-wins-rights-recognition-and-indigenous-guardianship-in-court"
+        },
+        {
+          "href": "https://www.pj.gob.pe/wps/wcm/connect/corte%2Bsuperior%2Bloreto%2Bpj/s_csj_loreto_nuevo/as_inicio/as_imagen_prensa/as_noticias/csjlo_n_corte%2Bde%2Bloreto%2Breconoce%2Bderechos%2Bal%2Brio%2Bmaranon%2By%2Bratifica%2Bmedidas%2Bpara%2Bsu%2Bproteccion"
+        }
+      ],
+      "headings": [
+        {
+          "tag": "h2",
+          "text": "Design the legal pathway from the beginning—not after the evidence is collected"
+        },
+        {
+          "tag": "h3",
+          "text": "Legal Strategy Lead"
+        },
+        {
+          "tag": "h3",
+          "text": "Legal Advisory Circle"
+        },
+        {
+          "tag": "h3",
+          "text": "Territorial mandate and representation"
+        },
+        {
+          "tag": "h3",
+          "text": "Explicit protection and guardianship pathway"
+        },
+        {
+          "tag": "h3",
+          "text": "Autonomous legal opportunity scan"
+        },
+        {
+          "tag": "h2",
+          "text": "Five outputs before choosing a campaign or case"
+        },
+        {
+          "tag": "h3",
+          "text": "Approach early enough to shape the design, but with enough clarity to make the conversation useful"
+        }
+      ],
+      "kickers": [
+        "17 · Legal and institutional strategy",
+        "Legal Scoping Sprint · approximately 30 days",
+        "Legal Readiness & Earth Law Center engagement"
+      ],
+      "end": 116465,
+      "raw_length": 8708,
+      "raw_sha256": "9e50efb6890f9864d8e73e1b358349dbb2f4ea17293b4ca0ce45d33dcd9ea534",
+      "text_length": 5875,
+      "text": "17 · Legal and institutional strategy Design the legal pathway from the beginning—not after the evidence is collected The legal function should help define purpose, mandate, proof, permissions, safeguards, institutions and remedies across the entire learning cycle. Legal Strategy Lead One accountable Peruvian-qualified professional responsible for integrating the protection objective, legal pathways, evidence strategy, risk and institutional sequencing. Felipe may coordinate relationships and translation, but substantive legal validation should remain with qualified counsel. Legal Advisory Circle A small review network spanning environmental and water law, constitutional or strategic litigation, Indigenous and territorial rights, administrative law and comparative Rights of Nature. A committee can advise; one lead still needs accountability. Territorial mandate and representation Communities, guardians, organizations and legitimate local actors determine whether and how the river or territory can be represented. A guardian model cannot be declared from outside the territorial process. Willkamayu Explicit protection and guardianship pathway Rights-of-river recognition and enforceable protection. Guardianship, representation, standing and territorial mandate. Administrative, municipal, regional, legislative and judicial routes. Water-quality compliance, restoration, reparation and institutional duties. Long-term legal, financial and MRV architecture for stewardship. Amazonas Sagrada Autonomous legal opportunity scan Territorial security, recognition or titling priorities. Community rights, consent and benefit-sharing. Water, sanitation, remediation and conservation agreements. Biodiversity, knowledge and data governance. Protection of a specific forest, wetland, stream or ecosystem if locally useful. Future Rights of Nature options only if they fit territorial aspirations. Legal Scoping Sprint · approximately 30 days Five outputs before choosing a campaign or case The sprint should reduce uncertainty and shape the scientific, territorial and organizational work that follows. 1 · Legal objective One clear objective per territory, with assumptions and limits. 2 · Pathways matrix Judicial, administrative, municipal, regional, legislative and contractual/community options. 3 · Evidence-to-law map Facts to prove, baseline, standards, laboratories, chain of custody, testimony and remedies. 4 · Mandate map Standing, representation, guardian selection, oversight and community legitimacy. 5 · Legal risk register Claims, permits, data, access, Indigenous knowledge, conflict, exposure, funding and retaliation risks. Route Possible result Who may initiate Evidence needed Forum Main uncertainty Administrative Inspection, supervision, corrective measures, permits or compliance. Communities, affected actors, organizations or authorities—subject to legal review. Compatible monitoring, documented impacts, jurisdiction and chain of custody. ANA, OEFA and other competent authorities. Fragmented competences and procedural fit. Municipal / regional Policy, ordinance, recognition, coordination or local protection. Subnational authorities with an aligned territorial coalition. Territorial rationale, public interest, competences and implementation plan. Municipality or Regional Government. Scope, continuity and enforceability. Judicial / constitutional Rights recognition, prevention, restoration, institutional duties or protective orders. Actors with standing and legitimate mandate. Damage or risk, ecological dependence, causation, mandate, requested remedies and implementation capacity. Peruvian courts. Standing, precedent transferability, proof and implementation. Legislative Specific or general framework for protection and governance. Coalition, representatives and public institutions. Strong case, public legitimacy, comparative models and implementation design. Congress or other norm-making bodies. Political timing and duration. Contractual / community Conservation agreements, data rules, stewardship commitments and benefit-sharing. Rights-holders, landholders, communities and participating entities. Consent, representation, clear obligations, monitoring and dispute rules. Participating parties and relevant registries/authorities. Representativeness and long-term compliance. Legal Readiness & Earth Law Center engagement Approach early enough to shape the design, but with enough clarity to make the conversation useful Earth Law Center’s Latin America program reports multi-year support to the Marañón case through an amicus brief, capacity building and expert testimony. That makes ELC a strong prospective design adviser, but not a confirmed partner. Stage 1 · Exploratory conversation Share a concise brief: Converging Waters, Willkamayu’s explicit protection horizon, Amazonas Sagrada’s autonomous exploration, the role of baseline/MRV/citizen science, what remains open and the questions for ELC. Stage 2 · Formal collaboration discussion After internal alignment: preliminary protection theory, actor and mandate map, threats, baseline gaps, MRV plan, data governance, local legal allies, budget, timeline and a clearly defined role request. Legal objective What result is plausible and strategic? Legal pathway Which combination of routes fits the case? Evidence architecture What must be collected and how? Guardianship + mandate Who can legitimately represent and defend? Legal team design What should ELC, Peruvian counsel and communities each do? ELC Latin America Legal Program Marañón case overview Peruvian Judiciary notice Core principle: do not collect science first and search for legal relevance later. Legal and territorial strategy should help decide what evidence, participation, documentation and safeguards are needed from the beginning. This is a strategic scoping summary, not legal advice.",
+      "index": 32
+    },
+    {
+      "start": 116466,
+      "id": "precedents",
+      "class": "section",
+      "images": [
+        {
+          "src": "assets/asset-4d8057946e69.svg",
+          "alt": "Marañón River illustration"
+        },
+        {
+          "src": "assets/asset-fb2771f4e4ba.svg",
+          "alt": "Lake Titicaca illustration"
+        },
+        {
+          "src": "assets/asset-a5e2ac7faf10.svg",
+          "alt": "Stingless bees illustration"
+        },
+        {
+          "src": "assets/asset-a22e225c7c8c.svg",
+          "alt": "Whanganui River illustration"
+        },
+        {
+          "src": "assets/asset-f88427ee51b2.svg",
+          "alt": "Atrato River illustration"
+        }
+      ],
+      "links": [
+        {
+          "href": "https://www.theguardian.com/environment/2025/apr/21/mari-luz-canaquiri-murayari-indigenous-river-campaigner-peru-wins-goldman-prize"
+        },
+        {
+          "href": "https://elpais.com/america-futura/2025-04-26/mari-luz-canaquiri-peruana-ganadora-del-premio-goldman-2025-las-mujeres-kukama-existimos-y-resistimos.html"
+        },
+        {
+          "href": "https://www.internationalrivers.org/news/landmark-ruling-the-peruvian-court-of-nauta-recognizes-the-rights-of-the-maranon-river-and-the-indigenous-communities-as-its-guardians/"
+        },
+        {
+          "href": "https://elpais.com/planeta-futuro/2025-11-13/una-victoria-ambiental-para-las-guardianas-del-lago-titicaca.html"
+        },
+        {
+          "href": "https://www.theguardian.com/environment/2025/dec/29/stingless-bees-from-the-amazon-granted-legal-rights-in-world-first"
+        },
+        {
+          "href": "https://people.com/stingless-bees-in-amazon-get-legal-rights-worlds-first-for-insects-11877405"
+        },
+        {
+          "href": "https://www.legislation.govt.nz/act/public/2017/7/en/latest/sections/DLM6831754/"
+        },
+        {
+          "href": "https://www.theguardian.com/world/2017/mar/16/new-zealand-river-granted-same-legal-rights-as-human-being"
+        },
+        {
+          "href": "https://www.corteconstitucional.gov.co/relatoria/2016/t-622-16.htm"
+        },
+        {
+          "href": "https://apnews.com/article/b6273e2936749d38ddfedb2aee4e9815"
+        }
+      ],
+      "headings": [
+        {
+          "tag": "h2",
+          "text": "Learn from Peru first, then compare globally"
+        },
+        {
+          "tag": "h3",
+          "text": "Marañón"
+        },
+        {
+          "tag": "h3",
+          "text": "Titicaca"
+        },
+        {
+          "tag": "h3",
+          "text": "Stingless bees"
+        },
+        {
+          "tag": "h3",
+          "text": "Whanganui"
+        },
+        {
+          "tag": "h3",
+          "text": "Atrato"
+        },
+        {
+          "tag": "h3",
+          "text": "Shared lesson"
+        }
+      ],
+      "kickers": [
+        "18 · Precedents and lessons"
+      ],
+      "end": 121795,
+      "raw_length": 5329,
+      "raw_sha256": "305a77a2026b53d4fb9f3a3f3bc88927a21aba875bed5ff98d31636ccc764dd6",
+      "text_length": 1208,
+      "text": "18 · Precedents and lessons Learn from Peru first, then compare globally Images are local SVG illustrations, so the deck remains stable. Marañón River Peru Court path Marañón What worked Kukama women led the case. Evidence and lived harm mattered. Design lesson Compliance requires long pressure. Lesson Build guardians before filing. Guardian El País International Rivers Lake Titicaca Peru Ordinance path Titicaca What worked Women-led advocacy built regional momentum. Design lesson Implementation and competencies need verification. Lesson Use ordinances as one pillar among several. El País Stingless bees Peru Species rights Stingless bees What worked Science met Indigenous knowledge. Design lesson Official texts should be reviewed. Lesson Small jurisdictions can open legal imagination. Guardian People Whanganui New Zealand Whanganui River as an indivisible whole. Two guardians represent it. Long Indigenous struggle. Official Act Guardian Atrato Colombia Atrato Court recognized river rights. Guardians were created. Implementation remains hard. Official ruling AP implementation warning Pattern Shared lesson Rights matter. Guardians matter more. Budget matters. Implementation is the real test.",
+      "index": 33
+    },
+    {
+      "start": 121796,
+      "id": "risk",
+      "class": "section",
+      "images": [],
+      "links": [],
+      "headings": [
+        {
+          "tag": "h2",
+          "text": "Build the chain reaction with wise timing"
+        }
+      ],
+      "kickers": [
+        "19 · Design safeguards"
+      ],
+      "end": 122976,
+      "raw_length": 1180,
+      "raw_sha256": "628a76edaae8d37e955f61af9d285af51098b387cbb3e114df2febf2b9df8380",
+      "text_length": 678,
+      "text": "19 · Design safeguards Build the chain reaction with wise timing Safeguards make the careful first phase stronger. Visibility when ready Build evidence before public escalation. Mandate before representation Let legitimacy come from territorial processes. Institutional dialogue Frame sanitation as shared river responsibility. Farmer-centered transition Design incentives, support and realistic alternatives. Headwater diplomacy Understand interests before public confrontation. Responsible tourism standards Link visibility to measurable commitments. Controlled pilots Test technologies before public claims. Community data sovereignty Use consent, benefit and shared control.",
+      "index": 34
+    },
+    {
+      "start": 122977,
+      "id": "budget",
+      "class": "section",
+      "images": [],
+      "links": [],
+      "headings": [
+        {
+          "tag": "h2",
+          "text": "Phase the ask with precision"
+        },
+        {
+          "tag": "h3",
+          "text": "Minimum validation"
+        },
+        {
+          "tag": "h3",
+          "text": "90-day scoping phase"
+        },
+        {
+          "tag": "h3",
+          "text": "6–12 month seed pilot"
+        },
+        {
+          "tag": "h3",
+          "text": "Grant-funded"
+        },
+        {
+          "tag": "h3",
+          "text": "Philanthropic"
+        },
+        {
+          "tag": "h3",
+          "text": "Impact-investable"
+        },
+        {
+          "tag": "h3",
+          "text": "Tourism-funded"
+        }
+      ],
+      "kickers": [
+        "20 · Budget and funding logic"
+      ],
+      "end": 124806,
+      "raw_length": 1829,
+      "raw_sha256": "cf743a5d79485df1b7b98046ba39a7bb245c6751660df912bfcf3806db4b2701",
+      "text_length": 991,
+      "text": "20 · Budget and funding logic Phase the ask with precision All figures remain illustrative planning ranges. Scope, local costs, legal work, community participation, laboratories, travel and field design require validation before any funding ask. Minimum validation US$15k–35k Desk research, legal memo, stakeholder map, field design and first partner conversations. 90-day scoping phase US$45k–95k Listening, sample design, pilot site selection, guardian mapping and preliminary funding package. 6–12 month seed pilot US$180k–450k Citizen science, monitoring, legal pathway, technical pilots, restoration design and coordination. Grant-funded Baseline studies. Legal research. Guardian training. Community listening. Philanthropic River fund. Community stipends. Legal support. Careful coordination. Impact-investable Sanitation modules. Water technology. Regenerative infrastructure. Future recreation. Tourism-funded Hotel levy. Visitor contribution. Station sponsorship. Sector standards.",
+      "index": 35
+    },
+    {
+      "start": 124807,
+      "id": "upside",
+      "class": "section",
+      "images": [],
+      "links": [],
+      "headings": [
+        {
+          "tag": "h2",
+          "text": "Participation should create real value"
+        },
+        {
+          "tag": "h3",
+          "text": "WGA / Stanley + Simona"
+        },
+        {
+          "tag": "h3",
+          "text": "Amazonas Sagrada"
+        },
+        {
+          "tag": "h3",
+          "text": "María Gracia"
+        },
+        {
+          "tag": "h3",
+          "text": "Felipe"
+        },
+        {
+          "tag": "h3",
+          "text": "Future guardians"
+        }
+      ],
+      "kickers": [
+        "21 · Upside for present actors"
+      ],
+      "end": 126187,
+      "raw_length": 1380,
+      "raw_sha256": "d55c959d638eb8fcaa908ef1158a33fee2f2cba58fe343a32a926444ec5ab417",
+      "text_length": 711,
+      "text": "21 · Upside for present actors Participation should create real value Impact, visibility and funding can reinforce each other. WGA / Stanley + Simona Potential Andean learning and demonstration pathway. Environmental data, citizen science and storytelling. Data-governance, partnership and financing design. Only through roles and capacities explicitly confirmed by WGA. Amazonas Sagrada Cross-regional Peru portfolio. Funding synergy. Technical pilot visibility. María Gracia Climate science in action. Community science design. Valley-based impact. Felipe Philanthropic strategy. Alliance architecture. Fair compensation if operational. Future guardians Voice. Training. Mandate. Tools. Visibility when ready.",
+      "index": 36
+    },
+    {
+      "start": 126188,
+      "id": "roadmap",
+      "class": "section",
+      "images": [],
+      "links": [],
+      "headings": [
+        {
+          "tag": "h2",
+          "text": "A careful 90-day scoping phase"
+        },
+        {
+          "tag": "h3",
+          "text": "Internal alignment and corrections"
+        },
+        {
+          "tag": "h3",
+          "text": "Legal and organizational scoping"
+        },
+        {
+          "tag": "h3",
+          "text": "Territorial listening + evidence design"
+        },
+        {
+          "tag": "h3",
+          "text": "Ally validation"
+        },
+        {
+          "tag": "h3",
+          "text": "Decision and next-phase package"
+        }
+      ],
+      "kickers": [
+        "22 · Proposed next path"
+      ],
+      "end": 128015,
+      "raw_length": 1827,
+      "raw_sha256": "4e2f683d412412722fe71e186a9ce911fe579c397006797a19b4045ef74d8d36",
+      "text_length": 1233,
+      "text": "22 · Proposed next path A careful 90-day scoping phase A phased readiness process can integrate the follow-up with Simona, internal organization, legal design, ally validation and a minimum evidence plan. Week 1–2 Internal alignment and corrections Share this detailed brief, collect corrections from Simona and other participants, confirm project autonomy, roles that are explicitly not assumed and the scope of a short collaboration accord. Week 2–4 Legal and organizational scoping Draft the Initial Collaboration Accord, define legal questions, compare collective/host/association options and prepare the Earth Law Center exploratory brief. Month 2 Territorial listening + evidence design Map priority questions, mandate-bearing actors, pilot locations, baseline gaps, MRV requirements, permits, data safeguards and community-engagement routes. Month 2–3 Ally validation Hold careful exploratory conversations with CBC, Pavel, Carlos, SPDA, ELC, Valle Sagrado Verde, academic/lab actors and relevant public institutions. Month 3 Decision and next-phase package Produce a corrected collaboration map, one legal objective per territory, pilot shortlist, costed workplan, funding options and a go / revise / separate-paths decision.",
+      "index": 37
+    },
+    {
+      "start": 128016,
+      "id": "validation",
+      "class": "section",
+      "images": [],
+      "links": [],
+      "headings": [
+        {
+          "tag": "h2",
+          "text": "What we are ready to validate"
+        }
+      ],
+      "kickers": [
+        "23 · Learning agenda"
+      ],
+      "end": 130733,
+      "raw_length": 2717,
+      "raw_sha256": "fdc2cb212eb0ffe43986c8ad7afe973297f4480480a62449c553a695400ca88d",
+      "text_length": 2012,
+      "text": "23 · Learning agenda What we are ready to validate This learning agenda protects rigor. Question Why it matters Owner candidate Status What does WGA actually want and have capacity to contribute in the next 3–6 months? Prevents theoretical capability from becoming an assumed commitment. Stanley + Simona Open; Simona review pending. What are the priority decisions and evidence needs in each territory? Determines baseline, MRV, methods and pilot value. Each project + territorial actors Open. Who are legitimate guardian and mandate-bearing candidates by basin segment? Legal standing, ethical legitimacy and long-term stewardship. Willkamayu circle + local allies + counsel Open; requires listening. Which legal pathway is plausible for Willkamayu? Shapes evidence, institutional strategy and remedies. Legal Strategy Lead + advisory circle Not yet scoped. What legal opportunities, if any, fit Amazonas Sagrada? Avoids imposing the Willkamayu objective. Amazonas Sagrada + communities + counsel Autonomous exploration. Does Converging Waters need a formal vehicle, and when? Clarifies liability, funding, contracts, equipment and continuity. Small legal-organizational team Compare collective, host and association. Which new allies are interested and what can they legitimately contribute? Converts names into accountable relationships without overclaiming. Felipe + relevant project leads CBC, Pavel and Carlos newly highlighted. What is the minimum useful 60–90 day budget? Supports fundability and accountability. Core participants Needs costing after scope. What independent knowledge infrastructure is needed? Protects ownership, continuity and separation from Norte Solar systems. Felipe / personal project governance Personal-scope package staged locally; GitHub migration pending preview approval. When is the project ready for external visibility? Protects communities, credibility and legal strategy. Whole collaboration + territorial mandate Visibility only after evidence, consent and readiness.",
+      "index": 38
+    },
+    {
+      "start": 130733,
+      "id": "current-decision",
+      "class": "section final-section current-decision-section",
+      "images": [],
+      "links": [],
+      "headings": [
+        {
+          "tag": "h2",
+          "text": "What are we ready to do together in the next 90 days?"
+        },
+        {
+          "tag": "h3",
+          "text": "Converging Waters Scoping & Readiness Brief"
+        }
+      ],
+      "kickers": [
+        "Current proposed decision"
+      ],
+      "end": 132181,
+      "raw_length": 1448,
+      "raw_sha256": "3f6c7ad3b5f6a1e8fb2ae4a5dd170cd7327b4189728fd06926f2e51dd6fcb0f1",
+      "text_length": 779,
+      "text": "Current proposed decision What are we ready to do together in the next 90 days? Confirm or correct the map What is accurate, missing or should not be assumed? Select one shared outcome Choose a concrete result that creates value for the participating projects. Confirm participation Who contributes, how, and what is the first dated action? Proposed first outcome Converging Waters Scoping & Readiness Brief Priority questions and intended value for each territory. WGA feasibility: equipment, support, data and field requirements. One preliminary pilot path per territory and any useful shared layer. Participation, visit options, governance, budget and funding questions. A useful review should leave us with: one outcome · named contributors · one first task · one review date",
+      "index": 39
+    },
+    {
+      "start": 132182,
+      "id": "open-fronts",
+      "class": "section",
+      "images": [],
+      "links": [],
+      "headings": [
+        {
+          "tag": "h2",
+          "text": "Keep the full landscape visible while working one layer at a time"
+        },
+        {
+          "tag": "h3",
+          "text": "Initial Collaboration Accord"
+        },
+        {
+          "tag": "h3",
+          "text": "Legal Scoping + ELC brief"
+        },
+        {
+          "tag": "h3",
+          "text": "Purpose, baseline and MRV"
+        },
+        {
+          "tag": "h3",
+          "text": "Listening, mandate and guardianship"
+        },
+        {
+          "tag": "h3",
+          "text": "Governance, sovereignty and safeguards"
+        },
+        {
+          "tag": "h3",
+          "text": "Relationship validation"
+        },
+        {
+          "tag": "h3",
+          "text": "Controlled technical and territorial options"
+        },
+        {
+          "tag": "h3",
+          "text": "Costed readiness and financing architecture"
+        },
+        {
+          "tag": "h3",
+          "text": "Evidence-based storytelling"
+        },
+        {
+          "tag": "h3",
+          "text": "Legal vehicle decision"
+        },
+        {
+          "tag": "h3",
+          "text": "Independent documentation and AI OS"
+        },
+        {
+          "tag": "h3",
+          "text": "Integration and decision cadence"
+        }
+      ],
+      "kickers": [
+        "24 · Open workstreams and next stages"
+      ],
+      "end": 136639,
+      "raw_length": 4457,
+      "raw_sha256": "6598452bb06e855b2c8a17210f8a1cf70272c6637894ecbb13067dd1f2b0b322",
+      "text_length": 3020,
+      "text": "24 · Open workstreams and next stages Keep the full landscape visible while working one layer at a time These fronts are connected, but they should not all become simultaneous commitments. Each needs an owner, a question, an output and a readiness threshold. 01 · Governance Initial Collaboration Accord Purpose, autonomy, decision rights, representation, data, credit, commitments, review and exit. Next: circulate a 2–4 page v0.1 after participant corrections. 02 · Legal Legal Scoping + ELC brief One objective per territory, pathways, evidence, mandate, risk and legal-team design. Next: identify Peruvian lead counsel and prepare an exploratory brief. 03 · Evidence Purpose, baseline and MRV Priority decisions, indicators, protocols, verification, reporting, recovery monitoring and adaptive learning. Next: define minimum useful evidence by territory before selecting technology. 04 · Territory Listening, mandate and guardianship Communities, water users, rights-holders, local institutions, basin segments, risks and legitimate representation. Next: design a careful listening and actor-mapping route. 05 · Data Governance, sovereignty and safeguards Ownership, access, consent, Indigenous and community knowledge, provenance, privacy, publication and commercial use. Next: draft data-governance principles before field collection. 06 · Allies Relationship validation Clarify interest, capacity, conflicts, decision authority, expectations and boundaries for every prospective ally. Next: prioritize CBC, Pavel, Carlos, legal allies and scientific validation partners. 07 · Pilots Controlled technical and territorial options Site selection, comparison, permissions, before/after measurement, cost, maintenance and unintended effects. Next: shortlist only after purpose and legal evidence needs are defined. 08 · Funding Costed readiness and financing architecture Grants, philanthropy, sector contributions, impact investment and long-term stewardship funding. Next: cost the 60–90 day phase before building a fundraising narrative. 09 · Communications Evidence-based storytelling Translate complexity without overclaiming, protect sensitive information, secure consent and give territorial actors appropriate credit. Next: develop an internal/external communications threshold. 10 · Structure Legal vehicle decision Collective, host, association or bounded commercial vehicle based on actual functions and liabilities. Next: compare scenarios with Peruvian legal and tax advice. 11 · Knowledge system Independent documentation and AI OS Canonical memory, decisions, source register, Drive, GitHub, versioning and automation under project-specific governance. Next: create and migrate to a new personal GitHub repository after preview approval; keep it fully separate from Norte Solar. 12 · Review Integration and decision cadence Bring legal, scientific, territorial, financial and organizational findings back into one current synthesis. Next: establish a simple review rhythm and one named owner per output.",
+      "index": 40
+    },
+    {
+      "start": 136639,
+      "id": "sources",
+      "class": "section compact-section",
+      "images": [],
+      "links": [
+        {
+          "href": "https://www.earthlawcenter.org/latam-program"
+        },
+        {
+          "href": "https://www.pj.gob.pe/wps/wcm/connect/corte%2Bsuperior%2Bloreto%2Bpj/s_csj_loreto_nuevo/as_inicio/as_imagen_prensa/as_noticias/csjlo_n_corte%2Bde%2Bloreto%2Breconoce%2Bderechos%2Bal%2Brio%2Bmaranon%2By%2Bratifica%2Bmedidas%2Bpara%2Bsu%2Bproteccion"
+        },
+        {
+          "href": "https://cbc.org.pe/cusco/"
+        },
+        {
+          "href": "https://cbc.org.pe/who-we-are/"
+        },
+        {
+          "href": "https://scr.sunarp.gob.pe/constitucion-de-asociacion-por-pasos/"
+        },
+        {
+          "href": "https://www.gob.pe/institucion/apci/pages/9076-inscribir-tu-organizacion-no-gubernamental-de-desarrollo-ongd"
+        },
+        {
+          "href": "https://wga-site.vercel.app/"
+        },
+        {
+          "href": "https://simonaaw.github.io/world-genome/"
+        }
+      ],
+      "headings": [
+        {
+          "tag": "h2",
+          "text": "Primary external references and internal source basis"
+        }
+      ],
+      "kickers": [
+        "26 · Source and evidence register"
+      ],
+      "end": 139523,
+      "raw_length": 2884,
+      "raw_sha256": "f74059ee3c1e40bff637450562bd14fc0b266cfeb32308696a4125fef4ac3a8c",
+      "text_length": 1227,
+      "text": "26 · Source and evidence register Primary external references and internal source basis External facts should be checked at the source. Internal descriptions remain subject to correction by the people and projects concerned. Earth Law Center — Latin America Program and Marañón case materials . Reports support through amicus work, capacity building and expert testimony. Peruvian Judiciary — Marañón Official Loreto court notice on the appellate confirmation and protective measures. Centro Bartolomé de Las Casas Cusco territorial work and institutional mission . Peruvian organizational options SUNARP association guidance and APCI ONGD requirements . WGA references supplied in the project Current public site , Simona’s WIP site , and Stanley’s storytelling reference. Internal project materials Earlier internal HTML brief; later purpose/MRV HTML iterations; process and collaboration graphics; Amazonas Sagrada proposal; Patrick and María Gracia profiles; legal-strategy and organizational-scoping notes; recent discussion with Simona. Purpose-led measurement visual The consolidated process and collaboration graphic from the prior iteration is embedded directly in this page, alongside the editable HTML/CSS expansion.",
+      "index": 41
+    },
+    {
+      "start": 139523,
+      "id": "decision",
+      "class": "section final-section",
+      "images": [],
+      "links": [],
+      "headings": [
+        {
+          "tag": "h2",
+          "text": "Is there enough corrected alignment to design a bounded 60–90 day Scoping and Readiness phase?"
+        }
+      ],
+      "kickers": [
+        "25 · Current decision horizon"
+      ],
+      "end": 140513,
+      "raw_length": 990,
+      "raw_sha256": "166e74d04e676988cabc80608fedc3c7a398cadb33b76a5fc79ab73dbffd4d5b",
+      "text_length": 608,
+      "text": "25 · Current decision horizon Is there enough corrected alignment to design a bounded 60–90 day Scoping and Readiness phase? Proceed carefully Confirm a small scope, owners, boundaries, legal adviser search and first deliverables. Revise first List missing corrections, unresolved assumptions and the people needed to validate them. Maintain autonomous paths Keep relationships open while each project advances independently until real convergence emerges. The goal is clarity, consent, territorial legitimacy and a useful next step. No external commitment follows automatically from this internal synthesis.",
+      "index": 42
+    }
+  ]
+}
