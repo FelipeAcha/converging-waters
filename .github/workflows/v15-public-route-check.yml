@@ -1,0 +1,31 @@
+name: v15 public candidate route check
+
+on:
+  push:
+    branches:
+      - review/web-v15-dedup-preserve
+    paths:
+      - '.github/workflows/v15-public-route-check.yml'
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify candidate and unchanged v13 preview
+        shell: bash
+        run: |
+          set -euo pipefail
+          candidate='https://felipeacha.github.io/converging-waters/candidates/v15/'
+          preview='https://felipeacha.github.io/converging-waters/preview/'
+          release='https://felipeacha.github.io/converging-waters/releases/v13/'
+          curl -fsSL --retry 5 --retry-delay 2 "$candidate" -o /tmp/v15.html
+          grep -q 'A more tangible field-and-data possibility' /tmp/v15.html
+          grep -q 'Concrete examples already on the table' /tmp/v15.html
+          grep -q 'Small field computers' /tmp/v15.html
+          grep -q 'Sensor + metadata nodes' /tmp/v15.html
+          grep -q 'Autonomous field systems' /tmp/v15.html
+          grep -q 'Current proposed decision' /tmp/v15.html
+          test "$(curl -fsSL -o /dev/null -w '%{http_code}' "$candidate")" = '200'
+          test "$(curl -fsSL -o /dev/null -w '%{http_code}' "$release")" = '200'
+          preview_target="$(curl -fsSL "$preview" | grep -o '../releases/v13/' | head -n 1 || true)"
+          test "$preview_target" = '../releases/v13/'
