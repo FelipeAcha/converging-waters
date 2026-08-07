@@ -1,0 +1,274 @@
+name: v15 preservation-first candidate
+
+on:
+  push:
+    branches:
+      - review/web-v15-dedup-preserve
+    paths:
+      - '.github/workflows/v15-build-preservation-first.yml'
+      - 'work/web-v15/source/**'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: review/web-v15-dedup-preserve
+          fetch-depth: 0
+
+      - name: Build v15 by raw section subtraction only
+        shell: bash
+        run: |
+          python - <<'PY'
+          import hashlib, json, re, shutil
+          from pathlib import Path
+          from html.parser import HTMLParser
+
+          SRC = Path('work/web-v15/source/v13-source.html')
+          SRC_ASSETS = Path('work/web-v15/source/assets')
+          OUT = Path('work/web-v15/candidate')
+          OUT_ASSETS = OUT / 'assets'
+          REMOVED = ['agenda', 'open-decisions', 'decision']
+          EXPECTED_WGA_HASH = 'd22889e1b98d8f49d3ea09f74092e97273d06964852e19b20c0aebd26d5525e1'
+          EXPECTED_ASSET_COUNT = 16
+          EXPECTED_BASELINE_SECTIONS = 42
+
+          if OUT.exists():
+              shutil.rmtree(OUT)
+          OUT_ASSETS.mkdir(parents=True, exist_ok=True)
+          html = SRC.read_text(encoding='utf-8')
+
+          class Parser(HTMLParser):
+              def __init__(self, source):
+                  super().__init__(convert_charrefs=True)
+                  self.source = source
+                  self.line_offsets = [0]
+                  for m in re.finditer(r'\n', source): self.line_offsets.append(m.end())
+                  self.stack = []
+                  self.sections = []
+                  self.current = None
+              def off(self, pos):
+                  line,col = pos
+                  return self.line_offsets[line-1] + col
+              def handle_starttag(self, tag, attrs):
+                  start = self.off(self.getpos())
+                  ad = dict(attrs)
+                  self.stack.append(tag)
+                  if tag == 'section' and self.current is None:
+                      self.current = {'start':start,'id':ad.get('id',''),'images':[],'links':[]}
+                  if self.current:
+                      if tag == 'img': self.current['images'].append({'src':ad.get('src',''),'alt':ad.get('alt','')})
+                      if tag == 'a': self.current['links'].append({'href':ad.get('href','')})
+              def handle_endtag(self, tag):
+                  if tag == 'section' and self.current is not None:
+                      depth = sum(1 for x in self.stack if x == 'section')
+                      if depth == 1:
+                          close_start = self.off(self.getpos())
+                          close_end = self.source.find('>', close_start) + 1
+                          raw = self.source[self.current['start']:close_end]
+                          self.current.update({'end':close_end,'raw':raw,'raw_sha256':hashlib.sha256(raw.encode()).hexdigest()})
+                          self.sections.append(self.current)
+                          self.current = None
+                  if self.stack:
+                      for i in range(len(self.stack)-1,-1,-1):
+                          if self.stack[i] == tag:
+                              del self.stack[i:]
+                              break
+
+          def parse(source):
+              p = Parser(source); p.feed(source); return p.sections
+
+          base_sections = parse(html)
+          if len(base_sections) != EXPECTED_BASELINE_SECTIONS:
+              raise SystemExit(f'Expected {EXPECTED_BASELINE_SECTIONS} baseline sections, got {len(base_sections)}')
+          by_id = {s['id']:s for s in base_sections}
+          for rid in REMOVED:
+              if rid not in by_id:
+                  raise SystemExit(f'Removal target missing: {rid}')
+
+          # Remove only complete top-level section byte ranges; do not reserialize retained HTML.
+          spans = sorted([(by_id[r]['start'],by_id[r]['end'],r) for r in REMOVED], reverse=True)
+          candidate = html
+          for start,end,rid in spans:
+              candidate = candidate[:start] + candidate[end:]
+
+          cand_sections = parse(candidate)
+          cand_by_id = {s['id']:s for s in cand_sections}
+          expected_count = EXPECTED_BASELINE_SECTIONS - len(REMOVED)
+          if len(cand_sections) != expected_count:
+              raise SystemExit(f'Candidate section count {len(cand_sections)} != {expected_count}')
+          for rid in REMOVED:
+              if rid in cand_by_id:
+                  raise SystemExit(f'Removed section still present: {rid}')
+
+          # Every retained top-level section must be byte-identical.
+          changed_retained = []
+          for s in base_sections:
+              if s['id'] in REMOVED: continue
+              c = cand_by_id.get(s['id'])
+              if not c or c['raw_sha256'] != s['raw_sha256']:
+                  changed_retained.append({'id':s['id'],'baseline':s['raw_sha256'],'candidate':c and c['raw_sha256']})
+          if changed_retained:
+              raise SystemExit('Retained section regression: ' + json.dumps(changed_retained))
+
+          # Explicit WGA hard lock.
+          wga = cand_by_id.get('stanley-update')
+          if not wga:
+              raise SystemExit('stanley-update missing')
+          if wga['raw_sha256'] != EXPECTED_WGA_HASH:
+              raise SystemExit(f'WGA raw hash changed: {wga["raw_sha256"]}')
+          if len(wga['images']) != 13:
+              raise SystemExit(f'WGA image count changed: {len(wga["images"])}')
+          if len(wga['links']) != 17:
+              raise SystemExit(f'WGA link count changed: {len(wga["links"])}')
+
+          # Copy every v13 asset byte-for-byte and prove hashes match.
+          src_files = sorted(p for p in SRC_ASSETS.rglob('*') if p.is_file())
+          if len(src_files) != EXPECTED_ASSET_COUNT:
+              raise SystemExit(f'Expected {EXPECTED_ASSET_COUNT} source assets, got {len(src_files)}')
+          asset_checks = []
+          for p in src_files:
+              rel = p.relative_to(SRC_ASSETS)
+              q = OUT_ASSETS / rel
+              q.parent.mkdir(parents=True, exist_ok=True)
+              shutil.copyfile(p,q)
+              a = hashlib.sha256(p.read_bytes()).hexdigest()
+              b = hashlib.sha256(q.read_bytes()).hexdigest()
+              if a != b: raise SystemExit(f'Asset hash mismatch: {rel}')
+              asset_checks.append({'path':str(rel),'sha256':a,'size':p.stat().st_size})
+
+          # All local image references must resolve; all fragment links must resolve.
+          missing_images = []
+          for s in cand_sections:
+              for img in s['images']:
+                  src = img['src']
+                  if src.startswith('assets/') and not (OUT / src).is_file():
+                      missing_images.append(src)
+          if missing_images:
+              raise SystemExit('Missing image assets: ' + json.dumps(sorted(set(missing_images))))
+
+          ids = set(re.findall(r'\bid=["\']([^"\']+)["\']', candidate)) | {'top'}
+          fragment_links = re.findall(r'href=["\']#([^"\']+)["\']', candidate)
+          broken_fragments = sorted(set(x for x in fragment_links if x not in ids))
+          if broken_fragments:
+              raise SystemExit('Broken fragment links: ' + json.dumps(broken_fragments))
+
+          (OUT / 'index.html').write_text(candidate, encoding='utf-8')
+          report = {
+              'baseline_html_sha256': hashlib.sha256(html.encode()).hexdigest(),
+              'candidate_html_sha256': hashlib.sha256(candidate.encode()).hexdigest(),
+              'baseline_sections': len(base_sections),
+              'candidate_sections': len(cand_sections),
+              'removed_sections': REMOVED,
+              'retained_sections_byte_identical': True,
+              'stanley_wga': {'id':'stanley-update','raw_sha256':wga['raw_sha256'],'images':len(wga['images']),'links':len(wga['links']),'status':'PASS_BYTE_IDENTICAL'},
+              'assets': {'count':len(asset_checks),'all_byte_identical':True,'items':asset_checks},
+              'broken_fragment_links': broken_fragments,
+              'missing_images': missing_images,
+              'minified': False,
+          }
+          (OUT / 'preservation-report.json').write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding='utf-8')
+          md = f'''# Converging Waters v15 - Preservation-first deduplication report
+
+## Result
+
+- Baseline: exact recovered v13 source
+- Baseline sections: **{len(base_sections)}**
+- Candidate sections: **{len(cand_sections)}**
+- Removed standalone sections: **{', '.join(REMOVED)}**
+- Retained sections byte-identical: **PASS**
+- Assets preserved byte-for-byte: **PASS ({len(asset_checks)}/{len(asset_checks)})**
+- Broken fragment links: **0**
+- Missing local image assets: **0**
+- HTML minification: **NO**
+
+## Hard preservation lock - Stanley / WGA
+
+The entire `stanley-update` section is copied from v13 without any byte-level change.
+
+- Raw section SHA-256: `{wga['raw_sha256']}`
+- Images inside section: **{len(wga['images'])}**
+- Links inside section: **{len(wga['links'])}**
+- Result: **PASS_BYTE_IDENTICAL**
+
+This preserves the full apparatus/reference area: sample + sequence; context + verify; learn + steward; portable field science; Sacred Valley possibility; design principle; ecosystem atlas/metagenome patterns; small field computers; sensor + metadata nodes; citizen science bioacoustics; autonomous field systems; portable sequencing in context; WGA public/data/academy/storytelling links; technical-next-step sequence; and clarification band.
+
+## Why only three sections were removed
+
+This recovery deliberately uses a much stricter interpretation of deduplication than the rejected v14 candidate. No substantive deep-dive section is consolidated or rewritten.
+
+1. `agenda` - a second meta reading/agenda layer after `current-session`; removing it does not remove the actual current-session agenda or any technical/project section.
+2. `open-decisions` - a short summary of unknowns already represented in the more detailed `validation`, `first-outcome`, `current-decision`, governance/data/territorial sections.
+3. `decision` - a second closing decision block after the richer `current-decision`; the richer current decision remains unchanged.
+
+Everything else remains in the same order and with identical HTML bytes, including `changed-since`, `where-now`, `shared-direction`, `collaboration-layer`, `emerged-since-call`, `stanley-update`, `three-paths`, Willkamayu, citizen science, purpose/MRV visuals, basin/system, convergence, Chelsea, Amazonas Sagrada, Patrick technical track, finance, allies, governance, guardians, tourism, legal, precedents, safeguards, budget, upside, roadmap, validation, current decision, open fronts and sources.
+
+## Hashes
+
+- Baseline HTML SHA-256: `{report['baseline_html_sha256']}`
+- Candidate HTML SHA-256: `{report['candidate_html_sha256']}`
+'''
+          (OUT / 'PRESERVATION_REPORT.md').write_text(md,encoding='utf-8')
+          PY
+
+      - name: Browser smoke test with exact assets
+        shell: bash
+        run: |
+          python3 -m http.server 8765 --directory work/web-v15/candidate >/tmp/v15-http.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID || true' EXIT
+          sleep 1
+          CHROME="$(command -v google-chrome || command -v chromium || command -v chromium-browser || true)"
+          if [ -z "$CHROME" ]; then
+            echo "Chrome/Chromium not available on runner" >&2
+            exit 1
+          fi
+          "$CHROME" --headless=new --no-sandbox --disable-gpu --dump-dom http://127.0.0.1:8765/ > /tmp/v15-dom.html
+          grep -q 'A more tangible field-and-data possibility' /tmp/v15-dom.html
+          grep -q 'Concrete examples already on the table' /tmp/v15-dom.html
+          grep -q 'Small field computers' /tmp/v15-dom.html
+          grep -q 'Sensor + metadata nodes' /tmp/v15-dom.html
+          grep -q 'Autonomous field systems' /tmp/v15-dom.html
+          grep -q 'Current proposed decision' /tmp/v15-dom.html
+          if grep -q 'What remains open' /tmp/v15-dom.html; then
+            echo 'Removed open-decisions section still rendered' >&2; exit 1
+          fi
+
+      - name: Commit candidate and validation evidence to review branch
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add work/web-v15/candidate
+          if git diff --cached --quiet; then
+            echo "No candidate changes to commit"
+          else
+            git commit -m "Build preservation-first Converging Waters v15 candidate"
+            git push origin HEAD:review/web-v15-dedup-preserve
+          fi
+
+      - name: Prepare candidate-only review branch from main
+        shell: bash
+        run: |
+          CANDIDATE_DIR="$RUNNER_TEMP/v15-candidate-copy"
+          mkdir -p "$CANDIDATE_DIR"
+          cp -a work/web-v15/candidate/. "$CANDIDATE_DIR/"
+          git fetch origin main
+          git checkout -B review/web-v15-candidate-only origin/main
+          rm -rf docs/candidates/v15
+          mkdir -p docs/candidates/v15
+          cp -a "$CANDIDATE_DIR"/. docs/candidates/v15/
+          git add docs/candidates/v15
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git diff --cached --quiet; then
+            echo "Candidate-only branch already current"
+          else
+            git commit -m "Add Converging Waters v15 preservation-first review candidate"
+          fi
+          git push --force-with-lease origin HEAD:review/web-v15-candidate-only
