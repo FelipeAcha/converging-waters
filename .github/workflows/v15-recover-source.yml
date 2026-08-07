@@ -1,0 +1,193 @@
+name: v15 source recovery
+
+on:
+  push:
+    branches:
+      - review/web-v15-dedup-preserve
+
+permissions:
+  contents: write
+
+jobs:
+  recover:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: review/web-v15-dedup-preserve
+      - name: Recover exact v13 source and inventory
+        shell: bash
+        run: |
+          python - <<'PY'
+          import hashlib, json, re, zipfile
+          from pathlib import Path
+          from html.parser import HTMLParser
+
+          ZIP = Path('converging-waters-repository-ready.zip')
+          EXPECTED = 'cf0a0e2f78ccf0ca370735c285cb1cbe19515c44bffabbb87424a0cda7efafb1'
+          actual = hashlib.sha256(ZIP.read_bytes()).hexdigest()
+          if actual != EXPECTED:
+              raise SystemExit(f'ZIP SHA mismatch: {actual}')
+
+          out = Path('work/web-v15/source')
+          assets_out = out / 'assets'
+          assets_out.mkdir(parents=True, exist_ok=True)
+
+          with zipfile.ZipFile(ZIP) as z:
+              html_bytes = z.read('docs/releases/v13/index.html')
+              html = html_bytes.decode('utf-8')
+              (out / 'v13-source.html').write_bytes(html_bytes)
+              manifest = []
+              prefix = 'docs/releases/v13/assets/'
+              for name in z.namelist():
+                  if name.startswith(prefix) and not name.endswith('/'):
+                      rel = name[len(prefix):]
+                      data = z.read(name)
+                      target = assets_out / rel
+                      target.parent.mkdir(parents=True, exist_ok=True)
+                      target.write_bytes(data)
+                      manifest.append({
+                          'path': rel,
+                          'size': len(data),
+                          'sha256': hashlib.sha256(data).hexdigest(),
+                      })
+
+          class SectionInventoryParser(HTMLParser):
+              def __init__(self, source):
+                  super().__init__(convert_charrefs=True)
+                  self.source = source
+                  self.line_offsets = [0]
+                  for m in re.finditer(r'\n', source):
+                      self.line_offsets.append(m.end())
+                  self.stack = []
+                  self.sections = []
+                  self.current = None
+                  self.capture_tag = None
+                  self.capture_text = []
+              def pos_to_offset(self, pos):
+                  line, col = pos
+                  return self.line_offsets[line-1] + col
+              def handle_starttag(self, tag, attrs):
+                  start = self.pos_to_offset(self.getpos())
+                  attrs_d = dict(attrs)
+                  self.stack.append(tag)
+                  if tag == 'section' and self.current is None:
+                      self.current = {
+                          'start': start,
+                          'id': attrs_d.get('id',''),
+                          'class': attrs_d.get('class',''),
+                          'texts': [],
+                          'images': [],
+                          'links': [],
+                          'headings': [],
+                          'kickers': [],
+                      }
+                  if self.current:
+                      if tag == 'img':
+                          self.current['images'].append({'src': attrs_d.get('src',''), 'alt': attrs_d.get('alt','')})
+                      elif tag == 'a':
+                          self.current['links'].append({'href': attrs_d.get('href','')})
+                      if tag in ('h1','h2','h3'):
+                          self.capture_tag = ('heading', tag)
+                          self.capture_text = []
+                      elif 'kicker' in attrs_d.get('class','').split():
+                          self.capture_tag = ('kicker', tag)
+                          self.capture_text = []
+              def handle_data(self, data):
+                  if self.current:
+                      t = ' '.join(data.split())
+                      if t:
+                          self.current['texts'].append(t)
+                      if self.capture_tag:
+                          self.capture_text.append(data)
+              def handle_endtag(self, tag):
+                  if self.current and self.capture_tag and self.capture_tag[1] == tag:
+                      text = ' '.join(''.join(self.capture_text).split())
+                      if self.capture_tag[0] == 'heading' and text:
+                          self.current['headings'].append({'tag': tag, 'text': text})
+                      elif self.capture_tag[0] == 'kicker' and text:
+                          self.current['kickers'].append(text)
+                      self.capture_tag = None
+                      self.capture_text = []
+                  if tag == 'section' and self.current is not None:
+                      # A section is top-level if the closing tag reduces section depth to zero.
+                      section_depth = sum(1 for x in self.stack if x == 'section')
+                      if section_depth == 1:
+                          end_start = self.pos_to_offset(self.getpos())
+                          end = self.source.find('>', end_start) + 1
+                          raw = self.source[self.current['start']:end]
+                          text = ' '.join(self.current.pop('texts'))
+                          self.current.update({
+                              'end': end,
+                              'raw_length': len(raw),
+                              'raw_sha256': hashlib.sha256(raw.encode()).hexdigest(),
+                              'text_length': len(text),
+                              'text': text,
+                          })
+                          self.sections.append(self.current)
+                          self.current = None
+                  if self.stack:
+                      # Pop through matching tag to stay tolerant of imperfect HTML.
+                      for i in range(len(self.stack)-1, -1, -1):
+                          if self.stack[i] == tag:
+                              del self.stack[i:]
+                              break
+
+          parser = SectionInventoryParser(html)
+          parser.feed(html)
+          sections = parser.sections
+          for i, s in enumerate(sections, 1):
+              s['index'] = i
+
+          wga = []
+          for s in sections:
+              hay = (' '.join(s.get('kickers',[])) + ' ' + ' '.join(h['text'] for h in s.get('headings',[])) + ' ' + s.get('text','')).lower()
+              if ('stanley' in hay and 'wga' in hay) or 'more tangible field' in hay or 'concrete examples already on the table' in hay:
+                  wga.append({
+                      'index': s['index'], 'id': s['id'], 'kickers': s['kickers'], 'headings': s['headings'],
+                      'raw_sha256': s['raw_sha256'], 'raw_length': s['raw_length'],
+                      'image_count': len(s['images']), 'link_count': len(s['links']),
+                      'images': s['images'], 'links': s['links'],
+                  })
+
+          report = {
+              'zip_sha256': actual,
+              'html_sha256': hashlib.sha256(html_bytes).hexdigest(),
+              'html_size': len(html_bytes),
+              'section_count': len(sections),
+              'asset_count': len(manifest),
+              'wga_sections': wga,
+              'sections': sections,
+          }
+          (out / 'v13-section-inventory.json').write_text(json.dumps(report, ensure_ascii=False, indent=2))
+          (out / 'v13-assets-manifest.json').write_text(json.dumps(manifest, ensure_ascii=False, indent=2))
+
+          md = ['# v13 exact source inventory', '', f'- ZIP SHA-256: `{actual}`', f'- HTML SHA-256: `{report["html_sha256"]}`', f'- Sections: {len(sections)}', f'- Assets: {len(manifest)}', '', '## Sections', '']
+          for s in sections:
+              kicker = ' | '.join(s.get('kickers', []))
+              heading = ' | '.join(h['text'] for h in s.get('headings', []))
+              md.append(f'### {s["index"]}. {heading or "(no heading)"}')
+              md.append(f'- id: `{s["id"]}`')
+              md.append(f'- kicker: {kicker}')
+              md.append(f'- raw_sha256: `{s["raw_sha256"]}`')
+              md.append(f'- images: {len(s["images"])}; links: {len(s["links"])}; text chars: {s["text_length"]}')
+              md.append(f'- text: {s["text"][:1200]}')
+              md.append('')
+          md += ['## WGA preservation anchors', '']
+          for w in wga:
+              md.append(f'- Section {w["index"]}: `{w["raw_sha256"]}` — {w["image_count"]} images, {w["link_count"]} links')
+          (out / 'v13-section-inventory.md').write_text('\n'.join(md))
+          PY
+      - name: Persist recovered source on review branch
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add work/web-v15/source
+          if git diff --cached --quiet; then
+            echo "No recovery changes to commit"
+          else
+            git commit -m "Recover exact v13 source for preservation-first v15 review"
+            git push origin HEAD:review/web-v15-dedup-preserve
+          fi
