@@ -48,22 +48,25 @@ jobs:
                   super().__init__(convert_charrefs=True)
                   self.source = source
                   self.line_offsets = [0]
-                  for m in re.finditer(r'\n', source): self.line_offsets.append(m.end())
+                  for m in re.finditer(r'\n', source):
+                      self.line_offsets.append(m.end())
                   self.stack = []
                   self.sections = []
                   self.current = None
               def off(self, pos):
-                  line,col = pos
+                  line, col = pos
                   return self.line_offsets[line-1] + col
               def handle_starttag(self, tag, attrs):
                   start = self.off(self.getpos())
                   ad = dict(attrs)
                   self.stack.append(tag)
                   if tag == 'section' and self.current is None:
-                      self.current = {'start':start,'id':ad.get('id',''),'images':[],'links':[]}
+                      self.current = {'start': start, 'id': ad.get('id',''), 'images': [], 'links': []}
                   if self.current:
-                      if tag == 'img': self.current['images'].append({'src':ad.get('src',''),'alt':ad.get('alt','')})
-                      if tag == 'a': self.current['links'].append({'href':ad.get('href','')})
+                      if tag == 'img':
+                          self.current['images'].append({'src': ad.get('src',''), 'alt': ad.get('alt','')})
+                      if tag == 'a':
+                          self.current['links'].append({'href': ad.get('href','')})
               def handle_endtag(self, tag):
                   if tag == 'section' and self.current is not None:
                       depth = sum(1 for x in self.stack if x == 'section')
@@ -71,34 +74,34 @@ jobs:
                           close_start = self.off(self.getpos())
                           close_end = self.source.find('>', close_start) + 1
                           raw = self.source[self.current['start']:close_end]
-                          self.current.update({'end':close_end,'raw':raw,'raw_sha256':hashlib.sha256(raw.encode()).hexdigest()})
+                          self.current.update({'end': close_end, 'raw': raw, 'raw_sha256': hashlib.sha256(raw.encode()).hexdigest()})
                           self.sections.append(self.current)
                           self.current = None
                   if self.stack:
-                      for i in range(len(self.stack)-1,-1,-1):
+                      for i in range(len(self.stack)-1, -1, -1):
                           if self.stack[i] == tag:
                               del self.stack[i:]
                               break
 
           def parse(source):
-              p = Parser(source); p.feed(source); return p.sections
+              p = Parser(source)
+              p.feed(source)
+              return p.sections
 
           base_sections = parse(html)
           if len(base_sections) != EXPECTED_BASELINE_SECTIONS:
               raise SystemExit(f'Expected {EXPECTED_BASELINE_SECTIONS} baseline sections, got {len(base_sections)}')
-          by_id = {s['id']:s for s in base_sections}
+          by_id = {s['id']: s for s in base_sections}
           for rid in REMOVED:
               if rid not in by_id:
                   raise SystemExit(f'Removal target missing: {rid}')
 
-          # Remove only complete top-level section byte ranges; do not reserialize retained HTML.
-          spans = sorted([(by_id[r]['start'],by_id[r]['end'],r) for r in REMOVED], reverse=True)
           candidate = html
-          for start,end,rid in spans:
+          for start, end, rid in sorted([(by_id[r]['start'], by_id[r]['end'], r) for r in REMOVED], reverse=True):
               candidate = candidate[:start] + candidate[end:]
 
           cand_sections = parse(candidate)
-          cand_by_id = {s['id']:s for s in cand_sections}
+          cand_by_id = {s['id']: s for s in cand_sections}
           expected_count = EXPECTED_BASELINE_SECTIONS - len(REMOVED)
           if len(cand_sections) != expected_count:
               raise SystemExit(f'Candidate section count {len(cand_sections)} != {expected_count}')
@@ -106,17 +109,16 @@ jobs:
               if rid in cand_by_id:
                   raise SystemExit(f'Removed section still present: {rid}')
 
-          # Every retained top-level section must be byte-identical.
           changed_retained = []
           for s in base_sections:
-              if s['id'] in REMOVED: continue
+              if s['id'] in REMOVED:
+                  continue
               c = cand_by_id.get(s['id'])
               if not c or c['raw_sha256'] != s['raw_sha256']:
-                  changed_retained.append({'id':s['id'],'baseline':s['raw_sha256'],'candidate':c and c['raw_sha256']})
+                  changed_retained.append({'id': s['id'], 'baseline': s['raw_sha256'], 'candidate': c and c['raw_sha256']})
           if changed_retained:
               raise SystemExit('Retained section regression: ' + json.dumps(changed_retained))
 
-          # Explicit WGA hard lock.
           wga = cand_by_id.get('stanley-update')
           if not wga:
               raise SystemExit('stanley-update missing')
@@ -127,7 +129,6 @@ jobs:
           if len(wga['links']) != 17:
               raise SystemExit(f'WGA link count changed: {len(wga["links"])}')
 
-          # Copy every v13 asset byte-for-byte and prove hashes match.
           src_files = sorted(p for p in SRC_ASSETS.rglob('*') if p.is_file())
           if len(src_files) != EXPECTED_ASSET_COUNT:
               raise SystemExit(f'Expected {EXPECTED_ASSET_COUNT} source assets, got {len(src_files)}')
@@ -136,13 +137,13 @@ jobs:
               rel = p.relative_to(SRC_ASSETS)
               q = OUT_ASSETS / rel
               q.parent.mkdir(parents=True, exist_ok=True)
-              shutil.copyfile(p,q)
+              shutil.copyfile(p, q)
               a = hashlib.sha256(p.read_bytes()).hexdigest()
               b = hashlib.sha256(q.read_bytes()).hexdigest()
-              if a != b: raise SystemExit(f'Asset hash mismatch: {rel}')
-              asset_checks.append({'path':str(rel),'sha256':a,'size':p.stat().st_size})
+              if a != b:
+                  raise SystemExit(f'Asset hash mismatch: {rel}')
+              asset_checks.append({'path': str(rel), 'sha256': a, 'size': p.stat().st_size})
 
-          # All local image references must resolve; all fragment links must resolve.
           missing_images = []
           for s in cand_sections:
               for img in s['images']:
@@ -166,54 +167,55 @@ jobs:
               'candidate_sections': len(cand_sections),
               'removed_sections': REMOVED,
               'retained_sections_byte_identical': True,
-              'stanley_wga': {'id':'stanley-update','raw_sha256':wga['raw_sha256'],'images':len(wga['images']),'links':len(wga['links']),'status':'PASS_BYTE_IDENTICAL'},
-              'assets': {'count':len(asset_checks),'all_byte_identical':True,'items':asset_checks},
+              'stanley_wga': {'id': 'stanley-update', 'raw_sha256': wga['raw_sha256'], 'images': len(wga['images']), 'links': len(wga['links']), 'status': 'PASS_BYTE_IDENTICAL'},
+              'assets': {'count': len(asset_checks), 'all_byte_identical': True, 'items': asset_checks},
               'broken_fragment_links': broken_fragments,
               'missing_images': missing_images,
               'minified': False,
           }
-          (OUT / 'preservation-report.json').write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding='utf-8')
-          md = f'''# Converging Waters v15 - Preservation-first deduplication report
+          (OUT / 'preservation-report.json').write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding='utf-8')
 
-## Result
-
-- Baseline: exact recovered v13 source
-- Baseline sections: **{len(base_sections)}**
-- Candidate sections: **{len(cand_sections)}**
-- Removed standalone sections: **{', '.join(REMOVED)}**
-- Retained sections byte-identical: **PASS**
-- Assets preserved byte-for-byte: **PASS ({len(asset_checks)}/{len(asset_checks)})**
-- Broken fragment links: **0**
-- Missing local image assets: **0**
-- HTML minification: **NO**
-
-## Hard preservation lock - Stanley / WGA
-
-The entire `stanley-update` section is copied from v13 without any byte-level change.
-
-- Raw section SHA-256: `{wga['raw_sha256']}`
-- Images inside section: **{len(wga['images'])}**
-- Links inside section: **{len(wga['links'])}**
-- Result: **PASS_BYTE_IDENTICAL**
-
-This preserves the full apparatus/reference area: sample + sequence; context + verify; learn + steward; portable field science; Sacred Valley possibility; design principle; ecosystem atlas/metagenome patterns; small field computers; sensor + metadata nodes; citizen science bioacoustics; autonomous field systems; portable sequencing in context; WGA public/data/academy/storytelling links; technical-next-step sequence; and clarification band.
-
-## Why only three sections were removed
-
-This recovery deliberately uses a much stricter interpretation of deduplication than the rejected v14 candidate. No substantive deep-dive section is consolidated or rewritten.
-
-1. `agenda` - a second meta reading/agenda layer after `current-session`; removing it does not remove the actual current-session agenda or any technical/project section.
-2. `open-decisions` - a short summary of unknowns already represented in the more detailed `validation`, `first-outcome`, `current-decision`, governance/data/territorial sections.
-3. `decision` - a second closing decision block after the richer `current-decision`; the richer current decision remains unchanged.
-
-Everything else remains in the same order and with identical HTML bytes, including `changed-since`, `where-now`, `shared-direction`, `collaboration-layer`, `emerged-since-call`, `stanley-update`, `three-paths`, Willkamayu, citizen science, purpose/MRV visuals, basin/system, convergence, Chelsea, Amazonas Sagrada, Patrick technical track, finance, allies, governance, guardians, tourism, legal, precedents, safeguards, budget, upside, roadmap, validation, current decision, open fronts and sources.
-
-## Hashes
-
-- Baseline HTML SHA-256: `{report['baseline_html_sha256']}`
-- Candidate HTML SHA-256: `{report['candidate_html_sha256']}`
-'''
-          (OUT / 'PRESERVATION_REPORT.md').write_text(md,encoding='utf-8')
+          md = []
+          md.append('# Converging Waters v15 - Preservation-first deduplication report')
+          md.append('')
+          md.append('## Result')
+          md.append('')
+          md.append('- Baseline: exact recovered v13 source')
+          md.append(f'- Baseline sections: **{len(base_sections)}**')
+          md.append(f'- Candidate sections: **{len(cand_sections)}**')
+          md.append(f'- Removed standalone sections: **{", ".join(REMOVED)}**')
+          md.append('- Retained sections byte-identical: **PASS**')
+          md.append(f'- Assets preserved byte-for-byte: **PASS ({len(asset_checks)}/{len(asset_checks)})**')
+          md.append('- Broken fragment links: **0**')
+          md.append('- Missing local image assets: **0**')
+          md.append('- HTML minification: **NO**')
+          md.append('')
+          md.append('## Hard preservation lock - Stanley / WGA')
+          md.append('')
+          md.append('The entire `stanley-update` section is copied from v13 without any byte-level change.')
+          md.append('')
+          md.append(f'- Raw section SHA-256: `{wga["raw_sha256"]}`')
+          md.append(f'- Images inside section: **{len(wga["images"])}**')
+          md.append(f'- Links inside section: **{len(wga["links"])}**')
+          md.append('- Result: **PASS_BYTE_IDENTICAL**')
+          md.append('')
+          md.append('This preserves the full apparatus/reference area: sample + sequence; context + verify; learn + steward; portable field science; Sacred Valley possibility; design principle; ecosystem atlas/metagenome patterns; small field computers; sensor + metadata nodes; citizen science bioacoustics; autonomous field systems; portable sequencing in context; WGA public/data/academy/storytelling links; technical-next-step sequence; and clarification band.')
+          md.append('')
+          md.append('## Why only three sections were removed')
+          md.append('')
+          md.append('This recovery deliberately uses a much stricter interpretation of deduplication than the rejected v14 candidate. No substantive deep-dive section is consolidated or rewritten.')
+          md.append('')
+          md.append('1. `agenda` - a second meta reading/agenda layer after `current-session`; removing it does not remove the actual current-session agenda or any technical/project section.')
+          md.append('2. `open-decisions` - a short summary of unknowns already represented in the more detailed `validation`, `first-outcome`, `current-decision`, governance/data/territorial sections.')
+          md.append('3. `decision` - a second closing decision block after the richer `current-decision`; the richer current decision remains unchanged.')
+          md.append('')
+          md.append('Everything else remains in the same order and with identical HTML bytes, including `changed-since`, `where-now`, `shared-direction`, `collaboration-layer`, `emerged-since-call`, `stanley-update`, `three-paths`, Willkamayu, citizen science, purpose/MRV visuals, basin/system, convergence, Chelsea, Amazonas Sagrada, Patrick technical track, finance, allies, governance, guardians, tourism, legal, precedents, safeguards, budget, upside, roadmap, validation, current decision, open fronts and sources.')
+          md.append('')
+          md.append('## Hashes')
+          md.append('')
+          md.append(f'- Baseline HTML SHA-256: `{report["baseline_html_sha256"]}`')
+          md.append(f'- Candidate HTML SHA-256: `{report["candidate_html_sha256"]}`')
+          (OUT / 'PRESERVATION_REPORT.md').write_text('\n'.join(md) + '\n', encoding='utf-8')
           PY
 
       - name: Browser smoke test with exact assets
@@ -235,8 +237,9 @@ Everything else remains in the same order and with identical HTML bytes, includi
           grep -q 'Sensor + metadata nodes' /tmp/v15-dom.html
           grep -q 'Autonomous field systems' /tmp/v15-dom.html
           grep -q 'Current proposed decision' /tmp/v15-dom.html
-          if grep -q 'What remains open' /tmp/v15-dom.html; then
-            echo 'Removed open-decisions section still rendered' >&2; exit 1
+          if grep -q '08 · What remains open' /tmp/v15-dom.html; then
+            echo 'Removed open-decisions section still rendered' >&2
+            exit 1
           fi
 
       - name: Commit candidate and validation evidence to review branch
