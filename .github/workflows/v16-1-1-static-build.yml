@@ -22,7 +22,7 @@ jobs:
           set -euo pipefail
           python3 - <<'PY'
           from pathlib import Path
-          import hashlib, io, re, shutil, urllib.request, zipfile
+          import hashlib, io, re, urllib.request, zipfile
 
           ZIP_URL='https://raw.githubusercontent.com/FelipeAcha/converging-waters/main/converging-waters-repository-ready.zip'
           EXPECTED_ZIP_SHA256='cf0a0e2f78ccf0ca370735c285cb1cbe19515c44bffabbb87424a0cda7efafb1'
@@ -35,16 +35,13 @@ jobs:
           OUT_ASSETS.mkdir(parents=True, exist_ok=True)
 
           data=urllib.request.urlopen(ZIP_URL).read()
-          if hashlib.sha256(data).hexdigest()!=EXPECTED_ZIP_SHA256:
-              raise SystemExit('v13 ZIP hash mismatch')
+          if hashlib.sha256(data).hexdigest()!=EXPECTED_ZIP_SHA256: raise SystemExit('v13 ZIP hash mismatch')
           z=zipfile.ZipFile(io.BytesIO(data))
           html=z.read(HTML_PATH).decode('utf-8')
-          if hashlib.sha256(html.encode()).hexdigest()!=EXPECTED_HTML_SHA256:
-              raise SystemExit('v13 HTML hash mismatch')
+          if hashlib.sha256(html.encode()).hexdigest()!=EXPECTED_HTML_SHA256: raise SystemExit('v13 HTML hash mismatch')
 
           href_re=re.compile(r'href=["\'](https?://[^"\']+)["\']')
           hrefs_before=href_re.findall(html)
-
           marker='<figure class="visual-reference" id="purpose-visual-reference">'
           start=html.find(marker)
           if start<0: raise SystemExit('principal infographic not found')
@@ -55,29 +52,23 @@ jobs:
           html=html[:start]+html[end:]
 
           visual='<div class="visual-shell">'
-          if html.count(visual)!=1:
-              raise SystemExit('expected exactly one native visual-shell')
+          if html.count(visual)!=1: raise SystemExit('expected exactly one native visual-shell')
           html=html.replace(visual,'<div class="visual-shell" hidden aria-hidden="true">',1)
 
-          hero='<section class="hero">'
-          hs=html.find(hero)
+          hs=html.find('<section class="hero">')
           if hs<0: raise SystemExit('hero not found')
           he=html.find('</section>', hs)
           if he<0: raise SystemExit('hero end not found')
           he += len('</section>')
-          insertion='\n<div class="container" id="principal-infographic">'+infographic+'</div>'
-          html=html[:he]+insertion+html[he:]
+          html=html[:he]+'\n<div class="container" id="principal-infographic">'+infographic+'</div>'+html[he:]
 
           hrefs_after=href_re.findall(html)
-          if hrefs_after!=hrefs_before:
-              raise SystemExit(f'external href preservation failed: before={len(hrefs_before)} after={len(hrefs_after)}')
+          if hrefs_after!=hrefs_before: raise SystemExit(f'external href preservation failed: before={len(hrefs_before)} after={len(hrefs_after)}')
           required=['id="stanley-update"','Concrete examples already on the table','Small field computers','Sensor + metadata nodes','Autonomous field systems']
           for x in required:
               if x not in html: raise SystemExit(f'missing protected WGA marker: {x}')
-          if html.count('id="purpose-visual-reference"')!=1:
-              raise SystemExit('principal infographic count is not 1')
-          if html.count('class="visual-shell" hidden aria-hidden="true"')!=1:
-              raise SystemExit('native duplicate visual not hidden exactly once')
+          if html.count('id="purpose-visual-reference"')!=1: raise SystemExit('principal infographic count is not 1')
+          if html.count('class="visual-shell" hidden aria-hidden="true"')!=1: raise SystemExit('native duplicate visual not hidden exactly once')
 
           (OUT/'index.html').write_text(html, encoding='utf-8')
           copied=0
@@ -86,18 +77,15 @@ jobs:
                   rel=name[len(ASSET_PREFIX):]
                   target=OUT_ASSETS/rel
                   target.parent.mkdir(parents=True, exist_ok=True)
-                  target.write_bytes(z.read(name))
-                  copied+=1
-          if copied!=16:
-              raise SystemExit(f'expected 16 v13 assets, copied {copied}')
-
+                  target.write_bytes(z.read(name)); copied+=1
+          if copied!=16: raise SystemExit(f'expected 16 v13 assets, copied {copied}')
           print('PASS static v16.1.1 built from exact v13')
           print(f'PASS external hrefs preserved: {len(hrefs_after)}')
           print('PASS Stanley/WGA protected markers preserved')
           print('PASS principal infographic count: 1')
           print('PASS v13 assets copied: 16')
           PY
-      - name: Commit static candidate
+      - name: Commit static candidate if needed
         shell: bash
         run: |
           set -euo pipefail
@@ -107,6 +95,29 @@ jobs:
           if git diff --cached --quiet; then
             echo 'No candidate changes to commit'
           else
-            git commit -m 'Add static Converging Waters v16.1.1 review candidate'
+            git commit -m 'Refresh static Converging Waters v16.1.1 review candidate'
             git push origin HEAD:main
           fi
+      - name: Verify public static candidate is directly viewable
+        shell: bash
+        run: |
+          set -euo pipefail
+          URL='https://felipeacha.github.io/converging-waters/candidates/v16.1.1/'
+          code=000
+          for attempt in $(seq 1 24); do
+            code=$(curl -L --silent --show-error --output /tmp/v1611.html --write-out '%{http_code}' "$URL" || true)
+            if [ "$code" = 200 ] && grep -q '<title>Converging Waters | Integrated Working Synthesis</title>' /tmp/v1611.html; then break; fi
+            sleep 5
+          done
+          test "$code" = 200
+          grep -q 'id="principal-infographic"' /tmp/v1611.html
+          grep -q 'id="stanley-update"' /tmp/v1611.html
+          grep -q 'Concrete examples already on the table' /tmp/v1611.html
+          grep -q 'Small field computers' /tmp/v1611.html
+          if grep -q 'Loading Converging Waters v16.1' /tmp/v1611.html; then echo 'Dynamic loader still served' >&2; exit 1; fi
+          chrome=$(command -v google-chrome || command -v chromium || command -v chromium-browser || true)
+          test -n "$chrome"
+          "$chrome" --headless=new --no-sandbox --disable-gpu --dump-dom "$URL" > /tmp/v1611-dom.html
+          grep -q 'id="principal-infographic"' /tmp/v1611-dom.html
+          grep -q 'Concrete examples already on the table' /tmp/v1611-dom.html
+          echo 'PASS public v16.1.1 static HTML directly viewable'
