@@ -1,0 +1,112 @@
+name: Build static v16.1.1 review candidate
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/v16-1-1-static-build.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Build static candidate from exact v13 package
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib, io, re, shutil, urllib.request, zipfile
+
+          ZIP_URL='https://raw.githubusercontent.com/FelipeAcha/converging-waters/main/converging-waters-repository-ready.zip'
+          EXPECTED_ZIP_SHA256='cf0a0e2f78ccf0ca370735c285cb1cbe19515c44bffabbb87424a0cda7efafb1'
+          EXPECTED_HTML_SHA256='fcb857aa61635a800f2faef512e9a14c3d53445ec996a03603ffa939dbd4ca11'
+          HTML_PATH='docs/releases/v13/index.html'
+          ASSET_PREFIX='docs/releases/v13/assets/'
+          OUT=Path('docs/candidates/v16.1.1')
+          OUT_ASSETS=OUT/'assets'
+          OUT.mkdir(parents=True, exist_ok=True)
+          OUT_ASSETS.mkdir(parents=True, exist_ok=True)
+
+          data=urllib.request.urlopen(ZIP_URL).read()
+          if hashlib.sha256(data).hexdigest()!=EXPECTED_ZIP_SHA256:
+              raise SystemExit('v13 ZIP hash mismatch')
+          z=zipfile.ZipFile(io.BytesIO(data))
+          html=z.read(HTML_PATH).decode('utf-8')
+          if hashlib.sha256(html.encode()).hexdigest()!=EXPECTED_HTML_SHA256:
+              raise SystemExit('v13 HTML hash mismatch')
+
+          href_re=re.compile(r'href=["\'](https?://[^"\']+)["\']')
+          hrefs_before=href_re.findall(html)
+
+          marker='<figure class="visual-reference" id="purpose-visual-reference">'
+          start=html.find(marker)
+          if start<0: raise SystemExit('principal infographic not found')
+          end=html.find('</figure>', start)
+          if end<0: raise SystemExit('principal infographic end not found')
+          end += len('</figure>')
+          infographic=html[start:end]
+          html=html[:start]+html[end:]
+
+          visual='<div class="visual-shell">'
+          if html.count(visual)!=1:
+              raise SystemExit('expected exactly one native visual-shell')
+          html=html.replace(visual,'<div class="visual-shell" hidden aria-hidden="true">',1)
+
+          hero='<section class="hero">'
+          hs=html.find(hero)
+          if hs<0: raise SystemExit('hero not found')
+          he=html.find('</section>', hs)
+          if he<0: raise SystemExit('hero end not found')
+          he += len('</section>')
+          insertion='\n<div class="container" id="principal-infographic">'+infographic+'</div>'
+          html=html[:he]+insertion+html[he:]
+
+          hrefs_after=href_re.findall(html)
+          if hrefs_after!=hrefs_before:
+              raise SystemExit(f'external href preservation failed: before={len(hrefs_before)} after={len(hrefs_after)}')
+          required=['id="stanley-update"','Concrete examples already on the table','Small field computers','Sensor + metadata nodes','Autonomous field systems']
+          for x in required:
+              if x not in html: raise SystemExit(f'missing protected WGA marker: {x}')
+          if html.count('id="purpose-visual-reference"')!=1:
+              raise SystemExit('principal infographic count is not 1')
+          if html.count('class="visual-shell" hidden aria-hidden="true"')!=1:
+              raise SystemExit('native duplicate visual not hidden exactly once')
+
+          (OUT/'index.html').write_text(html, encoding='utf-8')
+          copied=0
+          for name in z.namelist():
+              if name.startswith(ASSET_PREFIX) and not name.endswith('/'):
+                  rel=name[len(ASSET_PREFIX):]
+                  target=OUT_ASSETS/rel
+                  target.parent.mkdir(parents=True, exist_ok=True)
+                  target.write_bytes(z.read(name))
+                  copied+=1
+          if copied!=16:
+              raise SystemExit(f'expected 16 v13 assets, copied {copied}')
+
+          print('PASS static v16.1.1 built from exact v13')
+          print(f'PASS external hrefs preserved: {len(hrefs_after)}')
+          print('PASS Stanley/WGA protected markers preserved')
+          print('PASS principal infographic count: 1')
+          print('PASS v13 assets copied: 16')
+          PY
+      - name: Commit static candidate
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add docs/candidates/v16.1.1
+          if git diff --cached --quiet; then
+            echo 'No candidate changes to commit'
+          else
+            git commit -m 'Add static Converging Waters v16.1.1 review candidate'
+            git push origin HEAD:main
+          fi
