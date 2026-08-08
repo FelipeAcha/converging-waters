@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" role="img" aria-label="Abstract Whanganui river illustration">
+  <rect width="1200" height="700" fill="#eef3ef"/>
+  <path d="M0 430 C140 350 245 390 370 300 C530 185 680 260 830 160 C965 70 1060 88 1200 25 V700 H0 Z" fill="#1c3c31" opacity="0.92"/>
+  <path d="M-20 620 C160 510 250 610 430 505 C590 410 715 475 875 345 C995 248 1080 250 1220 170" stroke="#2c7f83" stroke-width="110" fill="none" stroke-linecap="round"/>
+  <path d="M-20 620 C160 510 250 610 430 505 C590 410 715 475 875 345 C995 248 1080 250 1220 170" stroke="#f0d37f" stroke-width="7" fill="none" stroke-linecap="round"/>
+  <text x="70" y="120" font-family="Georgia, serif" font-size="66" fill="#183425" font-weight="700">Whanganui</text>
+  <text x="72" y="168" font-family="Arial, sans-serif" font-size="26" fill="#385647">New Zealand · living whole</text>
+</svg>
