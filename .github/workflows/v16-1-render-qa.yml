@@ -1,0 +1,57 @@
+name: v16.1 rendered regression check
+
+on:
+  push:
+    branches:
+      - review/v16-1-render-qa
+    paths:
+      - '.github/workflows/v16-1-render-qa.yml'
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify rendered candidate against v13
+        shell: bash
+        run: |
+          set -euo pipefail
+          CHROME="$(command -v google-chrome || command -v chromium || command -v chromium-browser || true)"
+          if [ -z "$CHROME" ]; then
+            echo "Chrome/Chromium not available" >&2
+            exit 1
+          fi
+          "$CHROME" --headless=new --no-sandbox --disable-gpu --virtual-time-budget=12000 --dump-dom https://felipeacha.github.io/converging-waters/releases/v13/ > /tmp/v13-dom.html
+          "$CHROME" --headless=new --no-sandbox --disable-gpu --virtual-time-budget=12000 --dump-dom https://felipeacha.github.io/converging-waters/candidates/v16.1/ > /tmp/v161-dom.html
+          grep -q 'id="principal-infographic"' /tmp/v161-dom.html
+          grep -q 'id="purpose-visual-reference"' /tmp/v161-dom.html
+          grep -q 'class="visual-shell" hidden' /tmp/v161-dom.html
+          grep -q 'id="stanley-update"' /tmp/v161-dom.html
+          grep -q 'Concrete examples already on the table' /tmp/v161-dom.html
+          grep -q 'Small field computers' /tmp/v161-dom.html
+          grep -q 'Sensor + metadata nodes' /tmp/v161-dom.html
+          python3 - <<'PY'
+          from html.parser import HTMLParser
+          from pathlib import Path
+
+          class P(HTMLParser):
+              def __init__(self):
+                  super().__init__(); self.ext=[]; self.ids=[]
+              def handle_starttag(self, tag, attrs):
+                  d=dict(attrs)
+                  if 'id' in d: self.ids.append(d['id'])
+                  if tag=='a' and d.get('href','').startswith(('http://','https://')): self.ext.append(d['href'])
+
+          def parse(path):
+              p=P(); p.feed(Path(path).read_text(errors='ignore')); return p
+          b=parse('/tmp/v13-dom.html'); c=parse('/tmp/v161-dom.html')
+          if b.ext != c.ext:
+              raise SystemExit(f'external href list changed: v13={len(b.ext)} v16.1={len(c.ext)}')
+          pos={x:i for i,x in enumerate(c.ids)}
+          for key in ('principal-infographic','current-session','stanley-update'):
+              if key not in pos: raise SystemExit(f'missing id {key}')
+          if not pos['principal-infographic'] < pos['current-session']:
+              raise SystemExit('principal infographic is not above current-session')
+          print(f'PASS external hrefs unchanged: {len(c.ext)}')
+          print('PASS principal infographic is above current-session')
+          print('PASS Stanley/WGA markers visible')
+          PY
