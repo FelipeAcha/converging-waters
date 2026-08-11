@@ -121,3 +121,10 @@ jobs:
           grep -q 'id="principal-infographic"' /tmp/v1611-dom.html
           grep -q 'Concrete examples already on the table' /tmp/v1611-dom.html
           echo 'PASS public v16.1.1 static HTML directly viewable'
+      - name: Upload static candidate for ChatGPT visualizer transport
+        uses: actions/upload-artifact@v4
+        with:
+          name: cw-v16.1.1-static-candidate
+          path: docs/candidates/v16.1.1
+          if-no-files-found: error
+          retention-days: 7
