@@ -37,7 +37,7 @@ PASS
 
 ## ChatGPT review transport
 
-Zero-network delta Preview:
+Primary full-CSS zero-network delta Preview:
 - payload: 42,060 bytes
 - SHA-256: `8973a63ee2efc515b9457979fbeb9240dd1b88b394eb1888cffe78022c7e1529`
 - iframes: 0
@@ -45,11 +45,21 @@ Zero-network delta Preview:
 - automatic remote render resources: 0
 - the two HTTP(S) values in the slice are user-clicked anchor references only.
 
+Compact exact-section variant prepared for the in-chat code-block surface:
+- payload: 9,127 bytes
+- SHA-256: `10151ce9a1ae39f1315763bcbf8ea01939ef784d26d055746d7867cdf70a7f11`
+- `#system` raw HTML is byte-identical to the v16.5 candidate
+- `#system` raw SHA-256 remains `10678f303c7454de1bdf01e506ac45d75d7c5f1f0b32e0ac6c47075dbac64381`
+- compact transport changes CSS only; no semantic/content transformation
+- iframe count: 0; automatic remote render resources: 0.
+
 ## Rolling cumulative review transport
 
 Stable route: `https://felipeacha.github.io/converging-waters/candidates/progress/`
 
 The progress transport applies approved v16.2/v16.3/v16.4 transformations to exact v16.1.1 and inserts exact local-candidate v16.5 `#system` markup. Frontier: `#system`. Downstream unreviewed sections are hidden only in transport.
+
+At the time this gate record was updated, the v16.5 progress source had been committed and read back, but the repository deployment-diagnostics file still reflected the previous v16.4 Pages run. Therefore the stable route must not be described as freshly deployment-verified for v16.5 until Pages diagnostics advance.
 
 ## Evidence boundary
 
