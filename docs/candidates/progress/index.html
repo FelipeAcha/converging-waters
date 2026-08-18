@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Converging Waters — Rolling Progress Preview</title>
+<style>
+  html,body{margin:0;min-height:100%;background:#f5efe6;color:#13251d;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
+  .cw-progress-loading{min-height:100vh;display:grid;place-items:center;padding:30px;text-align:center}
+  .cw-progress-loading div{max-width:720px;background:#fffdf8;border:1px solid #e4dccf;border-radius:28px;padding:32px;box-shadow:0 18px 48px rgba(16,38,29,.12)}
+  .cw-progress-loading b{display:block;font-size:1.5rem;margin-bottom:8px}.cw-progress-loading span{color:#647368}
+</style>
+</head>
+<body>
+<div class="cw-progress-loading"><div><b>Converging Waters</b><span>Loading the rolling review preview…</span></div></div>
+<script>
+(async () => {
+  const SOURCE = '../v16.1.1/index.html';
+  const VERSION = 'v16.3 PROPOSED';
+  const FRONTIER_ID = 'thesis';
+  try {
+    const res = await fetch(SOURCE, {cache: 'no-store'});
+    if (!res.ok) throw new Error(`source HTTP ${res.status}`);
+    const source = await res.text();
+    const parsed = new DOMParser().parseFromString(source, 'text/html');
+
+    // v16.2 APPROVED: remove only the short WGA summary card.
+    const emerged = parsed.querySelector('#emerged-since-call');
+    if (!emerged) throw new Error('missing #emerged-since-call');
+    const wgaSummary = [...emerged.querySelectorAll('article.card')].find(card =>
+      card.querySelector('h3')?.textContent.trim() === "WGA's expanded field possibility"
+    );
+    if (!wgaSummary) throw new Error('v16.2 target card not found');
+    wgaSummary.remove();
+
+    // v16.3 PROPOSED: keep the territorial sequence only in #where-now.
+    const thesis = parsed.querySelector('#thesis');
+    if (!thesis) throw new Error('missing #thesis');
+    const duplicateSequence = thesis.querySelector('.sequence');
+    if (!duplicateSequence) throw new Error('v16.3 duplicate sequence not found');
+    duplicateSequence.remove();
+
+    // Review transport only: keep the full candidate DOM but hide downstream sections.
+    const mainSections = [...parsed.querySelectorAll('main > section')];
+    const frontierIndex = mainSections.findIndex(s => s.id === FRONTIER_ID);
+    if (frontierIndex < 0) throw new Error('review frontier not found');
+    mainSections.slice(frontierIndex + 1).forEach(s => s.hidden = true);
+    const footer = parsed.querySelector('footer');
+    if (footer) footer.hidden = true;
+
+    // Reuse the exact unchanged assets already published with v16.1.1.
+    parsed.querySelectorAll('[src^="assets/"]').forEach(el => {
+      el.setAttribute('src', '../v16.1.1/' + el.getAttribute('src'));
+    });
+    parsed.querySelectorAll('link[href^="assets/"]').forEach(el => {
+      el.setAttribute('href', '../v16.1.1/' + el.getAttribute('href'));
+    });
+
+    // Hide navigation links that point beyond the current review frontier.
+    parsed.querySelectorAll('.nav-links a[href^="#"]').forEach(a => {
+      const target = parsed.querySelector(a.getAttribute('href'));
+      if (!target || target.hidden) a.hidden = true;
+    });
+
+    const transportStyle = parsed.createElement('style');
+    transportStyle.id = 'cw-progress-transport-style';
+    transportStyle.textContent = `
+      #cw-progress-banner{position:sticky;top:0;z-index:9999;padding:10px 16px;background:#10261d;color:white;font:800 13px/1.35 Inter,system-ui,sans-serif;border-bottom:1px solid rgba(255,255,255,.16)}
+      #cw-progress-banner b{color:#efd488}
+      .header{top:38px!important}
+      #${FRONTIER_ID}::after{content:"Review frontier — sections below this point remain preserved in the candidate but are intentionally hidden until we work on them.";display:block;margin:30px auto 0;padding:14px 16px;max-width:900px;border:1px dashed #c9bda9;border-radius:16px;background:rgba(255,255,255,.55);color:#647368;font:700 13px/1.4 Inter,system-ui,sans-serif;letter-spacing:0}
+      [hidden]{display:none!important}
+    `;
+    parsed.head.appendChild(transportStyle);
+
+    const banner = parsed.createElement('div');
+    banner.id = 'cw-progress-banner';
+    banner.innerHTML = `<b>${VERSION} · cumulative progress preview</b> · approved v16.1.1 + v16.2, with v16.3 proposed. Downstream unreviewed sections are hidden only in this review transport.`;
+    parsed.body.insertBefore(banner, parsed.body.firstChild);
+
+    parsed.title = 'Converging Waters — ' + VERSION + ' Rolling Progress';
+
+    // Replace the current document with the transformed exact baseline-derived DOM.
+    document.head.innerHTML = parsed.head.innerHTML;
+    document.body.innerHTML = parsed.body.innerHTML;
+
+    // Transport assertions after mount.
+    const stanley = document.querySelector('#stanley-update');
+    if (!stanley) throw new Error('Stanley/WGA block missing after mount');
+    if (stanley.querySelectorAll('img').length !== 13) throw new Error('Stanley/WGA image count mismatch');
+    if (stanley.querySelectorAll('a').length !== 17) throw new Error('Stanley/WGA link count mismatch');
+    if (document.querySelectorAll('a[href^="http://"],a[href^="https://"]').length !== 46) throw new Error('external href count mismatch');
+    if (document.querySelectorAll('#emerged-since-call h3').length && [...document.querySelectorAll('#emerged-since-call h3')].some(h => h.textContent.trim() === "WGA's expanded field possibility")) throw new Error('v16.2 duplicate still visible');
+    if (document.querySelector('#thesis .sequence')) throw new Error('v16.3 duplicate sequence still present');
+    if (document.body.textContent.split('Listen → Measure → Train → Pilot → Mandate → File or legislate').length - 1 !== 1) throw new Error('territorial sequence count mismatch');
+  } catch (err) {
+    document.body.innerHTML = `<div class="cw-progress-loading"><div><b>Preview could not load</b><span>${String(err.message || err)}</span></div></div>`;
+  }
+})();
+</script>
+</body>
+</html>
