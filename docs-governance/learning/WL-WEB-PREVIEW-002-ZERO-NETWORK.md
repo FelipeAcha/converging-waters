@@ -1,6 +1,6 @@
 # WL-WEB-PREVIEW-002 — Zero-network ChatGPT Preview transport
 
-Status: IMPLEMENTED — BEHAVIOR TESTED LOCALLY / EXACT CHAT SURFACE PENDING USER CONFIRMATION
+Status: IMPLEMENTED — BEHAVIOR TESTED ON EXACT CHAT SURFACE
 Owner: Project production and governance workflow
 Recorded: 2026-08-18
 Coverage tier: TOOL_OR_VALIDATOR
@@ -49,6 +49,16 @@ For Converging Waters `v16.1.1` on 2026-08-18:
 
 Local real-browser regression was executed at desktop `1440x1100` and mobile `390x844`. In both runs the HTML generated **zero network requests**, the principal infographic existed exactly once, was visible and decoded, appeared after the hero and before `#current-session`, and produced no horizontal overflow. A separate visual inspection found the original WebP data-URI screenshot rendering correctly on desktop; mobile screenshot capture exposed a WebP rasterization anomaly in the headless screenshot path, which remains a transport-test caveat and is not treated as proof of user-surface failure.
 
+## Exact-surface behavior confirmation
+
+Felipe confirmed in the Converging Waters Project chat on 2026-08-18 that the compact zero-network HTML Preview rendered successfully in the native ChatGPT Preview surface without the persistent network-permission loop. This closes the exact-surface behavior gap for the zero-network transport pattern on this conversation surface.
+
+The approved transport rule for this workstream is therefore:
+
+`one delta -> compact zero-network HTML Preview slice -> exact-surface user review -> approval -> next subversion`
+
+The networked iframe route remains prohibited unless explicitly revalidated in a future environment.
+
 ## Regression requirement
 
 A future ChatGPT website review must fail closed rather than request user approval when any of the following is true:
@@ -62,4 +72,4 @@ A future ChatGPT website review must fail closed rather than request user approv
 
 ## Current gate
 
-`v16.1.1` remains the infographic-only candidate. No later content delta may start until Felipe can review that delta either through the zero-network slice in ChatGPT or, if that fails, through the verified public GitHub candidate route. `v13` remains the authoritative untouched baseline until a later explicit promotion decision.
+`v16.2` was approved by Felipe on 2026-08-18. The incremental deduplication workstream continues from that approved state under issue #5. `v13` remains the authoritative untouched baseline until a later explicit promotion decision.
