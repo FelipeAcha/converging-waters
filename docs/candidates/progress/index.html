@@ -16,37 +16,99 @@
 <script>
 (async () => {
   const SOURCE = '../v16.1.1/index.html';
-  const VERSION = 'v16.4 PROPOSED';
-  const FRONTIER_ID = 'citizen-science';
+  const VERSION = 'v16.5 PROPOSED';
+  const FRONTIER_ID = 'system';
   try {
     const res = await fetch(SOURCE, {cache: 'no-store'});
     if (!res.ok) throw new Error(`source HTTP ${res.status}`);
     const source = await res.text();
     const parsed = new DOMParser().parseFromString(source, 'text/html');
 
-    // v16.2 APPROVED: remove only the short WGA summary card.
     const emerged = parsed.querySelector('#emerged-since-call');
     if (!emerged) throw new Error('missing #emerged-since-call');
-    const wgaSummary = [...emerged.querySelectorAll('article.card')].find(card =>
-      card.querySelector('h3')?.textContent.trim() === "WGA's expanded field possibility"
-    );
+    const wgaSummary = [...emerged.querySelectorAll('article.card')].find(card => card.querySelector('h3')?.textContent.trim() === "WGA's expanded field possibility");
     if (!wgaSummary) throw new Error('v16.2 target card not found');
     wgaSummary.remove();
 
-    // v16.3 APPROVED: keep the territorial sequence only in #where-now.
     const thesis = parsed.querySelector('#thesis');
     if (!thesis) throw new Error('missing #thesis');
     const duplicateSequence = thesis.querySelector('.sequence');
     if (!duplicateSequence) throw new Error('v16.3 duplicate sequence not found');
     duplicateSequence.remove();
 
-    // v16.4 PROPOSED: suppress the remaining empty/duplicate purpose-MRV shell.
     const purposeMrv = parsed.querySelector('#purpose-mrv');
     if (!purposeMrv) throw new Error('missing #purpose-mrv');
     purposeMrv.hidden = true;
     purposeMrv.setAttribute('aria-hidden', 'true');
 
-    // Review transport only: hide content below the current reviewed frontier.
+    const system = parsed.querySelector('#system');
+    if (!system) throw new Error('missing #system');
+    const systemTemplate = parsed.createElement('template');
+    systemTemplate.innerHTML = `<section class="section" id="system">
+<div class="container">
+<div class="section-head">
+<div>
+<div class="kicker">07 · River system + candidate monitoring scope</div>
+<h2>One river system. A bounded first corridor. Wider downstream consequences.</h2>
+</div>
+<p>Monitoring may extend beyond the initial working area when it helps distinguish upstream sources, tributary pressure and downstream effects.</p>
+</div>
+<div class="note wide-note">
+<b>Working naming convention</b>
+<p><b>Willkamayu</b> is the Inka / Quechua name associated with the “sacred river.” Current institutional sources use <b>Vilcanota</b> and <b>Urubamba</b> for the same main river system across different stretches. This page therefore uses <b>Willkamayu / Vilcanota–Urubamba</b> when referring to the connected main stem as a whole.</p>
+</div>
+<div class="card-grid two" style="margin-top:18px">
+<article class="card mint">
+<div class="micro-title">Main stem · upstream to initial working corridor</div>
+<h3>Willkamayu / Vilcanota–Urubamba</h3>
+<div style="display:grid;gap:10px;margin-top:14px">
+<div class="river-node"><b>Headwaters / upper Vilcanota</b><span>La Raya and upper basin. Useful as upstream context; not proposed here as the initial intervention corridor.</span></div>
+<div class="river-arrow">flows downstream</div>
+<div class="river-node"><b>Huambutío confluence</b><span>The Huatanay joins the Vilcanota here, upstream of Pisac. This is a strategic attribution point for separating main-stem conditions from Cusco / Huatanay influence.</span></div>
+<div class="river-arrow">continues into</div>
+<div class="river-node" style="border-color:#b8d8c4;background:#f3fbf5"><b>Candidate initial working / benefit corridor</b><span><b>Pisac → Calca → Yucay → Urubamba → Ollantaytambo.</b> Proposed as a bounded first geography to validate with the team and territorial actors — not yet a final mandate.</span></div>
+</div>
+</article>
+<article class="card blue">
+<div class="micro-title">Tributary branch · source attribution + possible phase 2</div>
+<h3>Cusco → Huatanay → Huambutío</h3>
+<div style="display:grid;gap:10px;margin-top:14px">
+<div class="river-node"><b>Cusco urban basin</b><span>Urban drainage, wastewater, tributaries and the San Jerónimo treatment interface shape the Huatanay signal.</span></div>
+<div class="river-arrow">carried by Huatanay</div>
+<div class="river-node"><b>Huatanay before confluence</b><span>A candidate monitoring point to characterize what the tributary contributes before mixing with the Willkamayu / Vilcanota.</span></div>
+<div class="river-arrow">joins at Huambutío</div>
+<div class="river-node" style="border-color:#bfd2e3;background:#f3f8fc"><b>Phase 2 possibility · Cusco citizen science</b><span>Expand monitoring and participation upstream along the Huatanay into Cusco if the team confirms that source attribution, public learning and urban engagement justify the added scope.</span></div>
+</div>
+</article>
+</div>
+<div class="flow" style="margin-top:18px">
+<div class="flow-title">Candidate measurement logic · team decision required</div>
+<div class="flow-row four">
+<div class="flow-box"><b>1 · Upstream reference</b><span>Willkamayu / Vilcanota before receiving the Huatanay.</span></div>
+<div class="flow-box"><b>2 · Tributary signal</b><span>Huatanay immediately before its confluence.</span></div>
+<div class="flow-box"><b>3 · Mixed downstream signal</b><span>Main stem just below Huambutío to quantify the combined effect.</span></div>
+<div class="flow-box"><b>4 · Corridor baseline</b><span>Representative sites from Pisac through Ollantaytambo to track conditions and change in the initial working area.</span></div>
+</div>
+</div>
+<div class="callout slim-callout" style="margin-top:18px;background:linear-gradient(135deg,#243b33,#355d52)">
+<div class="micro-title" style="color:#efd488">Hydrological continuity · implication, not project footprint</div>
+<h3>Lower Urubamba → Atalaya → Ucayali → Amazon → Atlantic</h3>
+<p>The main stem continues downstream as the Urubamba. At Atalaya, the Urubamba meets the Tambo and forms the Ucayali; the Ucayali later meets the Marañón to form the Amazon, which reaches the Atlantic. Showing this continuity explains why local river recovery has wider downstream implications without implying that Converging Waters will monitor, govern or intervene across that entire system.</p>
+</div>
+<div class="card-grid three" style="margin-top:18px">
+<article class="card"><h3>Primary working scope</h3><p>Candidate first corridor: Pisac–Ollantaytambo. Final boundaries, beneficiaries and sites remain a team and territorial decision.</p></article>
+<article class="card"><h3>Measurement can extend upstream</h3><p>Reference and attribution stations can sit outside the main benefit corridor when they are necessary to understand where impacts originate.</p></article>
+<article class="card"><h3>No scope inflation</h3><p>Downstream connectivity is part of the ecological logic, not a claim that the project covers the full Urubamba–Ucayali–Amazon system.</p></article>
+</div>
+<div class="card-grid three source-cards">
+<article class="card"><h3>Known link</h3><p>San Jerónimo PTAR treats Cusco wastewater before discharge to the Huatanay.</p><a href="https://www.gob.pe/institucion/sunass/noticias/1205134-sunass-fiscaliza-planta-de-tratamiento-de-aguas-residuales-en-cusco-para-verificar-calidad-del-vertimiento-al-rio-huatanay" rel="noopener noreferrer" target="_blank">SUNASS inspection note</a></article>
+<article class="card"><h3>Capacity pressure</h3><p>ProInversión reported expansion needs and an estimated US$46M project.</p><a href="https://www.gob.pe/institucion/proinversion/noticias/820703-se-ampliara-y-mejorara-la-ptar-san-jeronimo-de-cusco-con-una-inversion-estimada-de-us-46-millones" rel="noopener noreferrer" target="_blank">ProInversión source</a></article>
+<article class="card"><h3>Learning question</h3><p>What is the real downstream impact on the Vilcanota?</p><a href="#validation">Add to validation backlog</a></article>
+</div>
+</div>
+</section>`;
+    system.replaceWith(systemTemplate.content.firstElementChild);
+
     const mainSections = [...parsed.querySelectorAll('main > section')];
     const frontierIndex = mainSections.findIndex(s => s.id === FRONTIER_ID);
     if (frontierIndex < 0) throw new Error('review frontier not found');
@@ -54,50 +116,37 @@
     const footer = parsed.querySelector('footer');
     if (footer) footer.hidden = true;
 
-    // Reuse exact unchanged assets already published with v16.1.1.
-    parsed.querySelectorAll('[src^="assets/"]').forEach(el => {
-      el.setAttribute('src', '../v16.1.1/' + el.getAttribute('src'));
-    });
-    parsed.querySelectorAll('link[href^="assets/"]').forEach(el => {
-      el.setAttribute('href', '../v16.1.1/' + el.getAttribute('href'));
-    });
-
-    parsed.querySelectorAll('.nav-links a[href^="#"]').forEach(a => {
-      const target = parsed.querySelector(a.getAttribute('href'));
-      if (!target || target.hidden) a.hidden = true;
-    });
+    parsed.querySelectorAll('[src^="assets/"]').forEach(el => el.setAttribute('src', '../v16.1.1/' + el.getAttribute('src')));
+    parsed.querySelectorAll('link[href^="assets/"]').forEach(el => el.setAttribute('href', '../v16.1.1/' + el.getAttribute('href')));
+    parsed.querySelectorAll('.nav-links a[href^="#"]').forEach(a => { const target = parsed.querySelector(a.getAttribute('href')); if (!target || target.hidden) a.hidden = true; });
 
     const transportStyle = parsed.createElement('style');
     transportStyle.id = 'cw-progress-transport-style';
-    transportStyle.textContent = `
-      #cw-progress-banner{position:sticky;top:0;z-index:9999;padding:10px 16px;background:#10261d;color:white;font:800 13px/1.35 Inter,system-ui,sans-serif;border-bottom:1px solid rgba(255,255,255,.16)}
-      #cw-progress-banner b{color:#efd488}
-      .header{top:38px!important}
-      #${FRONTIER_ID}::after{content:"Review frontier — sections below this point remain preserved in the candidate but are intentionally hidden until we work on them.";display:block;margin:30px auto 0;padding:14px 16px;max-width:900px;border:1px dashed #c9bda9;border-radius:16px;background:rgba(255,255,255,.55);color:#647368;font:700 13px/1.4 Inter,system-ui,sans-serif;letter-spacing:0}
-      [hidden]{display:none!important}
-    `;
+    transportStyle.textContent = `#cw-progress-banner{position:sticky;top:0;z-index:9999;padding:10px 16px;background:#10261d;color:white;font:800 13px/1.35 Inter,system-ui,sans-serif;border-bottom:1px solid rgba(255,255,255,.16)}#cw-progress-banner b{color:#efd488}.header{top:38px!important}#${FRONTIER_ID}::after{content:"Review frontier — sections below this point remain preserved in the candidate but are intentionally hidden until we work on them.";display:block;margin:30px auto 0;padding:14px 16px;max-width:900px;border:1px dashed #c9bda9;border-radius:16px;background:rgba(255,255,255,.55);color:#647368;font:700 13px/1.4 Inter,system-ui,sans-serif;letter-spacing:0}[hidden]{display:none!important}`;
     parsed.head.appendChild(transportStyle);
 
     const banner = parsed.createElement('div');
     banner.id = 'cw-progress-banner';
-    banner.innerHTML = `<b>${VERSION} · cumulative progress preview</b> · approved v16.1.1 + v16.2 + v16.3, with v16.4 proposed. Downstream unreviewed sections are hidden only in this review transport.`;
+    banner.innerHTML = `<b>${VERSION} · cumulative progress preview</b> · approved v16.1.1 + v16.2 + v16.3 + v16.4, with v16.5 proposed. Downstream unreviewed sections are hidden only in this review transport.`;
     parsed.body.insertBefore(banner, parsed.body.firstChild);
     parsed.title = 'Converging Waters — ' + VERSION + ' Rolling Progress';
 
     document.head.innerHTML = parsed.head.innerHTML;
     document.body.innerHTML = parsed.body.innerHTML;
 
-    // Transport assertions after mount.
     const stanley = document.querySelector('#stanley-update');
-    if (!stanley) throw new Error('Stanley/WGA block missing after mount');
-    if (stanley.querySelectorAll('img').length !== 13) throw new Error('Stanley/WGA image count mismatch');
-    if (stanley.querySelectorAll('a').length !== 17) throw new Error('Stanley/WGA link count mismatch');
+    if (!stanley || stanley.querySelectorAll('img').length !== 13 || stanley.querySelectorAll('a').length !== 17) throw new Error('Stanley/WGA preservation mismatch');
     if (document.querySelectorAll('a[href^="http://"],a[href^="https://"]').length !== 46) throw new Error('external href count mismatch');
     if ([...document.querySelectorAll('#emerged-since-call h3')].some(h => h.textContent.trim() === "WGA's expanded field possibility")) throw new Error('v16.2 duplicate still visible');
     if (document.querySelector('#thesis .sequence')) throw new Error('v16.3 duplicate sequence still present');
     if (document.body.textContent.split('Listen → Measure → Train → Pilot → Mandate → File or legislate').length - 1 !== 1) throw new Error('territorial sequence count mismatch');
     const mountedPurpose = document.querySelector('#purpose-mrv');
     if (!mountedPurpose || !mountedPurpose.hidden || mountedPurpose.getAttribute('aria-hidden') !== 'true') throw new Error('v16.4 purpose-MRV shell not hidden');
+    const mountedSystem = document.querySelector('#system');
+    if (!mountedSystem || !mountedSystem.textContent.includes('Candidate measurement logic · team decision required')) throw new Error('v16.5 monitoring logic missing');
+    if (!mountedSystem.textContent.includes('Pisac → Calca → Yucay → Urubamba → Ollantaytambo')) throw new Error('v16.5 corridor order mismatch');
+    if (!mountedSystem.textContent.includes('Lower Urubamba → Atalaya → Ucayali → Amazon → Atlantic')) throw new Error('v16.5 downstream continuity missing');
+    if (mountedSystem.textContent.includes('Pisac, Calca, Urubamba, Yucay, Ollantaytambo')) throw new Error('old Sacred Valley order still present');
   } catch (err) {
     document.body.innerHTML = `<div class="cw-progress-loading"><div><b>Preview could not load</b><span>${String(err.message || err)}</span></div></div>`;
   }
