@@ -16,8 +16,8 @@
 <script>
 (async () => {
   const SOURCE = '../v16.1.1/index.html';
-  const VERSION = 'v16.3 PROPOSED';
-  const FRONTIER_ID = 'thesis';
+  const VERSION = 'v16.4 PROPOSED';
+  const FRONTIER_ID = 'citizen-science';
   try {
     const res = await fetch(SOURCE, {cache: 'no-store'});
     if (!res.ok) throw new Error(`source HTTP ${res.status}`);
@@ -33,14 +33,20 @@
     if (!wgaSummary) throw new Error('v16.2 target card not found');
     wgaSummary.remove();
 
-    // v16.3 PROPOSED: keep the territorial sequence only in #where-now.
+    // v16.3 APPROVED: keep the territorial sequence only in #where-now.
     const thesis = parsed.querySelector('#thesis');
     if (!thesis) throw new Error('missing #thesis');
     const duplicateSequence = thesis.querySelector('.sequence');
     if (!duplicateSequence) throw new Error('v16.3 duplicate sequence not found');
     duplicateSequence.remove();
 
-    // Review transport only: keep the full candidate DOM but hide downstream sections.
+    // v16.4 PROPOSED: suppress the remaining empty/duplicate purpose-MRV shell.
+    const purposeMrv = parsed.querySelector('#purpose-mrv');
+    if (!purposeMrv) throw new Error('missing #purpose-mrv');
+    purposeMrv.hidden = true;
+    purposeMrv.setAttribute('aria-hidden', 'true');
+
+    // Review transport only: hide content below the current reviewed frontier.
     const mainSections = [...parsed.querySelectorAll('main > section')];
     const frontierIndex = mainSections.findIndex(s => s.id === FRONTIER_ID);
     if (frontierIndex < 0) throw new Error('review frontier not found');
@@ -48,7 +54,7 @@
     const footer = parsed.querySelector('footer');
     if (footer) footer.hidden = true;
 
-    // Reuse the exact unchanged assets already published with v16.1.1.
+    // Reuse exact unchanged assets already published with v16.1.1.
     parsed.querySelectorAll('[src^="assets/"]').forEach(el => {
       el.setAttribute('src', '../v16.1.1/' + el.getAttribute('src'));
     });
@@ -56,7 +62,6 @@
       el.setAttribute('href', '../v16.1.1/' + el.getAttribute('href'));
     });
 
-    // Hide navigation links that point beyond the current review frontier.
     parsed.querySelectorAll('.nav-links a[href^="#"]').forEach(a => {
       const target = parsed.querySelector(a.getAttribute('href'));
       if (!target || target.hidden) a.hidden = true;
@@ -75,12 +80,10 @@
 
     const banner = parsed.createElement('div');
     banner.id = 'cw-progress-banner';
-    banner.innerHTML = `<b>${VERSION} · cumulative progress preview</b> · approved v16.1.1 + v16.2, with v16.3 proposed. Downstream unreviewed sections are hidden only in this review transport.`;
+    banner.innerHTML = `<b>${VERSION} · cumulative progress preview</b> · approved v16.1.1 + v16.2 + v16.3, with v16.4 proposed. Downstream unreviewed sections are hidden only in this review transport.`;
     parsed.body.insertBefore(banner, parsed.body.firstChild);
-
     parsed.title = 'Converging Waters — ' + VERSION + ' Rolling Progress';
 
-    // Replace the current document with the transformed exact baseline-derived DOM.
     document.head.innerHTML = parsed.head.innerHTML;
     document.body.innerHTML = parsed.body.innerHTML;
 
@@ -90,9 +93,11 @@
     if (stanley.querySelectorAll('img').length !== 13) throw new Error('Stanley/WGA image count mismatch');
     if (stanley.querySelectorAll('a').length !== 17) throw new Error('Stanley/WGA link count mismatch');
     if (document.querySelectorAll('a[href^="http://"],a[href^="https://"]').length !== 46) throw new Error('external href count mismatch');
-    if (document.querySelectorAll('#emerged-since-call h3').length && [...document.querySelectorAll('#emerged-since-call h3')].some(h => h.textContent.trim() === "WGA's expanded field possibility")) throw new Error('v16.2 duplicate still visible');
+    if ([...document.querySelectorAll('#emerged-since-call h3')].some(h => h.textContent.trim() === "WGA's expanded field possibility")) throw new Error('v16.2 duplicate still visible');
     if (document.querySelector('#thesis .sequence')) throw new Error('v16.3 duplicate sequence still present');
     if (document.body.textContent.split('Listen → Measure → Train → Pilot → Mandate → File or legislate').length - 1 !== 1) throw new Error('territorial sequence count mismatch');
+    const mountedPurpose = document.querySelector('#purpose-mrv');
+    if (!mountedPurpose || !mountedPurpose.hidden || mountedPurpose.getAttribute('aria-hidden') !== 'true') throw new Error('v16.4 purpose-MRV shell not hidden');
   } catch (err) {
     document.body.innerHTML = `<div class="cw-progress-loading"><div><b>Preview could not load</b><span>${String(err.message || err)}</span></div></div>`;
   }
