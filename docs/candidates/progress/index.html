@@ -16,7 +16,7 @@
 <script>
 (async () => {
   const SOURCE = '../v16.1.1/index.html';
-  const VERSION = 'v16.5 PROPOSED · REV 2';
+  const VERSION = 'v16.5 PROPOSED · REV 3';
   const FRONTIER_ID = 'system';
   try {
     const res = await fetch(SOURCE, {cache: 'no-store'});
@@ -49,9 +49,9 @@
 <div class="section-head">
 <div>
 <div class="kicker">07 · River system + candidate monitoring scope</div>
-<h2>One river system. One confluence. A bounded first corridor.</h2>
+<h2>One river system. A bounded first corridor. Tributaries make impact legible.</h2>
 </div>
-<p>Separate where the collaboration may work, where evidence may need to be collected, and what the river connects downstream.</p>
+<p>Separate the geography we hope to benefit from the larger measurement network needed to understand where change enters the river.</p>
 </div>
 <div class="note wide-note">
 <b>Working naming convention</b>
@@ -61,7 +61,7 @@
 <article class="card mint">
 <div class="micro-title">Main stem before the confluence</div>
 <h3>Upper Willkamayu / Vilcanota</h3>
-<p>Headwaters and upper-basin conditions flow toward Huambutío. The main stem can be measured before it receives the Huatanay to establish an upstream reference.</p>
+<p>Headwaters and upper-basin conditions flow toward Huambutío. Measuring the main stem before it receives the Huatanay provides an upstream reference.</p>
 </article>
 <article class="card blue">
 <div class="micro-title">Tributary branch from Cusco</div>
@@ -70,23 +70,42 @@
 </article>
 </div>
 <div class="card" style="margin-top:18px;border-color:#b8d8c4;background:#f3fbf5">
-<div class="micro-title">Shared confluence node · one place, not two parallel steps</div>
+<div class="micro-title">Shared confluence node · one place, three comparable signals</div>
 <h3>Huambutío · Huatanay joins the Willkamayu / Vilcanota</h3>
-<p>This is the mixing point. A candidate station just downstream can help estimate the combined condition before the river continues toward the Sacred Valley corridor.</p>
+<p>Candidate attribution logic: <b>M1</b> main stem before the Huatanay + <b>M2</b> Huatanay immediately before the confluence + <b>M3</b> main stem just below Huambutío. Together they can help distinguish upstream conditions from the contribution arriving through Cusco / Huatanay.</p>
 </div>
 <div class="card" style="margin-top:18px;border-color:#d8c99e;background:#fffaf0">
 <div class="micro-title">Candidate initial working / benefit corridor · proposed</div>
-<h3>Pisac → Calca → Huarán → Urubamba → Pachar → Ollantaytambo</h3>
-<p>This is a continuous first geography to validate with the team and territorial actors, not a finalized station list. Yanahuara lies between Urubamba and Pachar and remains a candidate additional or alternate sampling area; final station placement should follow hydrologic relevance, tributaries and discharges, access and community priorities rather than town spacing alone.</p>
+<h3>Pisac → Calca → Huarán → Urubamba → Yanahuara → Pachar → Ollantaytambo</h3>
+<p>These are orientation and participation nodes for a bounded first corridor, not a finalized list of permanent stations. Final monitoring sites should follow tributaries, discharges, hydromorphology, access and community priorities rather than town spacing alone.</p>
 </div>
-<div class="flow" style="margin-top:18px">
-<div class="flow-title">Candidate measurement logic · measurement geography may be larger than benefit geography</div>
-<div class="flow-row four">
-<div class="flow-box"><b>M1 · Upstream reference</b><span>Main stem before receiving the Huatanay.</span></div>
-<div class="flow-box"><b>M2 · Tributary signal</b><span>Huatanay immediately before the confluence.</span></div>
-<div class="flow-box"><b>M3 · Mixed signal</b><span>Main stem just below Huambutío.</span></div>
-<div class="flow-box"><b>M4+ · Corridor sites</b><span>Representative points from Pisac through Ollantaytambo.</span></div>
+<div class="section-head" style="margin-top:28px;margin-bottom:16px">
+<div>
+<div class="kicker">Diagnostic tributary nodes</div>
+<h3 style="font-size:2rem">Before + tributary + after</h3>
 </div>
+<p>A repeated attribution pattern can reveal what enters the main stem at critical confluences without requiring every point to host a permanent sensor.</p>
+</div>
+<div class="card-grid three">
+<article class="card mint">
+<div class="micro-title">Yanahuara · distinct node</div>
+<h3>Yanahuara microcuenca</h3>
+<p><b>YAN-0</b> main stem before Yanahuara · <b>YAN-T</b> Yanahuara tributary before confluence · <b>YAN-1</b> main stem after mixing. Yanahuara is treated separately from Urubamba for monitoring design.</p>
+</article>
+<article class="card blue">
+<div class="micro-title">Pachar · second sub-basin signal</div>
+<h3>Hatun Mayu → Pachar</h3>
+<p><b>PACH-0</b> main stem before confluence · <b>PACH-HAT</b> Hatun Mayu before confluence · <b>PACH-1</b> main stem after mixing. ANA already operates the <b>PGIRH-067 Pachar hydrological station</b>; its variables and data access should be checked before adding infrastructure.</p>
+</article>
+<article class="card yellow">
+<div class="micro-title">Ollantaytambo · town + tributary attribution</div>
+<h3>Patacancha + town outlet</h3>
+<p><b>OLL-0</b> main stem before the town · <b>PAT-0</b> Patacancha before the urban area · <b>PAT-1</b> Patacancha after crossing the town and before confluence · <b>OLL-1</b> main stem just after Ollantaytambo and the confluence. This makes the post-town point an explicit outlet station for the first corridor.</p>
+</article>
+</div>
+<div class="note wide-note" style="margin-top:18px">
+<b>Citizen-science implication</b>
+<p>The diagnostic pattern does not require three or four permanent sensors at every node. Some points may be recurrent reference stations while tributary points can support periodic school/community sampling. The school network should later map <b>district → populated center / microcuenca → schools → students → nearest monitoring node</b>.</p>
 </div>
 <div class="note wide-note" style="margin-top:18px">
 <b>Open team decision · Cusco / Huatanay</b>
@@ -99,7 +118,7 @@
 </div>
 <div class="note wide-note" style="margin-top:18px">
 <b>Huatanay infrastructure context</b>
-<p>The relevant infrastructure project is the <b>PTAR Cusco / San Jerónimo expansion</b>, not an unspecified “US$46M project.” A 2023 ProInversión source documented a 580 L/s design capacity, peak inflows above 800 L/s and a proposed increase toward 938 L/s. Public investment estimates have changed materially since then, so this page does not freeze the old dollar figure. <a href="https://www.gob.pe/institucion/sunass/noticias/1205134-sunass-fiscaliza-planta-de-tratamiento-de-aguas-residuales-en-cusco-para-verificar-calidad-del-vertimiento-al-rio-huatanay" rel="noopener noreferrer" target="_blank">SUNASS context</a> · <a href="https://www.gob.pe/institucion/proinversion/noticias/820703-se-ampliara-y-mejorara-la-ptar-san-jeronimo-de-cusco-con-una-inversion-estimada-de-us-46-millones" rel="noopener noreferrer" target="_blank">2023 ProInversión baseline</a> · <a href="#validation">validation backlog</a>.</p>
+<p>The relevant infrastructure question is the <b>PTAR Cusco / San Jerónimo expansion and performance</b>, not a timeless project price. Public investment estimates have changed materially, so dated budget figures remain in the evidence register while the website keeps the stable monitoring question. <a href="https://www.gob.pe/institucion/sunass/noticias/1205134-sunass-fiscaliza-planta-de-tratamiento-de-aguas-residuales-en-cusco-para-verificar-calidad-del-vertimiento-al-rio-huatanay" rel="noopener noreferrer" target="_blank">SUNASS context</a> · <a href="https://www.gob.pe/institucion/proinversion/noticias/820703-se-ampliara-y-mejorara-la-ptar-san-jeronimo-de-cusco-con-una-inversion-estimada-de-us-46-millones" rel="noopener noreferrer" target="_blank">2023 ProInversión baseline</a> · <a href="#validation">validation backlog</a>.</p>
 </div>
 </div>
 </section>`;
@@ -123,7 +142,7 @@
 
     const banner = parsed.createElement('div');
     banner.id = 'cw-progress-banner';
-    banner.innerHTML = `<b>${VERSION} · cumulative progress preview</b> · approved v16.1.1 + v16.2 + v16.3 + v16.4, with revised v16.5 proposed. Downstream unreviewed sections are hidden only in this review transport.`;
+    banner.innerHTML = `<b>${VERSION} · cumulative progress preview</b> · approved v16.1.1 + v16.2 + v16.3 + v16.4, with v16.5 REV 3 proposed. Downstream unreviewed sections are hidden only in this review transport.`;
     parsed.body.insertBefore(banner, parsed.body.firstChild);
     parsed.title = 'Converging Waters — ' + VERSION + ' Rolling Progress';
 
@@ -139,14 +158,18 @@
     const mountedPurpose = document.querySelector('#purpose-mrv');
     if (!mountedPurpose || !mountedPurpose.hidden || mountedPurpose.getAttribute('aria-hidden') !== 'true') throw new Error('v16.4 purpose-MRV shell not hidden');
     const mountedSystem = document.querySelector('#system');
-    if (!mountedSystem || !mountedSystem.textContent.includes('Pisac → Calca → Huarán → Urubamba → Pachar → Ollantaytambo')) throw new Error('v16.5 corridor order mismatch');
-    if (!mountedSystem.textContent.includes('Yanahuara lies between Urubamba and Pachar')) throw new Error('v16.5 Yanahuara/Pachar note missing');
-    if (!mountedSystem.textContent.includes('Huambutío · Huatanay joins the Willkamayu / Vilcanota')) throw new Error('v16.5 shared confluence node missing');
+    const required = [
+      'Pisac → Calca → Huarán → Urubamba → Yanahuara → Pachar → Ollantaytambo',
+      'Huambutío · Huatanay joins the Willkamayu / Vilcanota',
+      'Yanahuara microcuenca',
+      'Hatun Mayu → Pachar',
+      'Patacancha + town outlet',
+      'PGIRH-067 Pachar hydrological station',
+      'OLL-1'
+    ];
+    if (!mountedSystem || required.some(t => !mountedSystem.textContent.includes(t))) throw new Error('v16.5 REV 3 content mismatch');
     if (mountedSystem.textContent.split('Huambutío · Huatanay joins the Willkamayu / Vilcanota').length - 1 !== 1) throw new Error('duplicate shared Huambutío node');
     if (mountedSystem.textContent.includes('estimated US$46M project')) throw new Error('stale US$46M label remains');
-    if ([...mountedSystem.querySelectorAll('h3')].some(h => ['Primary working scope','Measurement can extend upstream','No scope inflation','Capacity pressure'].includes(h.textContent.trim()))) throw new Error('redundant v16.5 rev1 cards remain');
-    if (!mountedSystem.textContent.includes('PTAR Cusco / San Jerónimo expansion')) throw new Error('PTAR project clarification missing');
-    if (!mountedSystem.textContent.includes('Lower Urubamba → Atalaya → Ucayali → Amazon → Atlantic')) throw new Error('downstream continuity missing');
   } catch (err) {
     document.body.innerHTML = `<div class="cw-progress-loading"><div><b>Preview could not load</b><span>${String(err.message || err)}</span></div></div>`;
   }
