@@ -1,39 +1,28 @@
-# Converging Waters — Governance Directory
+# Converging Waters — Governance Records
 
-This directory is the durable governance and continuity layer for Converging Waters, Willkamayu, Amazonas Sagrada, and WGA collaboration work.
+This directory is the durable home for technical governance, validation, standards, handoffs, registries and learning records associated with the Converging Waters repository.
 
-## Core records
+## Authority split
 
-- `PROJECT_TECHNICAL_MEMORY.md` — parent canonical decisions, corrections, boundaries, open questions, and rejected interpretations.
-- `PROJECT_TECHNICAL_MEMORY_ADDENDUM_2026-08-06.md` — active canonical addendum for Drive artifact governance and CW-G1 continuation until consolidated into the parent memory.
-- `PROJECT_GATE_CONTROL.md` — active gate, commitments, transition criteria, and execution controls.
-- `handoffs/` — dated continuation packets and archive references.
-- `standards/` — project-specific operating standards.
-- `learning/` — process failures, corrections, and prevention rules.
-- `validation/` — packets requiring participant or owner confirmation.
-- `registries/` — staged or canonical operational registers, clearly labeled by authority state.
+- `docs/` — website source, review transports and deployed static content.
+- `docs-governance/` — technical memory, gate control, validation, standards, handoffs, registries and learning.
+- Google Drive — editable project artifacts, operational exports and living document version histories where applicable.
 
-## Important path distinction
+## Key records
 
-`docs/` serves the public GitHub Pages website. Governance remains in the root-level `docs-governance/` directory so website publication files and project-governance records do not silently become the same authority.
+- `PROJECT_TECHNICAL_MEMORY.md`
+- `PROJECT_TECHNICAL_MEMORY_ADDENDUM_2026-08-06.md`
+- `PROJECT_GATE_CONTROL.md`
+- `validation/`
+- `learning/`
+- `standards/`
+- `handoffs/`
+- `registries/`
 
-## Current gate
+## Working principles
 
-`CW-G1 / CW-PRES-01`
-
-Current human validation packet:
-
-- [`validation/CW-G1-REPRESENTATION-VALIDATION.md`](validation/CW-G1-REPRESENTATION-VALIDATION.md)
-
-Current artifact-governance standard:
-
-- [`standards/DRIVE_ARTIFACT_VERSIONING_POLICY.md`](standards/DRIVE_ARTIFACT_VERSIONING_POLICY.md)
-
-Bootstrap records awaiting Drive reconciliation:
-
-- [`registries/ASSET_REGISTER_BOOTSTRAP.csv`](registries/ASSET_REGISTER_BOOTSTRAP.csv)
-- [`registries/VERSION_LEDGER_BOOTSTRAP.csv`](registries/VERSION_LEDGER_BOOTSTRAP.csv)
-
-Relevant learning record:
-
-- [`learning/WL-AUTOMATION-FIRST-PATH-CLARITY-001.md`](learning/WL-AUTOMATION-FIRST-PATH-CLARITY-001.md)
+- Preserve authoritative baselines and keep rejected candidates recoverable.
+- Do not treat preview or review transports as releases.
+- Separate proposed project decisions from confirmed commitments.
+- Use deterministic validation for material website changes.
+- Keep technical evidence and project-domain evidence in their appropriate durable records.
