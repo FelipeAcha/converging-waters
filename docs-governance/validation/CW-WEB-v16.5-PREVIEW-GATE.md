@@ -1,7 +1,7 @@
 # CW-WEB v16.5 — Preview gate
 
-Status: PENDING USER REVIEW
-Date: 2026-08-18
+Status: PENDING USER REVIEW — REVISION 2
+Date: 2026-08-19
 Parent workstream: issue #5
 
 ## Approved baseline
@@ -10,61 +10,50 @@ v16.4 local state was explicitly approved by Felipe in the Converging Waters Pro
 
 ## One authorized delta
 
-Rewrite only `#system` to clarify hydrological order, candidate monitoring geography and scope boundaries.
+Rewrite only `#system` to clarify hydrological order, candidate monitoring geography and scope boundaries. Revision 2 remains inside the same one-section delta; v16.5 has not been approved yet.
 
-The proposal:
-- identifies the connected main stem as `Willkamayu / Vilcanota–Urubamba` for project-working clarity without claiming that all historical/institutional names are interchangeable in every context;
-- places the Huatanay confluence at Huambutío upstream of Pisac;
-- marks `Pisac → Calca → Yucay → Urubamba → Ollantaytambo` as a candidate initial working/benefit corridor, not a confirmed mandate;
-- proposes attribution logic using a main-stem upstream reference, Huatanay pre-confluence station, main-stem post-confluence station and representative corridor stations;
-- leaves Cusco/Huatanay monitoring and citizen science as a phase decision;
-- shows downstream continuity to Ucayali → Amazon → Atlantic as ecological context, explicitly not project footprint.
+## Revision 2 changes after Felipe review
+
+- Replace Yucay as a principal corridor anchor with `Huarán`.
+- Use `Pachar` as the primary downstream orientation anchor between Urubamba and Ollantaytambo; keep Yanahuara as an additional/alternate candidate sampling area pending station design.
+- Do not claim Huarán is the exact midpoint; current geodata supports it as an intermediate point but not an exact midpoint claim.
+- Replace the visually confusing two-column duplication of Huambutío with one shared confluence node: main stem + Huatanay tributary branch -> one Huambutío mixing point -> downstream corridor.
+- Clarify that M1–M4+ are candidate measurement logic, not a finalized station network.
+- Keep Cusco/Huatanay participation as an explicit Phase 1 vs Phase 2 team decision while allowing measurement geography to extend beyond benefit geography.
+- Remove the redundant cards `Primary working scope`, `Measurement can extend upstream`, and `No scope inflation`; their unique meaning is already carried by the corridor, measurement-logic and downstream-continuity blocks.
+- Replace the ambiguous `Capacity pressure / US$46M` card with one compact `Huatanay infrastructure context` note. It identifies the actual project as the PTAR Cusco / San Jerónimo expansion, dates the 2023 capacity figures, and explicitly avoids freezing the obsolete US$46M estimate as a current project value.
+- Preserve the two existing external PTAR/SUNASS href values and the existing `#validation` internal link.
 
 ## Deterministic preservation result
 
 PASS
 
-- baseline HTML SHA-256: `5c28d9256b2ad86bdac4511d1bfc431ec5b3cb4d8e1341430dd84b14256c3719`
-- candidate HTML SHA-256: `bdbdf65b94209d47e184d9de189564249d0c99cabde8fd508aef0d971e04a70e`
-- baseline sections: 41
-- candidate sections: 41
-- changed section: `#system` only
-- external hrefs: 46, unchanged
+- approved v16.4 HTML SHA-256: `5c28d9256b2ad86bdac4511d1bfc431ec5b3cb4d8e1341430dd84b14256c3719`
+- revised v16.5 HTML SHA-256: `d7a644d97a6cb995e6ee444ab3138ea4321f9409318e697d2d94edca67e1a460`
+- revised `#system` SHA-256: `3a9fd19749825020c0381c1dd058b476cb66c87f3af55f82de719e5d119151a9`
+- only changed section relative to approved v16.4: `#system`
+- section count unchanged
+- external hrefs: 46, values and order unchanged
 - Stanley/WGA raw section SHA-256 unchanged: `d22889e1b98d8f49d3ea09f74092e97273d06964852e19b20c0aebd26d5525e1`
 - Stanley/WGA: 13 images / 17 links
-- all 16 assets unchanged
-- candidate `#system` SHA-256: `10678f303c7454de1bdf01e506ac45d75d7c5f1f0b32e0ac6c47075dbac64381`
+- all 16 assets unchanged byte-for-byte
+- one shared Huambutío confluence heading
+- old `estimated US$46M project` phrase absent
+- redundant rev-1 scope-card headings absent
 
-## ChatGPT review transport
+## Review transport
 
-Primary full-CSS zero-network delta Preview:
-- payload: 42,060 bytes
-- SHA-256: `8973a63ee2efc515b9457979fbeb9240dd1b88b394eb1888cffe78022c7e1529`
-- iframes: 0
-- images: 0
-- automatic remote render resources: 0
-- the two HTTP(S) values in the slice are user-clicked anchor references only.
+1. Primary approval surface: compact zero-network ChatGPT Preview containing the revised `#system` section.
+2. Cumulative context surface: stable review-only route `https://felipeacha.github.io/converging-waters/candidates/progress/`, labeled `v16.5 PROPOSED · REV 2`, with frontier `#system`.
 
-Compact exact-section variant prepared for the in-chat code-block surface:
-- payload: 9,127 bytes
-- SHA-256: `10151ce9a1ae39f1315763bcbf8ea01939ef784d26d055746d7867cdf70a7f11`
-- `#system` raw HTML is byte-identical to the v16.5 candidate
-- `#system` raw SHA-256 remains `10678f303c7454de1bdf01e506ac45d75d7c5f1f0b32e0ac6c47075dbac64381`
-- compact transport changes CSS only; no semantic/content transformation
-- iframe count: 0; automatic remote render resources: 0.
-
-## Rolling cumulative review transport
-
-Stable route: `https://felipeacha.github.io/converging-waters/candidates/progress/`
-
-The progress transport applies approved v16.2/v16.3/v16.4 transformations to exact v16.1.1 and inserts exact local-candidate v16.5 `#system` markup. Frontier: `#system`. Downstream unreviewed sections are hidden only in transport.
-
-At the time this gate record was updated, the v16.5 progress source had been committed and read back, but the repository deployment-diagnostics file still reflected the previous v16.4 Pages run. Therefore the stable route must not be described as freshly deployment-verified for v16.5 until Pages diagnostics advance.
+The cumulative route remains `REVIEW_TRANSPORT_ONLY`; it does not repoint `/preview/`, modify `/releases/v13/`, or promote v16.5.
 
 ## Evidence boundary
 
-Historical naming, Huatanay confluence/monitoring precedent, broader river continuity and prior water-quality studies are maintained in a separate hydrology/evidence register. The candidate uses cautious language and keeps unresolved project geography/phase choices explicitly proposed.
+The detailed locality, naming, hydrology and PTAR investment-history evidence lives in `docs-governance/registries/WILLKAMAYU_HYDROLOGY_AND_EVIDENCE_REGISTER.md`.
+
+Website rule for this section: preserve the minimum narrative needed to understand the system, candidate measurement logic and open phase choices. Avoid repeating scope disclaimers as multiple cards and avoid presenting volatile monetary estimates without a date/source context.
 
 ## Next transition
 
-If Felipe approves v16.5, it becomes the last approved local state. The next website delta must start from v16.5 and touch one new target only.
+If Felipe approves revised v16.5, it becomes the last approved local state. The next website delta must start from v16.5 and touch one new target only.
