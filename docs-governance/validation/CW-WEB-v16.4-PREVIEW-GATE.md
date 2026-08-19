@@ -22,12 +22,16 @@ PASS
 
 - baseline HTML SHA-256: `6d3acae3ddfeeb7a72f089a205e8a3483130560ea0ad030fb598a8b9bf8ae09a`
 - candidate HTML SHA-256: `5c28d9256b2ad86bdac4511d1bfc431ec5b3cb4d8e1341430dd84b14256c3719`
-- baseline sections: 41
-- candidate sections: 41
+- baseline top-level `main > section` count: 42
+- candidate top-level `main > section` count: 42
 - external hrefs: 46, unchanged
 - Stanley/WGA protected section remains byte-identical
 - all 16 assets unchanged
 - `#purpose-mrv` inner-content SHA-256 preserved: `8334e4aec880e4cab4d39b547f08c5105b44c313dafe251db8e74de668717f8a`
+
+### Count-metric correction — 2026-08-19
+
+An earlier version of this validation note reported 41 sections. A fresh direct parse of the exact approved-state HTML showed 42 top-level `main > section` elements, including the hero section without an `id`. The earlier count omitted one section in the counting method; it did not reflect content deletion. The preservation conclusion and approval status are unchanged.
 
 ## Review outcome
 
