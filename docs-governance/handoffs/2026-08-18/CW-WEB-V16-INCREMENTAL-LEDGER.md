@@ -48,36 +48,43 @@ Preservation evidence:
 
 ## Current proposal
 
-### v16.5 — PENDING REVIEW · REVISION 2
+### v16.5 — PENDING REVIEW · REVISION 3
 Baseline: approved v16.4 local state.
 Authorized delta only: rewrite `#system` to clarify the river system, candidate monitoring geography and scope boundaries.
 
-Revision-2 content logic:
+Revision-3 content logic:
 - use `Willkamayu / Vilcanota–Urubamba` as a working main-stem label while preserving historical/institutional naming distinctions;
-- show two upstream branches that converge into one shared Huambutío node rather than duplicating Huambutío across two parallel cards;
-- show candidate first working/benefit corridor `Pisac → Calca → Huarán → Urubamba → Pachar → Ollantaytambo` as PROPOSED, not confirmed;
-- keep Yanahuara as an additional/alternate candidate sampling area between Urubamba and Pachar rather than a fixed principal anchor before station-design review;
-- explicitly reject the unsupported wording that Huarán is the exact midpoint; treat it only as an intermediate corridor anchor;
-- show candidate attribution stations M1 upstream main stem, M2 Huatanay pre-confluence, M3 main stem just downstream of Huambutío, and M4+ representative corridor sites;
-- separate source-attribution measurement from the distinct team decision about Cusco/Huatanay citizen science and territorial participation in Phase 1 vs Phase 2;
-- show downstream hydrological continuity `Lower Urubamba → Atalaya → Ucayali → Amazon → Atlantic` while explicitly stating that hydrological continuity is not project footprint;
-- remove the redundant rev-1 cards `Primary working scope`, `Measurement can extend upstream`, and `No scope inflation`;
-- replace the ambiguous `Capacity pressure / US$46M` card with one compact note identifying the PTAR Cusco / San Jerónimo expansion, dating the 2023 capacity baseline, and avoiding an undated stale investment value.
+- show the main stem and Huatanay branch converging into one shared Huambutío node;
+- use candidate orientation/participation chain `Pisac → Calca → Huarán → Urubamba → Yanahuara → Pachar → Ollantaytambo`;
+- treat Yanahuara as a distinct node rather than folding it into Urubamba;
+- retain M1/M2/M3 Huambutío attribution logic;
+- add diagnostic node patterns:
+  - Yanahuara: `YAN-0 / YAN-T / YAN-1`;
+  - Pachar / Hatun Mayu: `PACH-0 / PACH-HAT / PACH-1`;
+  - Ollantaytambo / Patacancha: `OLL-0 / PAT-0 / PAT-1 / OLL-1`;
+- identify `OLL-1` as a candidate post-town/outlet point for the first corridor;
+- note that `PGIRH-067 Pachar` is evidenced as an ANA hydrological automatic station, not automatically a water-quality station;
+- state that not every node requires a permanent sensor and preserve periodic school/community sampling as a possible mode;
+- preserve school-network mapping schema `district → populated center / microcuenca → schools → students → nearest monitoring node` without turning `#system` into the school inventory;
+- keep Cusco/Huatanay participation as an explicit Phase 1 vs Phase 2 team decision;
+- keep downstream continuity `Lower Urubamba → Atalaya → Ucayali → Amazon → Atlantic` as ecological implication, not project footprint;
+- keep the PTAR external links while simplifying the public text to a stable infrastructure/performance question rather than volatile investment figures.
 
 Deterministic preservation audit: PASS.
 - approved v16.4 HTML SHA-256: `5c28d9256b2ad86bdac4511d1bfc431ec5b3cb4d8e1341430dd84b14256c3719`
-- revised v16.5 HTML SHA-256: `d7a644d97a6cb995e6ee444ab3138ea4321f9409318e697d2d94edca67e1a460`
-- revised `#system` SHA-256: `3a9fd19749825020c0381c1dd058b476cb66c87f3af55f82de719e5d119151a9`
-- section count unchanged
-- only changed section: `#system`
+- revised v16.5 REV 3 HTML SHA-256: `465a88055c06870ba47f2bf29344a19564504c149633777ae154108d3de1b168`
+- revised `#system` SHA-256: `c23ce6c7ee1a6f2f3e4ac272cc5b74c00c7b43d6b1fd57d748a8911c27610d8e`
+- total section count: 42; unchanged
+- only changed section relative to v16.4: `#system`
 - external hrefs: 46 unchanged, values and order identical
-- Stanley/WGA raw SHA-256 unchanged: `d22889e1b98d8f49d3ea09f74092e97273d06964852e19b20c0aebd26d5525e1`
+- Stanley/WGA protected section byte-identical
 - Stanley/WGA: 13 images / 17 links
 - all 16 assets unchanged byte-for-byte
+- one shared Huambutío node
+- diagnostic node-code regression: PASS
 - old `estimated US$46M project` phrase absent
-- redundant rev-1 scope-card headings absent
 
-Primary approval gate: compact zero-network ChatGPT Preview of revised `#system`.
+Primary approval gate: zero-network ChatGPT Preview of revised `#system`.
 
 ## Rolling cumulative progress preview
 
@@ -86,13 +93,19 @@ Stable review-only route:
 
 Current reviewed frontier: `#system`.
 
-Current progress transport is derived from the exact v16.1.1 source plus the approved v16.2/v16.3/v16.4 mutations and the exact revised v16.5 `#system` markup. Downstream sections remain in the underlying candidate but are hidden only in the review transport until their turn.
+Current progress source is labeled `v16.5 PROPOSED · REV 3` and is derived from exact v16.1.1 plus approved v16.2/v16.3/v16.4 mutations and exact v16.5 REV 3 `#system` markup. Downstream sections remain in the underlying candidate but are hidden only in the review transport until their turn.
 
 The stable progress route is `REVIEW_TRANSPORT_ONLY`; it is not the authoritative preview alias, not a release and not promotion of v16.5.
 
-## Hydrology and evidence track
+## Monitoring + citizen-science canonical integration
 
-A separate durable evidence register and research issue own the historical naming, Huatanay/Vilcanota source base, locality-anchor verification, candidate monitoring-station evidence, PTAR evidence chronology and the Japanese-cooperation study lead. Website claims should consume only evidence promoted from that track at the appropriate confidence level.
+Primary node-architecture register:
+`docs-governance/registries/WILLKAMAYU_MONITORING_AND_CITIZEN_SCIENCE_NODE_REGISTER.md`
+
+Cross-conversation school-research handoff:
+`docs-governance/handoffs/2026-08-19/CW_SCHOOL_RESEARCH_TO_MONITORING_HANDOFF.md`
+
+The school census remains authoritative in its own research workstream; website and monitoring records must link to that verified inventory rather than rebuilding its counts independently.
 
 ## Hard locks
 
