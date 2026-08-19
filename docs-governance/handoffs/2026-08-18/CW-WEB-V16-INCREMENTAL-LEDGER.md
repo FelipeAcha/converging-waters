@@ -29,7 +29,7 @@ Preservation evidence:
 Baseline: approved v16.2 local state.
 Delta: remove only the second visual rendering of `Listen → Measure → Train → Pilot → Mandate → File or legislate` from `#thesis`; retain the exact territorial pathway in `#where-now` as its single active visual home.
 Preservation evidence:
-- 41 sections retained
+- section count unchanged
 - 46 external hrefs unchanged
 - Stanley/WGA section byte-identical
 - all assets unchanged
@@ -39,7 +39,7 @@ Preservation evidence:
 Baseline: approved v16.3 local state.
 Delta: suppress only the residual visible wrapper of `#purpose-mrv` by adding `hidden aria-hidden="true"`; no inner content deleted or rewritten.
 Preservation evidence:
-- 41 sections retained
+- section count unchanged
 - 46 external hrefs unchanged
 - Stanley/WGA section byte-identical
 - all 16 assets unchanged
@@ -48,31 +48,36 @@ Preservation evidence:
 
 ## Current proposal
 
-### v16.5 — PENDING REVIEW
+### v16.5 — PENDING REVIEW · REVISION 2
 Baseline: approved v16.4 local state.
 Authorized delta only: rewrite `#system` to clarify the river system, candidate monitoring geography and scope boundaries.
 
-Proposed content logic:
+Revision-2 content logic:
 - use `Willkamayu / Vilcanota–Urubamba` as a working main-stem label while preserving historical/institutional naming distinctions;
-- show the Huatanay joining the Vilcanota at Huambutío upstream of Pisac;
-- show candidate first working/benefit corridor `Pisac → Calca → Yucay → Urubamba → Ollantaytambo` as PROPOSED, not confirmed;
-- show candidate attribution stations: upstream main-stem reference, Huatanay pre-confluence, main stem just downstream of Huambutío, and representative corridor sites;
-- show Cusco/Huatanay citizen science and monitoring as a possible phase-2 expansion / team decision, not a commitment;
-- show downstream hydrological continuity `Lower Urubamba → Atalaya → Ucayali → Amazon → Atlantic` while explicitly stating that hydrological continuity is not project footprint.
+- show two upstream branches that converge into one shared Huambutío node rather than duplicating Huambutío across two parallel cards;
+- show candidate first working/benefit corridor `Pisac → Calca → Huarán → Urubamba → Pachar → Ollantaytambo` as PROPOSED, not confirmed;
+- keep Yanahuara as an additional/alternate candidate sampling area between Urubamba and Pachar rather than a fixed principal anchor before station-design review;
+- explicitly reject the unsupported wording that Huarán is the exact midpoint; treat it only as an intermediate corridor anchor;
+- show candidate attribution stations M1 upstream main stem, M2 Huatanay pre-confluence, M3 main stem just downstream of Huambutío, and M4+ representative corridor sites;
+- separate source-attribution measurement from the distinct team decision about Cusco/Huatanay citizen science and territorial participation in Phase 1 vs Phase 2;
+- show downstream hydrological continuity `Lower Urubamba → Atalaya → Ucayali → Amazon → Atlantic` while explicitly stating that hydrological continuity is not project footprint;
+- remove the redundant rev-1 cards `Primary working scope`, `Measurement can extend upstream`, and `No scope inflation`;
+- replace the ambiguous `Capacity pressure / US$46M` card with one compact note identifying the PTAR Cusco / San Jerónimo expansion, dating the 2023 capacity baseline, and avoiding an undated stale investment value.
 
 Deterministic preservation audit: PASS.
-- baseline HTML SHA-256: `5c28d9256b2ad86bdac4511d1bfc431ec5b3cb4d8e1341430dd84b14256c3719`
-- candidate HTML SHA-256: `bdbdf65b94209d47e184d9de189564249d0c99cabde8fd508aef0d971e04a70e`
-- baseline sections: 41
-- candidate sections: 41
+- approved v16.4 HTML SHA-256: `5c28d9256b2ad86bdac4511d1bfc431ec5b3cb4d8e1341430dd84b14256c3719`
+- revised v16.5 HTML SHA-256: `d7a644d97a6cb995e6ee444ab3138ea4321f9409318e697d2d94edca67e1a460`
+- revised `#system` SHA-256: `3a9fd19749825020c0381c1dd058b476cb66c87f3af55f82de719e5d119151a9`
+- section count unchanged
 - only changed section: `#system`
-- external hrefs: 46 unchanged
+- external hrefs: 46 unchanged, values and order identical
 - Stanley/WGA raw SHA-256 unchanged: `d22889e1b98d8f49d3ea09f74092e97273d06964852e19b20c0aebd26d5525e1`
 - Stanley/WGA: 13 images / 17 links
-- all 16 assets unchanged
-- candidate `#system` SHA-256: `10678f303c7454de1bdf01e506ac45d75d7c5f1f0b32e0ac6c47075dbac64381`
+- all 16 assets unchanged byte-for-byte
+- old `estimated US$46M project` phrase absent
+- redundant rev-1 scope-card headings absent
 
-Primary approval gate: compact zero-network ChatGPT Preview of the proposed `#system` section.
+Primary approval gate: compact zero-network ChatGPT Preview of revised `#system`.
 
 ## Rolling cumulative progress preview
 
@@ -81,13 +86,13 @@ Stable review-only route:
 
 Current reviewed frontier: `#system`.
 
-Current progress transport is derived from the exact v16.1.1 source plus the approved v16.2/v16.3/v16.4 mutations and the exact v16.5 `#system` markup. Downstream sections remain in the underlying candidate but are hidden only in the review transport until their turn.
+Current progress transport is derived from the exact v16.1.1 source plus the approved v16.2/v16.3/v16.4 mutations and the exact revised v16.5 `#system` markup. Downstream sections remain in the underlying candidate but are hidden only in the review transport until their turn.
 
 The stable progress route is `REVIEW_TRANSPORT_ONLY`; it is not the authoritative preview alias, not a release and not promotion of v16.5.
 
 ## Hydrology and evidence track
 
-A separate durable evidence register and research issue own the historical naming, Huatanay/Vilcanota source base, candidate monitoring-station evidence and the Japanese-cooperation study lead. Website claims should consume only evidence promoted from that track at the appropriate confidence level.
+A separate durable evidence register and research issue own the historical naming, Huatanay/Vilcanota source base, locality-anchor verification, candidate monitoring-station evidence, PTAR evidence chronology and the Japanese-cooperation study lead. Website claims should consume only evidence promoted from that track at the appropriate confidence level.
 
 ## Hard locks
 
