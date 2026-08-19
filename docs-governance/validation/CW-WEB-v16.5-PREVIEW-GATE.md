@@ -47,14 +47,27 @@ PASS
 - old `estimated US$46M project` phrase absent
 - redundant rev-1 scope-card headings absent
 
-## Browser-validation state
+## Browser / route validation state
 
 A fresh local Chromium attempt in the current execution environment did not complete: Chromium's network service crashed/hung during localhost rendering and produced no DOM. This is an environment/browser-validation limitation, not evidence of page failure.
 
-Therefore keep states separate:
+The stable cumulative progress source was committed at `b36d2ae2f5b781faba21972c71a7dce0b98b446e`.
+
+GitHub Pages deployment diagnostics for that commit:
+- run `32304592741`;
+- local validation: success;
+- configure: success;
+- upload: success;
+- deploy: success;
+- smoke: success.
+
+The deployed Pages artifact `9384234670` was downloaded and inspected. Its `candidates/progress/index.html` SHA-256 is `c09efa94cf13679562a74e85fd5882ecd1493121e14845d43e75231192198924`, exactly matching the locally prepared REV 3 progress transport, and contains the Yanahuara, Hatun Mayu/Pachar, Patacancha/Ollantaytambo and `PGIRH-067` markers.
+
+Keep lifecycle states separate:
 - `SOURCE_VALIDATED = true`
-- `BROWSER_RENDER_VALIDATED = false` for the local container attempt
-- `PUBLIC_ROUTE_VALIDATED = pending fresh Pages deployment/readback for REV 3`
+- `DEPLOYED_ARTIFACT_VALIDATED = true`
+- `DIRECT_PUBLIC_HTTP_FETCH_VALIDATED = false` in the current execution environment because DNS access to the Pages host is unavailable here
+- `LOCAL_BROWSER_RENDER_VALIDATED = false` because of the Chromium environment failure
 - `CHAT_VISUALIZER_VALIDATED = pending user-visible in-chat Preview for REV 3`
 - `USER_APPROVED = false`
 
