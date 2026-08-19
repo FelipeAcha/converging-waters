@@ -53,14 +53,14 @@ Purpose: keep verified facts, source leads and unresolved project-scope choices 
 
 ### Place-anchor verification
 
-- **Huarán** is an officially recognized populated center/community in Calca. Open geodata places Calca about 7 km east of Huarán; Huarán is a useful intermediate orientation point between Calca and Urubamba, but the current evidence does **not** support calling it the exact midpoint.
+- **Huarán** is an officially recognized populated center/community in Calca. Available open geodata supports its use as an intermediate orientation point between Calca and Urubamba, but the current evidence does **not** support calling it the exact midpoint.
 - **Yanahuara** lies on the Urubamba–Ollantaytambo corridor.
 - **Pachar** is in Ollantaytambo district and official tourism material places it about 6 km from Ollantaytambo. Open geodata places Pachar downstream/west of Yanahuara on the same corridor. For a sparse orientation chain, Pachar is the stronger primary downstream anchor; Yanahuara remains a plausible additional station area.
 
 ### Place-anchor sources
 
 1. Municipalidad Provincial de Calca, 2025: Centro Poblado de Arin Huarán. Source: https://www.gob.pe/institucion/municalca/normas-legales/7541697-344-2025-a-mpc
-2. OpenStreetMap/GeoNames via Mapcarta: Huarán coordinates and relative location to Calca; used only for orientation, not as hydrological evidence. Source: https://mapcarta.com/20224238
+2. OpenStreetMap/GeoNames via Mapcarta: Huarán coordinates and relative location; used only for orientation, not as hydrological evidence. Source: https://mapcarta.com/20224238
 3. Mincetur inventory: Pachar reference approximately 6 km from Ollantaytambo. Source: https://consultasenlinea.mincetur.gob.pe/fichaInventario/index.aspx?cod_Ficha=7238
 4. Municipalidad Distrital de Ollantaytambo tourism site: Pachar community on the Urubamba corridor. Source: https://ollantaytambodestinoseguro.muniollantaytambo.gob.pe/chullaracay/
 5. OpenStreetMap/GeoNames via Mapcarta: Yanahuara and Pachar coordinates; used only to establish relative orientation. Sources: https://mapcarta.com/es/25133048 and https://mapcarta.com/es/20213062
