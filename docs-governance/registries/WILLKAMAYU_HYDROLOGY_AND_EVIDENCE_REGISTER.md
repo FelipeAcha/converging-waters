@@ -29,6 +29,10 @@ Purpose: keep verified facts, source leads and unresolved project-scope choices 
 - The Huatanay is a principal tributary of the Vilcanota.
 - Historical INRENA/ATDR inventory material locates the Huatanay mouth in the Vilcanota at the Huambutío sector.
 - DIGESA’s 2007 Vilcanota–Urubamba monitoring network placed station `RV-06` 100 m downstream of the Huatanay discharge, followed by stations downstream of Pisac, Calca, Urubamba and Ollantaytambo. This is strong precedent for an attribution-oriented monitoring design around the confluence.
+- Yanahuara is an official centro poblado of Urubamba, and institutional/research material recognizes a `Microcuenca Yanahuara`; this supports treating Yanahuara as a distinct hydrological/citizen-science node rather than collapsing it into Urubamba city.
+- Gobierno Regional Cusco describes the Hatun Mayu sub-basin as extending to its confluence with the Vilcanota in the Pachar sector, district of Ollantaytambo.
+- ANA technical documentation lists `PGIRH-067 Pachar` as an `EHA` — estación hidrológica automática. This supports existing hydrological infrastructure at Pachar but does **not** by itself establish that the station measures water quality.
+- Municipal Ollantaytambo material describes the Patacancha river reaching Ollantaytambo and joining the Urubamba there. This makes the town/confluence area a candidate attribution node rather than a simple single-station location.
 - The Vilcanota–Urubamba receives the Huatanay and later joins the Tambo to form the Ucayali.
 - The Ucayali and Marañón form the Amazon; the Amazon continues to the Atlantic.
 - Corrective rule: **do not state that the Vilcanota/Urubamba is a tributary of the Apurímac.** The Apurímac continues through the Ene/Tambo branch; the Tambo then joins the Urubamba to form the Ucayali.
@@ -39,40 +43,57 @@ Purpose: keep verified facts, source leads and unresolved project-scope choices 
 2. ANA, 2023: Huatanay described as the principal tributary of the Vilcanota. Source: https://www.gob.pe/institucion/ana/noticias/772557-cusco-se-recogen-mas-de-45-toneladas-de-residuos-solidos-del-cauce-y-ribera-del-rio-huatanay
 3. INRENA / ATDR-Cusco historical *Inventario de Fuentes de Agua Superficiales*: Huatanay mouth recorded at Huambutío. Primary repository copy still to be located; current indexed reproduction is a locator lead, not the final citation.
 4. INEI, *Conociendo Ucayali*: Apurímac → Ene → Tambo; Tambo receives Urubamba and becomes Ucayali; Ucayali receives Marañón and becomes Amazon. Source: https://proyectos.inei.gob.pe/web/biblioineipub/bancopub/Est/Lib0256/resum.htm
+5. Municipalidad Provincial de Urubamba: elected authorities / municipal status of Centro Poblado Yanahuara. Source: https://www.gob.pe/institucion/muniurubamba/noticias/905203-nuevas-autoridades-en-el-centro-poblado-de-yanahuara
+6. ANA indexed material referencing `Microcuenca Yanahuara`. Source: https://www.ana.gob.pe/sites/default/files/normatividad/files/58-RD-0349-2019-03.pdf
+7. Gobierno Regional Cusco: Hatun Mayu sub-basin to confluence with Vilcanota in Pachar. Source: https://www.gob.pe/institucion/regioncusco/noticias/501018-en-el-marco-de-la-implementacion-del-acuerdo-regional-n-066-2021-cr-gr-cusco
+8. ANA, Informe Técnico N° 0028-2023-ANA-MGRH-CH: station list includes `PGIRH-067 Pachar — EHA`. Source: https://www.ana.gob.pe/sites/default/files/normatividad/files/INFORME%20TECNICO%20N%C2%B0%200028-2023-ANA-MGRH-CH.pdf
+9. Municipalidad Distrital de Ollantaytambo tourism material: Patacancha reaches Ollantaytambo and joins Urubamba. Source: https://ollantaytambodestinoseguro.muniollantaytambo.gob.pe/comunidad-de-huilloc/
 
 ## Candidate project geography — NOT YET A COMMITMENT
 
 ### OPEN TEAM DECISIONS
 
-1. **Initial working / benefit corridor:** candidate continuous corridor `Pisac → Calca → Huarán → Urubamba → Pachar → Ollantaytambo`. These are orientation anchors, not a finalized station list and not a claim that benefits are limited to the named settlements.
-2. **Yanahuara vs Pachar station density:** Yanahuara is between Urubamba and Pachar; Pachar is farther downstream and close to Ollantaytambo. Keep Yanahuara as an additional/alternate sampling area until tributaries, discharges, access and station-spacing needs are evaluated. Do not select either solely because of town spacing.
-3. **Primary beneficiaries:** identify the communities, municipalities, guardians, water users and ecological priorities that define the first benefit geography.
-4. **Measurement geography:** measurements may need to extend outside the benefit corridor to establish causality/source attribution.
+1. **Initial working / benefit corridor:** candidate continuous corridor `Pisac → Calca → Huarán → Urubamba → Yanahuara → Pachar → Ollantaytambo`. These are orientation/participation nodes, not a finalized station list and not a claim that benefits are limited to the named settlements.
+2. **Primary beneficiaries:** identify the communities, municipalities, guardians, water users and ecological priorities that define the first benefit geography.
+3. **Measurement geography:** measurements may need to extend outside the benefit corridor to establish causality/source attribution.
+4. **Diagnostic tributary density:** decide where repeated `before + tributary + after` attribution patterns are justified. Current candidates are Yanahuara, Pachar/Hatun Mayu and Ollantaytambo/Patacancha.
 5. **Cusco/Huatanay:** decide whether Huatanay/Cusco participation is included in Phase 1 or held as a Phase 2 expansion.
 6. **Citizen science in Cusco:** determine whether urban schools, universities, communities and other actors would materially improve source attribution, public learning and stewardship enough to justify early inclusion.
 
 ### Place-anchor verification
 
 - **Huarán** is an officially recognized populated center/community in Calca. Available open geodata supports its use as an intermediate orientation point between Calca and Urubamba, but the current evidence does **not** support calling it the exact midpoint.
-- **Yanahuara** lies on the Urubamba–Ollantaytambo corridor.
-- **Pachar** is in Ollantaytambo district and official tourism material places it about 6 km from Ollantaytambo. Open geodata places Pachar downstream/west of Yanahuara on the same corridor. For a sparse orientation chain, Pachar is the stronger primary downstream anchor; Yanahuara remains a plausible additional station area.
+- **Yanahuara** is an official centro poblado of Urubamba and is associated with a recognized microcuenca. It is therefore retained as a distinct corridor and diagnostic node.
+- **Pachar** is in Ollantaytambo district and is hydrologically important because Hatun Mayu reaches the Vilcanota there. Official tourism material also places Pachar approximately 6 km from Ollantaytambo.
+- **Ollantaytambo** is treated as a terminal candidate node for the first corridor, with a candidate downstream outlet point after the town and Patacancha confluence.
 
 ### Place-anchor sources
 
 1. Municipalidad Provincial de Calca, 2025: Centro Poblado de Arin Huarán. Source: https://www.gob.pe/institucion/municalca/normas-legales/7541697-344-2025-a-mpc
 2. OpenStreetMap/GeoNames via Mapcarta: Huarán coordinates and relative location; used only for orientation, not as hydrological evidence. Source: https://mapcarta.com/20224238
-3. Mincetur inventory: Pachar reference approximately 6 km from Ollantaytambo. Source: https://consultasenlinea.mincetur.gob.pe/fichaInventario/index.aspx?cod_Ficha=7238
-4. Municipalidad Distrital de Ollantaytambo tourism site: Pachar community on the Urubamba corridor. Source: https://ollantaytambodestinoseguro.muniollantaytambo.gob.pe/chullaracay/
-5. OpenStreetMap/GeoNames via Mapcarta: Yanahuara and Pachar coordinates; used only to establish relative orientation. Sources: https://mapcarta.com/es/25133048 and https://mapcarta.com/es/20213062
+3. Municipalidad Provincial de Urubamba: Centro Poblado Yanahuara. Source: https://www.gob.pe/institucion/muniurubamba/noticias/905203-nuevas-autoridades-en-el-centro-poblado-de-yanahuara
+4. Mincetur inventory: Pachar reference approximately 6 km from Ollantaytambo. Source: https://consultasenlinea.mincetur.gob.pe/fichaInventario/index.aspx?cod_Ficha=7238
+5. Municipalidad Distrital de Ollantaytambo tourism site: Pachar community on the Urubamba corridor. Source: https://ollantaytambodestinoseguro.muniollantaytambo.gob.pe/chullaracay/
 
 ### Candidate monitoring logic for team review
 
+Primary Huambutío source-attribution pattern:
 - `M1 — Main-stem upstream reference`: Willkamayu/Vilcanota before receiving the Huatanay.
 - `M2 — Tributary signal`: Huatanay immediately before confluence.
 - `M3 — Mixed downstream signal`: Willkamayu/Vilcanota immediately below Huambutío.
-- `M4+ — Corridor stations`: representative sites from Pisac through Ollantaytambo, selected by hydrological relevance rather than by settlement spacing alone.
 
-This is a hypothesis for scoping, not a finalized MRV network. Station selection must later account for access, seasonality, tributary inputs, wastewater discharges, hydromorphology, sampling protocol, laboratory requirements and community priorities.
+Corridor pattern:
+- `M4+ — Corridor stations`: representative sites from Pisac through Ollantaytambo, selected by hydrological relevance rather than settlement spacing alone.
+
+Diagnostic nodes currently proposed:
+- Yanahuara: `YAN-0 / YAN-T / YAN-1`.
+- Pachar / Hatun Mayu: `PACH-0 / PACH-HAT / PACH-1`.
+- Ollantaytambo / Patacancha: `OLL-0 / PAT-0 / PAT-1 / OLL-1`, with `OLL-1` as a candidate post-town/outlet point for the first corridor.
+
+The full monitoring-node architecture and citizen-science mapping logic live in:
+`WILLKAMAYU_MONITORING_AND_CITIZEN_SCIENCE_NODE_REGISTER.md`.
+
+This is a hypothesis for scoping, not a finalized MRV network. Station selection must later account for access, seasonality, tributary inputs, wastewater discharges, hydromorphology, sampling protocol, laboratory requirements and community priorities. Not every candidate point implies a permanent sensor.
 
 ## PTAR Cusco / San Jerónimo — capacity and investment evidence
 
@@ -121,10 +142,14 @@ This is **not yet canonical evidence** because the currently located copy is a s
 2. Retrieve and structure DIGESA 2006 Huatanay monitoring data and 2005/2007 Vilcanota series.
 3. Locate the full ANA 2025 monitoring report once deposited in the institutional repository; map stations relevant to Huambutío and Pisac–Ollantaytambo.
 4. Retrieve primary JBIC/JICA/Nippon Koei / MVCS / SEDACUSCO feasibility and design documents for PTAR San Jerónimo.
-5. Create a source-by-source table of station coordinates, sampling season, parameters, ECA/classification framework and findings.
-6. Compare historical stations with the candidate M1–M4 monitoring logic before the team decides the final MRV design.
-7. Add any newer peer-reviewed Vilcanota/Urubamba biological, chemical, microbiological, eDNA or microplastics studies after quality screening.
+5. Verify exact Yanahuara tributary geometry and candidate safe-access points.
+6. Locate `PGIRH-067 Pachar` coordinates, installed variables, data frequency, operating status and SNIRH/data-access route.
+7. Map Hatun Mayu source/tributary stations and evaluate the Huarocondo satellite citizen-science hypothesis.
+8. Map Patacancha and main-stem access for `PAT-0 / PAT-1 / OLL-0 / OLL-1`.
+9. Create a source-by-source table of station coordinates, sampling season, parameters, ECA/classification framework and findings.
+10. Compare historical stations with the candidate monitoring-node architecture before the team decides the final MRV design.
+11. Add any newer peer-reviewed Vilcanota/Urubamba biological, chemical, microbiological, eDNA or microplastics studies after quality screening.
 
 ## Website-use rule
 
-Use this register as the primary home for evidence depth. The website should state only the minimum narrative needed for orientation; detailed source history belongs here unless a future evidence/source section is explicitly approved. This prevents duplication while keeping the research traceable.
+Use this register as the primary home for evidence depth. The website should state only the minimum narrative needed for orientation; detailed source history belongs here unless a future evidence/source section is explicitly approved. Monitoring-node and school/citizen-science architecture belongs in `WILLKAMAYU_MONITORING_AND_CITIZEN_SCIENCE_NODE_REGISTER.md`. This prevents duplication while keeping the research traceable.
