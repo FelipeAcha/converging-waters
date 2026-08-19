@@ -2,6 +2,7 @@
 
 Status: ACTIVE / DISCOVERY
 Recorded: 2026-08-18
+Updated: 2026-08-19
 Owner: Converging Waters evidence workstream
 Purpose: keep verified facts, source leads and unresolved project-scope choices separate so website language does not turn hypotheses into commitments.
 
@@ -43,20 +44,51 @@ Purpose: keep verified facts, source leads and unresolved project-scope choices 
 
 ### OPEN TEAM DECISIONS
 
-1. **Initial working / benefit corridor:** candidate `Pisac → Calca → Yucay → Urubamba → Ollantaytambo`.
-2. **Primary beneficiaries:** identify the communities, municipalities, guardians, water users and ecological priorities that define the first benefit geography.
-3. **Measurement geography:** measurements may need to extend outside the benefit corridor to establish causality/source attribution.
-4. **Cusco/Huatanay:** decide whether Huatanay/Cusco participation is included in Phase 1 or held as a Phase 2 expansion.
-5. **Citizen science in Cusco:** determine whether urban schools, universities, communities and other actors would materially improve source attribution, public learning and stewardship enough to justify early inclusion.
+1. **Initial working / benefit corridor:** candidate continuous corridor `Pisac → Calca → Huarán → Urubamba → Pachar → Ollantaytambo`. These are orientation anchors, not a finalized station list and not a claim that benefits are limited to the named settlements.
+2. **Yanahuara vs Pachar station density:** Yanahuara is between Urubamba and Pachar; Pachar is farther downstream and close to Ollantaytambo. Keep Yanahuara as an additional/alternate sampling area until tributaries, discharges, access and station-spacing needs are evaluated. Do not select either solely because of town spacing.
+3. **Primary beneficiaries:** identify the communities, municipalities, guardians, water users and ecological priorities that define the first benefit geography.
+4. **Measurement geography:** measurements may need to extend outside the benefit corridor to establish causality/source attribution.
+5. **Cusco/Huatanay:** decide whether Huatanay/Cusco participation is included in Phase 1 or held as a Phase 2 expansion.
+6. **Citizen science in Cusco:** determine whether urban schools, universities, communities and other actors would materially improve source attribution, public learning and stewardship enough to justify early inclusion.
+
+### Place-anchor verification
+
+- **Huarán** is an officially recognized populated center/community in Calca. Open geodata places Calca about 7 km east of Huarán; Huarán is a useful intermediate orientation point between Calca and Urubamba, but the current evidence does **not** support calling it the exact midpoint.
+- **Yanahuara** lies on the Urubamba–Ollantaytambo corridor.
+- **Pachar** is in Ollantaytambo district and official tourism material places it about 6 km from Ollantaytambo. Open geodata places Pachar downstream/west of Yanahuara on the same corridor. For a sparse orientation chain, Pachar is the stronger primary downstream anchor; Yanahuara remains a plausible additional station area.
+
+### Place-anchor sources
+
+1. Municipalidad Provincial de Calca, 2025: Centro Poblado de Arin Huarán. Source: https://www.gob.pe/institucion/municalca/normas-legales/7541697-344-2025-a-mpc
+2. OpenStreetMap/GeoNames via Mapcarta: Huarán coordinates and relative location to Calca; used only for orientation, not as hydrological evidence. Source: https://mapcarta.com/20224238
+3. Mincetur inventory: Pachar reference approximately 6 km from Ollantaytambo. Source: https://consultasenlinea.mincetur.gob.pe/fichaInventario/index.aspx?cod_Ficha=7238
+4. Municipalidad Distrital de Ollantaytambo tourism site: Pachar community on the Urubamba corridor. Source: https://ollantaytambodestinoseguro.muniollantaytambo.gob.pe/chullaracay/
+5. OpenStreetMap/GeoNames via Mapcarta: Yanahuara and Pachar coordinates; used only to establish relative orientation. Sources: https://mapcarta.com/es/25133048 and https://mapcarta.com/es/20213062
 
 ### Candidate monitoring logic for team review
 
 - `M1 — Main-stem upstream reference`: Willkamayu/Vilcanota before receiving the Huatanay.
 - `M2 — Tributary signal`: Huatanay immediately before confluence.
 - `M3 — Mixed downstream signal`: Willkamayu/Vilcanota immediately below Huambutío.
-- `M4+ — Corridor stations`: representative sites from Pisac through Ollantaytambo.
+- `M4+ — Corridor stations`: representative sites from Pisac through Ollantaytambo, selected by hydrological relevance rather than by settlement spacing alone.
 
 This is a hypothesis for scoping, not a finalized MRV network. Station selection must later account for access, seasonality, tributary inputs, wastewater discharges, hydromorphology, sampling protocol, laboratory requirements and community priorities.
+
+## PTAR Cusco / San Jerónimo — capacity and investment evidence
+
+### VERIFIED / TIME-SENSITIVE
+
+- The `US$46M` figure came from a **2023 ProInversión estimate for the PTAR Cusco / San Jerónimo improvement and expansion project**. It was not a generic river investment.
+- The same 2023 source documented treatment design capacity of 580 L/s, peak inflows above 800 L/s, and a proposed increase toward 938 L/s, together with improvements to General and Huatanay interceptors.
+- Public investment estimates have changed materially over time. Later ProInversión portfolio communications cite different values, including approximately S/230M in 2024 and substantially higher USD estimates in 2026. Therefore, the website should **not present one undated investment figure as current**.
+- Website rule: explain the infrastructure/capacity relevance in plain language; keep volatile monetary estimates dated in this evidence register unless a later source-audit step intentionally promotes a current figure.
+
+### PTAR sources
+
+1. ProInversión, 18 Aug 2023: PTAR San Jerónimo expansion, US$46M estimate; 580 L/s design, >800 L/s peaks, proposed 938 L/s. Source: https://www.gob.pe/institucion/proinversion/noticias/820703-se-ampliara-y-mejorara-la-ptar-san-jeronimo-de-cusco-con-una-inversion-estimada-de-us-46-millones
+2. ProInversión, 6 Sep 2024: PTAR San Jerónimo expansion, referential investment S/230M. Source: https://www.gob.pe/institucion/proinversion/noticias/1017650-cusco-planta-de-tratamiento-de-aguas-residuales-avanza-firme-en-su-estructuracion
+3. ProInversión, 27 Jun 2026: Cusco portfolio lists PTAR Cusco at US$129M. Source: https://www.gob.pe/institucion/proinversion/noticias/1412409-proinversion-impulsa-25-proyectos-app-y-adendas-por-us-6690-millones-en-mancomunidad-regional-de-los-andes
+4. ProInversión, 2026 water/sanitation portfolio communication lists PTAR Cusco at US$165M, illustrating continuing estimate volatility. Source: https://www.gob.pe/institucion/proinversion/noticias/1401092-proinversion-cartera-de-agua-y-saneamiento-por-us-5300-millones-atrae-interes-en-foro-regional
 
 ## Water-quality evidence base — first tranche
 
