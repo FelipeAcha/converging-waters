@@ -17,6 +17,12 @@ This directory is the durable governance and continuity layer for Converging Wat
 
 `docs/` serves the public GitHub Pages website. Governance remains in the root-level `docs-governance/` directory so website publication files and project-governance records do not silently become the same authority.
 
+## Active Willkamayu discovery registers
+
+- [`registries/WILLKAMAYU_HYDROLOGY_AND_EVIDENCE_REGISTER.md`](registries/WILLKAMAYU_HYDROLOGY_AND_EVIDENCE_REGISTER.md) — hydrology, naming, source history, water-quality evidence and source confidence.
+- [`registries/WILLKAMAYU_MONITORING_AND_CITIZEN_SCIENCE_NODE_REGISTER.md`](registries/WILLKAMAYU_MONITORING_AND_CITIZEN_SCIENCE_NODE_REGISTER.md) — proposed monitoring-node architecture and its connection to citizen-science participation; not a finalized MRV network.
+- [`handoffs/2026-08-19/CW_SCHOOL_RESEARCH_TO_MONITORING_HANDOFF.md`](handoffs/2026-08-19/CW_SCHOOL_RESEARCH_TO_MONITORING_HANDOFF.md) — cross-conversation transfer from the school-research workstream without duplicating school-census authority.
+
 ## Current gate
 
 `CW-G1 / CW-PRES-01`
