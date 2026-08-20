@@ -17,15 +17,15 @@ body{display:flex;flex-direction:column}
 </style>
 </head>
 <body>
-<div id="cw-progress-banner"><b>v16.5 APPROVED · cumulative progress preview</b> · approved content through #system. Downstream sections remain preserved in the candidate and are hidden only in this review transport.</div>
-<iframe id="cw-progress-frame" src="../v16.5/" title="Converging Waters cumulative progress through v16.5"></iframe>
+<div id="cw-progress-banner"><b>v16.6 APPROVED · cumulative progress preview</b> · approved content through #what-we-need-now. Downstream sections remain preserved in the candidate and are hidden only in this review transport.</div>
+<iframe id="cw-progress-frame" src="../v16.6/" title="Converging Waters cumulative progress through v16.6"></iframe>
 <div id="cw-progress-error"><div><b>Preview could not load</b><span id="cw-progress-error-text"></span></div></div>
 <script>
 (() => {
   const frame = document.getElementById('cw-progress-frame');
   const errorBox = document.getElementById('cw-progress-error');
   const errorText = document.getElementById('cw-progress-error-text');
-  const FRONTIER_ID = 'system';
+  const FRONTIER_ID = 'what-we-need-now';
   let attempts = 0;
 
   function fail(message){
@@ -40,21 +40,27 @@ body{display:flex;flex-direction:column}
       const doc = frame.contentDocument;
       if (!doc) throw new Error('candidate document unavailable');
       const frontier = doc.querySelector('#' + FRONTIER_ID);
+      const system = doc.querySelector('#system');
       const stanley = doc.querySelector('#stanley-update');
-      if (!frontier || !stanley) {
-        if (attempts < 80) return setTimeout(applyFrontier, 100);
+      if (!frontier || !system || !stanley) {
+        if (attempts < 120) return setTimeout(applyFrontier, 100);
         throw new Error('approved candidate did not finish mounting');
       }
 
-      const required = [
+      const requiredSystem = [
         'Pisac → Coya → Lamay → Calca → Huarán → Urubamba → Yanahuara → Pachar → Ollantaytambo',
         'Coya · COY-1',
         'Lamay · LAM-1',
         'Cusco–Huatanay: why the infrastructure matters',
         'YAN-0', 'PACH-HAT', 'OLL-1'
       ];
-      if (required.some(t => !frontier.textContent.includes(t))) throw new Error('v16.5 approval content mismatch');
+      if (requiredSystem.some(t => !system.textContent.includes(t))) throw new Error('v16.5 approved #system content mismatch');
       if (stanley.querySelectorAll('img').length !== 13 || stanley.querySelectorAll('a').length !== 17) throw new Error('Stanley/WGA preservation mismatch');
+      const open = doc.querySelector('#open-decisions');
+      const outcome = doc.querySelector('#first-outcome');
+      if (!open || !open.textContent.includes('People and organizations are not interchangeable') || !open.textContent.includes('WGA feasibility + authority')) throw new Error('v16.6 open-decisions content mismatch');
+      if (!outcome || !outcome.textContent.includes('Converging Waters — 60–90 Day Readiness Package') || !outcome.textContent.includes('Pilot Readiness Plan') || !outcome.textContent.includes('Discovery & Opportunity Map') || !outcome.textContent.includes('Technical Feasibility & Support Note')) throw new Error('v16.6 first-outcome content mismatch');
+      if (!frontier.textContent.includes('Review people and institutions on separate lanes') || !frontier.textContent.includes('From each person') || !frontier.textContent.includes('From each project or organization')) throw new Error('v16.6 frontier content mismatch');
 
       const sections = [...doc.querySelectorAll('main > section')];
       const frontierIndex = sections.findIndex(s => s.id === FRONTIER_ID);
@@ -69,7 +75,7 @@ body{display:flex;flex-direction:column}
 
       const style = doc.createElement('style');
       style.id = 'cw-progress-approved-frontier-style';
-      style.textContent = `#${FRONTIER_ID}::after{content:"Approved review frontier — sections below this point remain preserved in v16.5 but are intentionally hidden until the next incremental review.";display:block;margin:30px auto 0;padding:14px 16px;max-width:900px;border:1px dashed #c9bda9;border-radius:16px;background:rgba(255,255,255,.55);color:#647368;font:700 13px/1.4 Inter,system-ui,sans-serif;letter-spacing:0}[hidden]{display:none!important}`;
+      style.textContent = `#${FRONTIER_ID}::after{content:"Approved review frontier — sections below this point remain preserved in v16.6 but are intentionally hidden until the next incremental review.";display:block;margin:30px auto 0;padding:14px 16px;max-width:900px;border:1px dashed #c9bda9;border-radius:16px;background:rgba(255,255,255,.55);color:#647368;font:700 13px/1.4 Inter,system-ui,sans-serif;letter-spacing:0}[hidden]{display:none!important}`;
       doc.head.appendChild(style);
     } catch (err) {
       fail(err.message || err);
@@ -77,7 +83,7 @@ body{display:flex;flex-direction:column}
   }
 
   frame.addEventListener('load', () => setTimeout(applyFrontier, 50), {once:true});
-  setTimeout(() => { if (!frame.contentDocument?.querySelector('#system') && attempts === 0) applyFrontier(); }, 500);
+  setTimeout(() => { if (!frame.contentDocument?.querySelector('#what-we-need-now') && attempts === 0) applyFrontier(); }, 500);
 })();
 </script>
 </body>
