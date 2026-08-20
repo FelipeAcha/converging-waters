@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Converging Waters — v16.8 approved candidate</title>
+<meta name="robots" content="noindex,nofollow">
+<style>
+html,body{margin:0;min-height:100%;background:#f5efe6;color:#13251d;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
+.cw-loading{min-height:100vh;display:grid;place-items:center;padding:30px;text-align:center}
+.cw-loading div{max-width:720px;background:#fffdf8;border:1px solid #e4dccf;border-radius:28px;padding:32px;box-shadow:0 18px 48px rgba(16,38,29,.12)}
+.cw-loading b{display:block;font-size:1.5rem;margin-bottom:8px}.cw-loading span{color:#647368}
+#cw-v167-source{display:none}
+</style>
+</head>
+<body>
+<div class="cw-loading"><div><b>Converging Waters</b><span>Loading approved candidate v16.8…</span></div></div>
+<iframe id="cw-v167-source" src="../v16.7/index.html" aria-hidden="true" tabindex="-1"></iframe>
+<script>
+(() => {
+  const sourceFrame = document.querySelector('#cw-v167-source');
+  const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+  const amazonasHTML = `<section class="section" id="amazonas-application">
+<div class="container">
+<div class="section-head">
+<div>
+<div class="kicker">11 · Amazonas Sagrada — territorial application</div>
+<h2>Learn from the model without collapsing the project, the people or the territory</h2>
+</div>
+<p>Amazonas Sagrada remains autonomous. The useful question for Converging Waters is which parts of its regenerative-enterprise experience can strengthen conservation, livelihoods and evidence without importing a model that the territory has not chosen.</p>
+</div>
+<div class="callout v168-callout">
+<div class="status">Project-level hypothesis to validate</div>
+<h3>Conservation and livelihood value can reinforce each other</h3>
+<p>The working hypothesis is that conservation becomes more durable when community benefit, viable livelihoods and territorial stewardship reinforce one another. The specific mechanisms, beneficiaries, governance and evidence needs must be validated with Amazonas Sagrada and relevant territorial actors.</p>
+</div>
+<div class="grid four" style="margin-top:18px">
+<article class="card mint"><h3>Territorial priorities</h3><p>What does Amazonas Sagrada most want to understand, protect, regenerate or unlock first? Scientific or technical support follows those priorities rather than defining them.</p></article>
+<article class="card blue"><h3>Livelihood + conservation mechanisms</h3><p>Explore where tourism, products, traceability, production or other revenue activities already create community value and whether they measurably reinforce conservation.</p></article>
+<article class="card yellow"><h3>Evidence + traceability</h3><p>Identify where biodiversity, water, sanitation, provenance or impact evidence would improve decisions, credibility, learning or appropriate financing.</p></article>
+<article class="card clay"><h3>Boundaries + governance</h3><p>Clarify what remains entirely within Amazonas Sagrada, what requires community or Indigenous participation, and what — if anything — is useful to share through Converging Waters.</p></article>
+</div>
+<div class="grid two" style="margin-top:18px">
+<article class="card personal">
+<div class="label">Chelsea · possible personal operating lens</div>
+<h3>Execution, production and regenerative-enterprise discipline</h3>
+<p>Chelsea’s experience may help test operational feasibility, production systems, brand discipline, visitor or product experience and how economic activity can support conservation. This is a possible personal contribution, not an institutional commitment by Amazonas Sagrada.</p>
+<details class="source-detail"><summary>Background evidence carried forward from the inherited source</summary><ul><li>Two decades in production.</li><li>10 years at Maes Studio.</li><li>High-end brand environments and operational reliability.</li><li>Founder of Crafty Chicago and sustainable craft-service operations.</li><li>Composting, recycling, organic and local sourcing experience.</li></ul></details>
+</article>
+<article class="card">
+<div class="status">Cross-territorial learning</div>
+<h3>Transfer principles, not the Amazonian business model</h3>
+<p>Willkamayu may learn from the principle of aligning ecological recovery with local value creation. Any river fund, tourism contribution, hotel participation, restoration sponsorship or accountability standard remains a Willkamayu hypothesis to test in its own social, ecological and legal context.</p>
+</article>
+</div>
+<div class="boundary"><b>Person / project / territory boundary</b><p>Chelsea confirms her own interests, availability and possible contribution. Amazonas Sagrada confirms project priorities, resources and commitments. Communities and Indigenous or territorial actors confirm what belongs to their rights, knowledge, representation and benefit-sharing.</p></div>
+</div>
+</section>`;
+
+  const technicalHTML = `<section class="section" id="technical-options">
+<div class="container">
+<div class="section-head">
+<div>
+<div class="kicker">12 · Controlled technical options</div>
+<h2>Turn technical possibilities into testable options — not promised pilots</h2>
+</div>
+<p>Patrick’s experience can inform technical scoping. A pilot exists only after the relevant project or territory confirms the problem, site, permissions, resources and purpose.</p>
+</div>
+<div class="grid four">
+<article class="card personal"><div class="label">Patrick · possible personal technical lens</div><h3>Environmental + spatial engineering</h3><ul class="clean"><li>Environmental engineering.</li><li>Spatial analysis and satellite assessment.</li><li>Data modeling.</li><li>Watershed and headwater protection.</li></ul></article>
+<article class="card mint"><h3>Water + sanitation options</h3><ul class="clean"><li>Alternative wastewater systems.</li><li>Effluent purification.</li><li>Moringa-based clarification.</li><li>Native-species bioremediation.</li><li>Community-scale design.</li></ul></article>
+<article class="card blue"><div class="status">Unverified R&amp;D lead</div><h3>Plasmatic-oxygen water cleaning</h3><p>Carry this forward only as a user-provided technical lead. Before any pilot claim: obtain specifications, mechanism, independent evidence, laboratory validation, regulatory fit, energy/cost data and comparison with established or nature-based alternatives.</p></article>
+<article class="card yellow"><h3>Where GIS can add value</h3><p>Use spatial analysis to screen watersheds, headwaters, pressures, access, intervention sites and monitoring design before selecting field infrastructure.</p></article>
+</div>
+<div class="pilot-flow">
+<div class="pilot-step"><b>1</b><span>Define the decision or problem the option must solve.</span></div><div class="pilot-step"><b>2</b><span>Establish baseline, comparator and success / stop criteria.</span></div><div class="pilot-step"><b>3</b><span>Confirm site, rights, permissions, safety and operator.</span></div><div class="pilot-step"><b>4</b><span>Specify method, QA/QC, measurements and independent validation.</span></div><div class="pilot-step"><b>5</b><span>Document cost, energy, maintenance and unintended effects.</span></div><div class="pilot-step"><b>6</b><span>Decide: stop, revise, repeat or scale — based on evidence.</span></div>
+</div>
+<div class="boundary"><b>Technical authority boundary</b><p>Patrick may help scope or assess options personally. Amazonas Sagrada, Willkamayu, WGA or another organization must separately confirm whether it supports a pilot, contributes resources or accepts operational responsibility. WGA review may improve methods or instrumentation, but no WGA commitment is assumed.</p></div>
+</div>
+</section>`;
+
+  const financeHTML = `<section class="section" id="finance-hypotheses">
+<div class="container">
+<div class="section-head">
+<div>
+<div class="kicker">13 · Financing hypotheses</div>
+<h2>Finance follows purpose, readiness and evidence</h2>
+</div>
+<p>The financing architecture should distinguish public-interest learning and stewardship from potentially investable activities. A funding story is not evidence that a project is ready for funding.</p>
+</div>
+<div class="grid four">
+<article class="card mint"><h3>Grant / philanthropic layer</h3><ul class="clean"><li>Baseline and biodiversity studies.</li><li>Community listening and participation.</li><li>Citizen-science and guardian capacity.</li><li>Legal and institutional scoping.</li><li>Early restoration design.</li></ul></article>
+<article class="card blue"><h3>Potentially investable layer</h3><ul class="clean"><li>Regenerative infrastructure.</li><li>Sanitation or water systems with a viable operating model.</li><li>Traceable products or services.</li><li>Revenue-linked conservation mechanisms.</li></ul><p class="micro" style="margin-top:10px">Only after demand, governance, economics, safeguards and impact evidence are credible.</p></article>
+<article class="card yellow"><h3>Sector + visitor contributions</h3><ul class="clean"><li>Restoration sponsorship.</li><li>Hotel or visitor contributions.</li><li>Water-responsibility standards.</li><li>Monitoring or stewardship support.</li></ul><p class="micro" style="margin-top:10px">Use measurable obligations, local-benefit rules and anti-greenwashing safeguards.</p></article>
+<article class="card clay"><h3>Shared layer</h3><p>Joint fundraising makes sense only for genuinely shared costs or outcomes. Do not force Willkamayu and Amazonas Sagrada into one portfolio, one pilot stage or one financing instrument merely because they collaborate.</p></article>
+</div>
+<div class="grid three question-grid">
+<div class="question"><b>What must evidence first?</b><span>Which questions, baselines, governance conditions or proof points are required before approaching a funder?</span></div><div class="question"><b>Which capital fits which function?</b><span>What should remain grant-funded or philanthropic, and what activity could eventually support investment or earned revenue?</span></div><div class="question"><b>Who can actually commit or introduce?</b><span>Separate personal networks and advice from organizational authority, institutional introductions or financing commitments.</span></div>
+</div>
+<div class="boundary"><b>Simona / WGA boundary</b><p>Simona may contribute MRV, partnership or green-finance framing personally if she confirms that role. WGA-level introductions, staff time, resources, financing capacity or institutional commitments require WGA confirmation by someone with appropriate authority.</p></div>
+<div class="no-commit">Working rule: evidence before fundraising; readiness before investment language; explicit authority before representing any person or organization as a financing partner.</div>
+</div>
+</section>`;
+
+  const candidateCSS = `
+#amazonas-application .grid,#technical-options .grid,#finance-hypotheses .grid{display:grid;gap:16px}
+#amazonas-application .grid.two,#technical-options .grid.two,#finance-hypotheses .grid.two{grid-template-columns:repeat(2,1fr)}
+#amazonas-application .grid.three,#technical-options .grid.three,#finance-hypotheses .grid.three{grid-template-columns:repeat(3,1fr)}
+#amazonas-application .grid.four,#technical-options .grid.four,#finance-hypotheses .grid.four{grid-template-columns:repeat(4,1fr)}
+#amazonas-application .v168-callout{box-shadow:0 18px 46px rgba(16,38,29,.10)}
+#amazonas-application .boundary,#technical-options .boundary,#finance-hypotheses .boundary{margin-top:18px;background:#fff8dc;border:1px solid #eedb9a;border-radius:20px;padding:17px 18px}
+#amazonas-application .boundary b,#technical-options .boundary b,#finance-hypotheses .boundary b{display:block;margin-bottom:5px;color:#594111}
+#amazonas-application .boundary p,#technical-options .boundary p,#finance-hypotheses .boundary p{color:#594111;font-size:.94rem}
+#amazonas-application .personal,#technical-options .personal{border:1px solid #cfe1d6;background:#f6fbf7}
+#amazonas-application .personal .label,#technical-options .personal .label{font-size:.75rem;text-transform:uppercase;letter-spacing:.1em;font-weight:900;color:var(--green);margin-bottom:8px}
+#amazonas-application .source-detail{margin-top:15px;border-top:1px solid rgba(19,37,29,.13);padding-top:12px}
+#amazonas-application .source-detail summary{cursor:pointer;font-size:.86rem;font-weight:850;color:#365246}
+#amazonas-application .source-detail ul{margin:10px 0 0;padding-left:20px;color:#617068;font-size:.88rem}
+#technical-options .pilot-flow{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-top:18px}
+#technical-options .pilot-step{background:#fff;border:1px solid var(--line);border-radius:18px;padding:15px;text-align:center}
+#technical-options .pilot-step b{display:grid;place-items:center;width:2rem;height:2rem;margin:0 auto 9px;border-radius:999px;background:var(--green);color:#fff}
+#technical-options .pilot-step span{display:block;color:var(--muted);font-size:.84rem}
+#finance-hypotheses .question-grid{margin-top:18px}
+#finance-hypotheses .question{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px}
+#finance-hypotheses .question b{display:block;margin-bottom:4px;color:var(--deep)}
+#finance-hypotheses .question span{color:var(--muted);font-size:.92rem}
+#finance-hypotheses .micro{font-size:.88rem;color:#63736a}
+#finance-hypotheses .no-commit{margin-top:18px;background:#f6f1e8;border:1px dashed #cdbc9e;border-radius:18px;padding:14px 16px;color:#536158;font-size:.9rem;font-weight:700}
+/* Targeted regression fix from user screenshot: readable list text on the dark shared-convergence callout. */
+#first-outcome .callout ul.clean li{color:rgba(255,255,255,.96)!important}
+@media(max-width:950px){#amazonas-application .grid.two,#amazonas-application .grid.three,#amazonas-application .grid.four,#technical-options .grid.two,#technical-options .grid.three,#technical-options .grid.four,#finance-hypotheses .grid.two,#finance-hypotheses .grid.three,#finance-hypotheses .grid.four,#technical-options .pilot-flow{grid-template-columns:1fr}#technical-options .pilot-step{text-align:left;display:grid;grid-template-columns:auto 1fr;column-gap:12px;align-items:start}#technical-options .pilot-step b{grid-row:1/3;margin:0}#technical-options .pilot-step span{align-self:center}}
+`;
+
+  sourceFrame.addEventListener('load', async () => {
+    try {
+      const frameDoc = sourceFrame.contentDocument;
+      let ready = false;
+      for (let i = 0; i < 180; i += 1) {
+        if (frameDoc && frameDoc.querySelector('#what-we-need-now') && frameDoc.querySelector('#chelsea') && frameDoc.querySelector('#finance') && frameDoc.title.includes('v16.7 REV 4')) { ready = true; break; }
+        await sleep(60);
+      }
+      if (!ready) throw new Error('approved v16.7 source did not reach mounted state');
+
+      const parsed = document.implementation.createHTMLDocument('');
+      parsed.head.innerHTML = frameDoc.head.innerHTML;
+      parsed.body.innerHTML = frameDoc.body.innerHTML;
+      const style = parsed.createElement('style');
+      style.setAttribute('data-cw-v16-8', 'amazonas-technical-finance-plus-contrast-fix');
+      style.textContent = candidateCSS;
+      parsed.head.appendChild(style);
+
+      const replaceSection = (id, html) => {
+        const current = parsed.querySelector('#' + id);
+        if (!current) throw new Error('missing #' + id + ' in v16.7 source');
+        const template = parsed.createElement('template'); template.innerHTML = html; current.replaceWith(template.content.firstElementChild);
+      };
+      replaceSection('chelsea', amazonasHTML);
+      const oldAmazonas = parsed.querySelector('#amazonas'); if (!oldAmazonas) throw new Error('missing #amazonas in v16.7 source'); oldAmazonas.remove();
+      replaceSection('technical', technicalHTML);
+      replaceSection('finance', financeHTML);
+
+      parsed.querySelectorAll('a[href="#chelsea"],a[href="#amazonas"]').forEach(a => a.setAttribute('href','#amazonas-application'));
+      parsed.querySelectorAll('a[href="#technical"]').forEach(a => a.setAttribute('href','#technical-options'));
+      parsed.querySelectorAll('a[href="#finance"]').forEach(a => a.setAttribute('href','#finance-hypotheses'));
+      parsed.title = 'Converging Waters — v16.8 approved candidate';
+
+      const people = parsed.querySelector('#people');
+      if (!people || !people.textContent.includes('Stanley / WGA') || !people.textContent.includes('Simona / WGA') || !people.textContent.includes('Chelsea / Amazonas Sagrada') || !people.textContent.includes('Patrick / Amazonas Sagrada') || !people.textContent.includes('María Gracia') || !people.textContent.includes('Felipe')) throw new Error('authoritative people map preservation mismatch');
+      if (parsed.querySelector('#chelsea') || parsed.querySelector('#amazonas') || parsed.querySelector('#technical') || parsed.querySelector('#finance')) throw new Error('legacy v16.8 source cluster still active');
+      const amazon = parsed.querySelector('#amazonas-application'); const tech = parsed.querySelector('#technical-options'); const fin = parsed.querySelector('#finance-hypotheses');
+      if (!amazon || !tech || !fin) throw new Error('v16.8 replacement cluster missing');
+      const mustCarry = ['Two decades in production.','10 years at Maes Studio.','Founder of Crafty Chicago','Environmental engineering.','Moringa-based clarification.','Plasmatic-oxygen water cleaning','evidence before fundraising'];
+      if (mustCarry.some(t => !parsed.body.textContent.includes(t))) throw new Error('v16.8 no-loss marker missing');
+      const stale = ['The Amazon needs protection policies','The Sacred Valley needs the same logic around water.','Questions for Simona'];
+      if (stale.some(t => parsed.body.textContent.includes(t))) throw new Error('stale v16.8 framing still present');
+      if (!parsed.querySelector('#first-outcome .callout ul.clean li')) throw new Error('shared-convergence list target missing');
+      if (parsed.querySelectorAll('a[href^="http://"],a[href^="https://"]').length !== 46) throw new Error('external href count mismatch');
+
+      document.head.innerHTML = parsed.head.innerHTML;
+      document.body.innerHTML = parsed.body.innerHTML;
+      requestAnimationFrame(() => {
+        const bullet = document.querySelector('#first-outcome .callout ul.clean li');
+        const color = bullet ? getComputedStyle(bullet).color : '';
+        if (!/^rgba?\(255,\s*255,\s*255/.test(color)) {
+          document.body.innerHTML = `<div class="cw-loading"><div><b>Candidate contrast regression</b><span>Computed shared-callout text color: ${color || 'missing'}</span></div></div>`;
+        }
+      });
+    } catch (err) {
+      document.body.innerHTML = `<div class="cw-loading"><div><b>Candidate could not load</b><span>${String(err.message || err)}</span></div></div>`;
+    }
+  }, {once:true});
+})();
+</script>
+</body>
+</html>
