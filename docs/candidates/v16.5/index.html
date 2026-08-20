@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Converging Waters — v16.5 approved candidate</title>
+<meta name="robots" content="noindex,nofollow">
+<style>
+html,body{margin:0;min-height:100%;background:#f5efe6;color:#13251d;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
+.cw-loading{min-height:100vh;display:grid;place-items:center;padding:30px;text-align:center}
+.cw-loading div{max-width:720px;background:#fffdf8;border:1px solid #e4dccf;border-radius:28px;padding:32px;box-shadow:0 18px 48px rgba(16,38,29,.12)}
+.cw-loading b{display:block;font-size:1.5rem;margin-bottom:8px}.cw-loading span{color:#647368}
+</style>
+</head>
+<body>
+<div class="cw-loading"><div><b>Converging Waters</b><span>Loading approved candidate v16.5…</span></div></div>
+<script>
+(async () => {
+  const SOURCE = '../v16.1.1/index.html';
+  try {
+    const res = await fetch(SOURCE, {cache: 'no-store'});
+    if (!res.ok) throw new Error(`source HTTP ${res.status}`);
+    const source = await res.text();
+    const parsed = new DOMParser().parseFromString(source, 'text/html');
+
+    const emerged = parsed.querySelector('#emerged-since-call');
+    if (!emerged) throw new Error('missing #emerged-since-call');
+    const wgaSummary = [...emerged.querySelectorAll('article.card')].find(card => card.querySelector('h3')?.textContent.trim() === "WGA's expanded field possibility");
+    if (!wgaSummary) throw new Error('v16.2 target card not found');
+    wgaSummary.remove();
+
+    const thesis = parsed.querySelector('#thesis');
+    if (!thesis) throw new Error('missing #thesis');
+    const duplicateSequence = thesis.querySelector('.sequence');
+    if (!duplicateSequence) throw new Error('v16.3 duplicate sequence not found');
+    duplicateSequence.remove();
+
+    const purposeMrv = parsed.querySelector('#purpose-mrv');
+    if (!purposeMrv) throw new Error('missing #purpose-mrv');
+    purposeMrv.hidden = true;
+    purposeMrv.setAttribute('aria-hidden', 'true');
+
+    const system = parsed.querySelector('#system');
+    if (!system) throw new Error('missing #system');
+    const systemTemplate = parsed.createElement('template');
+    systemTemplate.innerHTML = `<section class="section" id="system">
+<div class="container">
+<div class="section-head">
+<div>
+<div class="kicker">07 · River system + candidate monitoring scope</div>
+<h2>One river system. A bounded first corridor. Tributaries make impact legible.</h2>
+</div>
+<p>For teammates who do not live in the Sacred Valley, this section separates three different questions: what changes along the main river, what enters through tributaries, and what wider-basin pressures should be attributed separately.</p>
+</div>
+<div class="note wide-note">
+<b>Working naming convention</b>
+<p><b>Willkamayu</b> is the Inka / Quechua name associated with the “sacred river.” Current institutional sources use <b>Vilcanota</b> and <b>Urubamba</b> for the same main river system across different stretches. This page therefore uses <b>Willkamayu / Vilcanota–Urubamba</b> when referring to the connected main stem as a whole.</p>
+</div>
+<div class="note wide-note">
+<b>How to read the monitoring architecture</b>
+<p><b>Main-river checkpoints</b> follow how the Willkamayu changes as it moves downstream. <b>Tributary diagnostic nodes</b> use a before + tributary + after pattern to identify what enters at important confluences. <b>Wider-basin attribution</b> looks beyond the first Sacred Valley corridor when a major source — such as Cusco through the Huatanay — may influence the river downstream.</p>
+</div>
+<div class="card-grid two" style="margin-top:18px">
+<article class="card mint">
+<div class="micro-title">Main stem before the confluence</div>
+<h3>Upper Willkamayu / Vilcanota</h3>
+<p>Headwaters and upper-basin conditions flow toward Huambutío. Measuring the main stem before it receives the Huatanay provides an upstream reference.</p>
+</article>
+<article class="card blue">
+<div class="micro-title">Tributary branch from Cusco</div>
+<h3>Cusco → Huatanay</h3>
+<p>Cusco is outside the first Sacred Valley benefit corridor, but its urban water footprint can still matter downstream. The Huatanay carries the signal from this urban system toward its confluence with the Willkamayu / Vilcanota at Huambutío.</p>
+</article>
+</div>
+<div class="card" style="margin-top:18px;border-color:#b8d8c4;background:#f3fbf5">
+<div class="micro-title">Shared confluence node · one place, three comparable signals</div>
+<h3>Huambutío · Huatanay joins the Willkamayu / Vilcanota</h3>
+<p>Candidate attribution logic: <b>M1</b> main stem before the Huatanay + <b>M2</b> Huatanay immediately before the confluence + <b>M3</b> main stem just below Huambutío. Together they can help distinguish upstream conditions from the contribution arriving through Cusco / Huatanay.</p>
+</div>
+<div class="card" style="margin-top:18px;border-color:#d8c99e;background:#fffaf0">
+<div class="micro-title">Higher-resolution longitudinal corridor · proposed</div>
+<h3>Pisac → Coya → Lamay → Calca → Huarán → Urubamba → Yanahuara → Pachar → Ollantaytambo</h3>
+<p>These are candidate orientation, participation and monitoring checkpoints for a bounded first corridor — not a finalized list of permanent stations. Coya and Lamay add resolution between Pisac and Calca so the team can test whether the main-river signal changes progressively or whether one locality or tributary is associated with a distinct shift.</p>
+</div>
+<div class="card-grid two" style="margin-top:18px">
+<article class="card mint">
+<div class="micro-title">Longitudinal checkpoint · candidate</div>
+<h3>Coya · COY-1</h3>
+<p>Start as a recurrent sampling / citizen-science checkpoint on the main stem. Its role is to characterize the river after Pisac and before Lamay, without assuming that a permanent sensor is already justified.</p>
+</article>
+<article class="card blue">
+<div class="micro-title">Longitudinal checkpoint · candidate</div>
+<h3>Lamay · LAM-1</h3>
+<p>Use a second recurrent checkpoint before Calca. Repeated measurements can show whether Coya and Lamay provide distinct information or whether one becomes redundant. Continuous instrumentation would be added only if the evidence supports it.</p>
+</article>
+</div>
+<div class="section-head" style="margin-top:28px;margin-bottom:16px">
+<div>
+<div class="kicker">Diagnostic tributary nodes</div>
+<h3 style="font-size:2rem">Before + tributary + after</h3>
+</div>
+<p>A repeated attribution pattern can reveal what enters the main stem at critical confluences without requiring every point to host a permanent sensor.</p>
+</div>
+<div class="card-grid three">
+<article class="card mint">
+<div class="micro-title">Yanahuara · distinct node</div>
+<h3>Yanahuara microcuenca</h3>
+<p><b>YAN-0</b> main stem before Yanahuara · <b>YAN-T</b> Yanahuara tributary before confluence · <b>YAN-1</b> main stem after mixing. Yanahuara is treated separately from Urubamba for monitoring design.</p>
+</article>
+<article class="card blue">
+<div class="micro-title">Pachar · second sub-basin signal</div>
+<h3>Hatun Mayu → Pachar</h3>
+<p><b>PACH-0</b> main stem before confluence · <b>PACH-HAT</b> Hatun Mayu before confluence · <b>PACH-1</b> main stem after mixing. ANA already operates the <b>PGIRH-067 Pachar hydrological station</b>; its variables and data access should be checked before adding infrastructure.</p>
+</article>
+<article class="card yellow">
+<div class="micro-title">Ollantaytambo · town + tributary attribution</div>
+<h3>Patacancha + town outlet</h3>
+<p><b>OLL-0</b> main stem before the town · <b>PAT-0</b> Patacancha before the urban area · <b>PAT-1</b> Patacancha after crossing the town and before confluence · <b>OLL-1</b> main stem just after Ollantaytambo and the confluence. This makes the post-town point an explicit outlet station for the first corridor.</p>
+</article>
+</div>
+<div class="note wide-note" style="margin-top:18px">
+<b>Citizen-science implication</b>
+<p>The network does not require a permanent sensor at every locality. Main-river checkpoints such as Coya and Lamay can begin with recurrent school/community sampling, while the before + tributary + after nodes answer more specific attribution questions. The school network should later map <b>district → populated center / microcuenca → schools → students → nearest monitoring question</b>.</p>
+</div>
+<div class="note wide-note" style="margin-top:18px">
+<b>Open team decision · Cusco / Huatanay</b>
+<p>Measuring the Huatanay may be scientifically useful from the beginning even if the first place-based benefit and citizen-science corridor remains in the Sacred Valley. These are two separate decisions: <b>measure the source</b> versus <b>activate a territorial program in Cusco</b>. The latter can remain Phase 2 even if Huatanay attribution enters Phase 1.</p>
+</div>
+<div class="callout slim-callout" style="margin-top:18px;background:linear-gradient(135deg,#243b33,#355d52)">
+<div class="micro-title" style="color:#efd488">Hydrological continuity · implication, not project footprint</div>
+<h3>Lower Urubamba → Atalaya → Ucayali → Amazon → Atlantic</h3>
+<p>The main stem continues downstream as the Urubamba. At Atalaya, the Urubamba meets the Tambo and forms the Ucayali; the Ucayali later meets the Marañón to form the Amazon, which reaches the Atlantic. This continuity explains why local river recovery can have wider downstream implications without implying that Converging Waters will monitor, govern or intervene across that entire system.</p>
+</div>
+<div class="note wide-note" style="margin-top:18px">
+<b>Cusco–Huatanay: why the infrastructure matters</b>
+<p>Cusco’s wastewater treatment system includes the <b>PTAR San Jerónimo</b>, which discharges treated effluent to the Huatanay. The Huatanay then joins the Willkamayu / Vilcanota at Huambutío. For Converging Waters, the key question is therefore not simply whether a treatment plant exists, but <b>how much of the downstream signal is already present in the main stem and how much arrives through the Cusco–Huatanay branch</b>.</p>
+<p>The treatment system is also the subject of expansion and improvement planning. Because investment estimates and project status can change, dated figures remain in the evidence register rather than being presented here as timeless facts. This page keeps the stable research question while the evidence workstream tracks current capacity, performance, expansion and monitoring data.</p>
+<p><a href="https://www.gob.pe/institucion/sunass/noticias/1205134-sunass-fiscaliza-planta-de-tratamiento-de-aguas-residuales-en-cusco-para-verificar-calidad-del-vertimiento-al-rio-huatanay" rel="noopener noreferrer" target="_blank">SUNASS context</a> · <a href="https://www.gob.pe/institucion/proinversion/noticias/820703-se-ampliara-y-mejorara-la-ptar-san-jeronimo-de-cusco-con-una-inversion-estimada-de-us-46-millones" rel="noopener noreferrer" target="_blank">2023 ProInversión baseline</a> · <a href="#validation">validation backlog</a>.</p>
+</div>
+</div>
+</section>`;
+    system.replaceWith(systemTemplate.content.firstElementChild);
+
+    parsed.querySelectorAll('[src^="assets/"]').forEach(el => el.setAttribute('src', '../v16.1.1/' + el.getAttribute('src')));
+    parsed.querySelectorAll('link[href^="assets/"]').forEach(el => el.setAttribute('href', '../v16.1.1/' + el.getAttribute('href')));
+    parsed.querySelectorAll('.nav-links a[href^="#"]').forEach(a => {
+      const target = parsed.querySelector(a.getAttribute('href'));
+      if (!target || target.hidden) a.hidden = true;
+    });
+
+    parsed.title = 'Converging Waters — v16.5 approved candidate';
+    document.head.innerHTML = parsed.head.innerHTML;
+    document.body.innerHTML = parsed.body.innerHTML;
+
+    const stanley = document.querySelector('#stanley-update');
+    if (!stanley || stanley.querySelectorAll('img').length !== 13 || stanley.querySelectorAll('a').length !== 17) throw new Error('Stanley/WGA preservation mismatch');
+    if (document.querySelectorAll('a[href^="http://"],a[href^="https://"]').length !== 46) throw new Error('external href count mismatch');
+    if ([...document.querySelectorAll('#emerged-since-call h3')].some(h => h.textContent.trim() === "WGA's expanded field possibility")) throw new Error('v16.2 duplicate still visible');
+    if (document.querySelector('#thesis .sequence')) throw new Error('v16.3 duplicate sequence still present');
+    if (document.body.textContent.split('Listen → Measure → Train → Pilot → Mandate → File or legislate').length - 1 !== 1) throw new Error('territorial sequence count mismatch');
+    const mountedPurpose = document.querySelector('#purpose-mrv');
+    if (!mountedPurpose || !mountedPurpose.hidden || mountedPurpose.getAttribute('aria-hidden') !== 'true') throw new Error('v16.4 purpose-MRV shell not hidden');
+    const mountedSystem = document.querySelector('#system');
+    const required = [
+      'Pisac → Coya → Lamay → Calca → Huarán → Urubamba → Yanahuara → Pachar → Ollantaytambo',
+      'Coya · COY-1',
+      'Lamay · LAM-1',
+      'Huambutío · Huatanay joins the Willkamayu / Vilcanota',
+      'Yanahuara microcuenca',
+      'Hatun Mayu → Pachar',
+      'Patacancha + town outlet',
+      'PGIRH-067 Pachar hydrological station',
+      'Cusco–Huatanay: why the infrastructure matters',
+      'OLL-1'
+    ];
+    if (!mountedSystem || required.some(t => !mountedSystem.textContent.includes(t))) throw new Error('v16.5 approved content mismatch');
+    if (mountedSystem.textContent.split('Huambutío · Huatanay joins the Willkamayu / Vilcanota').length - 1 !== 1) throw new Error('duplicate shared Huambutío node');
+    if (mountedSystem.textContent.includes('Huatanay infrastructure context')) throw new Error('old ambiguous Huatanay label remains');
+    if (mountedSystem.textContent.includes('estimated US$46M project')) throw new Error('stale US$46M label remains');
+  } catch (err) {
+    document.body.innerHTML = `<div class="cw-loading"><div><b>Candidate could not load</b><span>${String(err.message || err)}</span></div></div>`;
+  }
+})();
+</script>
+</body>
+</html>
