@@ -5,86 +5,14 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Converging Waters — Rolling Progress Preview</title>
 <meta name="robots" content="noindex,nofollow">
-<style>
-html,body{margin:0;height:100%;background:#f5efe6;color:#13251d;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;overflow:hidden}
-body{display:flex;flex-direction:column}
-#cw-progress-banner{flex:0 0 auto;padding:10px 16px;background:#10261d;color:white;font:800 13px/1.35 Inter,system-ui,sans-serif;border-bottom:1px solid rgba(255,255,255,.16)}
-#cw-progress-banner b{color:#efd488}
-#cw-progress-frame{flex:1 1 auto;width:100%;border:0;background:#f5efe6}
-#cw-progress-error{display:none;flex:1;place-items:center;padding:30px;text-align:center}
-#cw-progress-error div{max-width:720px;background:#fffdf8;border:1px solid #e4dccf;border-radius:28px;padding:32px;box-shadow:0 18px 48px rgba(16,38,29,.12)}
-#cw-progress-error b{display:block;font-size:1.5rem;margin-bottom:8px}#cw-progress-error span{color:#647368}
-</style>
+<style>html,body{margin:0;height:100%;background:#f5efe6;color:#13251d;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;overflow:hidden}body{display:flex;flex-direction:column}#banner{flex:0 0 auto;padding:10px 16px;background:#10261d;color:#fff;font:800 13px/1.35 Inter,system-ui,sans-serif;border-bottom:1px solid rgba(255,255,255,.16)}#banner b{color:#efd488}iframe{flex:1 1 auto;width:100%;border:0;background:#f5efe6}#error{display:none;flex:1;place-items:center;padding:30px;text-align:center}#error div{max-width:720px;background:#fffdf8;border:1px solid #e4dccf;border-radius:28px;padding:32px}</style>
 </head>
 <body>
-<div id="cw-progress-banner"><b>v16.6 APPROVED · cumulative progress preview</b> · approved content through #what-we-need-now. Downstream sections remain preserved in the candidate and are hidden only in this review transport.</div>
-<iframe id="cw-progress-frame" src="../v16.6/" title="Converging Waters cumulative progress through v16.6"></iframe>
-<div id="cw-progress-error"><div><b>Preview could not load</b><span id="cw-progress-error-text"></span></div></div>
+<div id="banner"><b>v16.7 APPROVED · cumulative progress preview</b> · approved content through #what-we-need-now. Downstream sections remain preserved in the candidate and are hidden only in this review transport.</div>
+<iframe id="frame" src="../v16.7/" title="Converging Waters cumulative progress through v16.7"></iframe>
+<div id="error"><div><b>Preview could not load</b><br><span id="error-text"></span></div></div>
 <script>
-(() => {
-  const frame = document.getElementById('cw-progress-frame');
-  const errorBox = document.getElementById('cw-progress-error');
-  const errorText = document.getElementById('cw-progress-error-text');
-  const FRONTIER_ID = 'what-we-need-now';
-  let attempts = 0;
-
-  function fail(message){
-    frame.style.display = 'none';
-    errorBox.style.display = 'grid';
-    errorText.textContent = String(message || 'unknown error');
-  }
-
-  function applyFrontier(){
-    attempts += 1;
-    try {
-      const doc = frame.contentDocument;
-      if (!doc) throw new Error('candidate document unavailable');
-      const frontier = doc.querySelector('#' + FRONTIER_ID);
-      const system = doc.querySelector('#system');
-      const stanley = doc.querySelector('#stanley-update');
-      if (!frontier || !system || !stanley) {
-        if (attempts < 120) return setTimeout(applyFrontier, 100);
-        throw new Error('approved candidate did not finish mounting');
-      }
-
-      const requiredSystem = [
-        'Pisac → Coya → Lamay → Calca → Huarán → Urubamba → Yanahuara → Pachar → Ollantaytambo',
-        'Coya · COY-1',
-        'Lamay · LAM-1',
-        'Cusco–Huatanay: why the infrastructure matters',
-        'YAN-0', 'PACH-HAT', 'OLL-1'
-      ];
-      if (requiredSystem.some(t => !system.textContent.includes(t))) throw new Error('v16.5 approved #system content mismatch');
-      if (stanley.querySelectorAll('img').length !== 13 || stanley.querySelectorAll('a').length !== 17) throw new Error('Stanley/WGA preservation mismatch');
-      const open = doc.querySelector('#open-decisions');
-      const outcome = doc.querySelector('#first-outcome');
-      if (!open || !open.textContent.includes('People and organizations are not interchangeable') || !open.textContent.includes('WGA feasibility + authority')) throw new Error('v16.6 open-decisions content mismatch');
-      if (!outcome || !outcome.textContent.includes('Converging Waters — 60–90 Day Readiness Package') || !outcome.textContent.includes('Pilot Readiness Plan') || !outcome.textContent.includes('Discovery & Opportunity Map') || !outcome.textContent.includes('Technical Feasibility & Support Note')) throw new Error('v16.6 first-outcome content mismatch');
-      if (!frontier.textContent.includes('Review people and institutions on separate lanes') || !frontier.textContent.includes('From each person') || !frontier.textContent.includes('From each project or organization')) throw new Error('v16.6 frontier content mismatch');
-
-      const sections = [...doc.querySelectorAll('main > section')];
-      const frontierIndex = sections.findIndex(s => s.id === FRONTIER_ID);
-      if (frontierIndex < 0) throw new Error('review frontier not found');
-      sections.slice(frontierIndex + 1).forEach(s => s.hidden = true);
-      const footer = doc.querySelector('footer');
-      if (footer) footer.hidden = true;
-      doc.querySelectorAll('.nav-links a[href^="#"]').forEach(a => {
-        const target = doc.querySelector(a.getAttribute('href'));
-        if (!target || target.hidden) a.hidden = true;
-      });
-
-      const style = doc.createElement('style');
-      style.id = 'cw-progress-approved-frontier-style';
-      style.textContent = `#${FRONTIER_ID}::after{content:"Approved review frontier — sections below this point remain preserved in v16.6 but are intentionally hidden until the next incremental review.";display:block;margin:30px auto 0;padding:14px 16px;max-width:900px;border:1px dashed #c9bda9;border-radius:16px;background:rgba(255,255,255,.55);color:#647368;font:700 13px/1.4 Inter,system-ui,sans-serif;letter-spacing:0}[hidden]{display:none!important}`;
-      doc.head.appendChild(style);
-    } catch (err) {
-      fail(err.message || err);
-    }
-  }
-
-  frame.addEventListener('load', () => setTimeout(applyFrontier, 50), {once:true});
-  setTimeout(() => { if (!frame.contentDocument?.querySelector('#what-we-need-now') && attempts === 0) applyFrontier(); }, 500);
-})();
+(()=>{const frame=document.getElementById('frame'),box=document.getElementById('error'),msg=document.getElementById('error-text');let tries=0;function fail(e){frame.style.display='none';box.style.display='grid';msg.textContent=String(e||'unknown error')}function apply(){tries++;try{const doc=frame.contentDocument;if(!doc)throw new Error('candidate document unavailable');const frontier=doc.querySelector('#what-we-need-now'),people=doc.querySelector('#people'),system=doc.querySelector('#system'),collab=doc.querySelector('#collaboration-framework'),outcome=doc.querySelector('#first-outcome');if(!frontier||!people||!system||!collab||!outcome||!doc.title.includes('v16.7 REV 4')){if(tries<160)return setTimeout(apply,100);throw new Error('approved v16.7 did not finish mounting')}if(!people.textContent.includes('Stanley / WGA')||!people.textContent.includes('Simona / WGA')||!people.textContent.includes('Chelsea / Amazonas Sagrada')||!people.textContent.includes('Patrick / Amazonas Sagrada')||!people.textContent.includes('María Gracia')||!people.textContent.includes('Felipe'))throw new Error('people map mismatch');if(collab.querySelectorAll('.science-step-number').length!==6)throw new Error('numbered citizen-science flow mismatch');if(!system.textContent.includes('Candidate confluence / attribution modules')||!system.textContent.includes('Marhuay / Coya tributary system')||!system.textContent.includes('Río Carmen → Vilcanota')||!system.textContent.includes('Charán / Cancha Cancha tributary corridor')||!system.textContent.includes('YAN-0')||!system.textContent.includes('PACH-HAT')||!system.textContent.includes('OLL-1'))throw new Error('hydrological architecture mismatch');if(!outcome.textContent.includes('Converging Waters — 60–90 Day Readiness Package'))throw new Error('readiness package mismatch');const sections=[...doc.querySelectorAll('main > section')],i=sections.findIndex(s=>s.id==='what-we-need-now');if(i<0)throw new Error('frontier not found');sections.slice(i+1).forEach(s=>s.hidden=true);const footer=doc.querySelector('footer');if(footer)footer.hidden=true;doc.querySelectorAll('.nav-links a[href^="#"]').forEach(a=>{const t=doc.querySelector(a.getAttribute('href'));if(!t||t.hidden)a.hidden=true});const style=doc.createElement('style');style.textContent='[hidden]{display:none!important}#what-we-need-now::after{content:"Approved review frontier — downstream content remains preserved and awaits the next incremental review.";display:block;margin:30px auto 0;padding:14px 16px;max-width:900px;border:1px dashed #c9bda9;border-radius:16px;background:rgba(255,255,255,.55);color:#647368;font:700 13px/1.4 Inter,system-ui,sans-serif}';doc.head.appendChild(style)}catch(e){fail(e.message||e)}}frame.addEventListener('load',()=>setTimeout(apply,80),{once:true});setTimeout(()=>{if(tries===0)apply()},700)})();
 </script>
 </body>
 </html>
