@@ -6,7 +6,7 @@ Baseline: v16.6 approved candidate
 Current review frontier: #what-we-need-now
 Approved review object: CW-WEB-v16.7 REV 4, consolidated sections 03-10
 Scope: architecture reconciliation for sections 03-10; one authoritative individual contribution map; three autonomous initiative starting points; Willkamayu framing; collaboration + citizen-science core; unified hydrological spine/confluence logic; provisional WGA technical review note; numbered 1-6 citizen-science flow; section-09 contrast correction; approved v16.6 sections 08-10 preserved semantically.
-Payload transport: docs/candidates/v16.7/index.html reconstructs the exact approved candidate payload from five local base64 chunks.
+Payload transport: docs/candidates/v16.7/index.html reconstructs the exact approved candidate payload from six local base64 chunks.
 Approved candidate payload SHA-256: 65828aadca82e7a624fe445279fed73e177051fbd06e899769987db8eeb30d73
 Preservation: #people remains the single authoritative individual contribution map; Stanley/WGA protected content and external href assertions remain embedded; downstream sections beyond #what-we-need-now remain inherited and unreviewed unless explicitly changed later.
 Production promotion: NOT AUTHORIZED by this approval.
