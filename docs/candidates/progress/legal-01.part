@@ -1,26 +1,27 @@
-<section class="section" id="guardians-legal" data-rev9="guardians-legal">
+<section class="section" id="guardians-legal" data-rev10="legal-protection-story-ux">
 <div class="container">
-  <div class="section-head">
+  <div class="section-head legal-hero-head">
     <div>
-      <div class="kicker">15 · Guardians + legal pathways</div>
-      <h2>A real upstream legal foothold — with implementation and representation still open</h2>
+      <div class="kicker">15 · Protecting the river as one living system</div>
+      <h2>Legal recognition has begun in Canchis — the next challenge is protection beyond one province</h2>
     </div>
     <p>
-      The legal pathway no longer starts from zero. Canchis has verified 2026 municipal/provincial instruments around recognizing the Willkamayu and tributaries as rights-holders. The practical question now is how protection can become operational, evidence-based and territorially coherent without overstating what the current instruments do.
+      The verified 2026 Canchis instruments are a real starting point, but they are provincial. They do not automatically extend their legal effect along the rest of the Willkamayu / Vilcanota. The opportunity now is to turn that foothold into practical, evidence-based protection that can connect jurisdictions without pretending that one instrument already covers the whole river.
     </p>
   </div>
 
-  <div class="research-note">
+  <div class="research-note compact-research-note">
     <b>LEGAL &amp; INSTITUTIONAL RESEARCH IN PROGRESS —</b>
     This section reflects source-backed preliminary findings from an active research stream.
     Primary legal instruments, implementation mechanisms and territorial pathways are still being recovered and audited.
     The website will be updated as that evidence matures.
   </div>
 
-  <div class="legal-grid">
-    <article class="legal-card mint">
-      <div class="status">PRIMARY-VERIFIED FOOTHOLD</div>
-      <h3>Canchis 2026 changes the starting point</h3>
+  <div class="legal-storyline" aria-label="Current legal protection storyline">
+    <article class="story-step story-done">
+      <div class="story-number">1</div>
+      <div class="status">ALREADY IN MOTION</div>
+      <h3>Canchis has created a verified legal foothold</h3>
       <p>
         Acuerdo de Concejo N.° 020-2026-CM-MPC (26 Feb 2026) records preferential provincial interest in recognizing the Río Willcamayu / Vilcanota and tributaries as rights-holders and expressly mentions their own legal personality. Ordenanza Municipal N.° 001-2026-CM-MPC (published 7 Apr 2026) carries the same summarized recognition object.
       </p>
@@ -31,26 +32,38 @@
       </ul>
     </article>
 
-    <article class="legal-card blue">
-      <div class="status">CORRECTED RESEARCH RECORD</div>
-      <h3>The often-cited 2021 ordinance is false as stated</h3>
+    <article class="story-step story-gap">
+      <div class="story-number">2</div>
+      <div class="status">THE TERRITORIAL GAP</div>
+      <h3>The river continues beyond Canchis</h3>
       <p>
-        The official Canchis registry assigns OM 05-2021-CM-MPC to the Provincial Citizen Security Plan, not to recognition of river rights. The verified rights milestone located so far is in 2026. Research remains open only for any different 2021 precursor or preparatory instrument.
+        The verified recognition located so far is provincial. Its legal effect does not automatically travel downstream with the river. Protection beyond Canchis therefore needs to be examined jurisdiction by jurisdiction and function by function: local implementation, regional coordination, sectoral duties, basin governance and, where justified, judicial protection can each add something different.
       </p>
+      <p class="micro-note">This is not a call for a mechanical chain of duplicate ordinances. The question is which competent route adds real reach, enforceability or coordination at each layer.</p>
     </article>
 
-    <article class="legal-card yellow">
+    <article class="story-step story-opportunity">
+      <div class="story-number">3</div>
       <div class="status">IMPLEMENTATION OPPORTUNITY</div>
-      <h3>Where Converging Waters may add value</h3>
+      <h3>Make protection operational and connected</h3>
       <p>
         The strongest working hypothesis is implementation rather than symbolic re-recognition: evidence / MRV, citizen science, restoration accountability, territorial coordination and careful guardian-design can help test whether rights language produces measurable protection.
       </p>
+      <p class="micro-note">Converging Waters can contribute where useful by connecting evidence, stewardship and institutional pathways without claiming public authority or replacing existing actors.</p>
     </article>
   </div>
 
-  <div class="focus-head">
-    <div><div class="kicker">Guardian boundary</div><h3>Community guardianship is real — legal representation is a separate question</h3></div>
-    <p>Using one word for both would create legal ambiguity and erase the value of the community practice that already exists.</p>
+  <div class="river-reach-strip" aria-label="From Canchis recognition to wider river protection">
+    <div class="reach-node reach-verified"><span>CANCHIS</span><b>Verified recognition</b><small>2026 provincial foothold</small></div>
+    <div class="reach-arrow" aria-hidden="true">→</div>
+    <div class="reach-node"><span>RIVER BEYOND CANCHIS</span><b>No automatic extension</b><small>The river crosses other jurisdictions</small></div>
+    <div class="reach-arrow" aria-hidden="true">→</div>
+    <div class="reach-node reach-goal"><span>OPPORTUNITY</span><b>Coherent protection</b><small>Evidence + stewardship + competent legal routes</small></div>
+  </div>
+
+  <div class="focus-head friendly-focus">
+    <div><div class="kicker">Guardians in practice</div><h3>People are already caring for the river. Legal representation is a different role.</h3></div>
+    <p>Keeping those roles distinct protects both the community practice and the legal clarity needed for any future formal representation.</p>
   </div>
 
   <div class="evidence-band">
@@ -64,37 +77,27 @@
 
     <article class="evidence-panel">
       <div class="status">FORMAL REPRESENTATION · OPEN FOR WILLKAMAYU</div>
-      <h3>No verified guardian ad litem for the Willkamayu yet</h3>
+      <h3>A formal legal representative has not yet been verified</h3>
       <p>
         No recovered primary Canchis instrument currently establishes a named guardian ad litem, trustee, procedural representative or equivalent office for the Willkamayu. Appointment, powers, standing, duties and accountability must come from the complete legal / implementation record before such language is used.
       </p>
     </article>
   </div>
 
-  <div class="focus-head">
-    <div><div class="kicker">Peruvian judicial comparator</div><h3>Marañón shows what a court-created representation architecture can look like</h3></div>
-    <p>It is a strong comparator, not a shortcut and not yet established here as a generally binding precedent.</p>
-  </div>
+  <details class="legal-details comparator-details">
+    <summary><span>Peruvian case to learn from</span><b>How the Marañón case built court-backed representation</b></summary>
+    <div class="details-inner">
+      <div class="focus-head">
+        <div><div class="kicker">Peruvian judicial comparator</div><h3>Marañón shows what a court-created representation architecture can look like</h3></div>
+        <p>It is a strong comparator, not a shortcut and not yet established here as a generally binding precedent.</p>
+      </div>
 
-  <div class="callout">
-    <div class="status">PRIMARY JUDICIAL RECORD</div>
-    <h3>Courts in the Marañón case ordered guardians, defenders and representatives</h3>
-    <p>
-      In Exp. 00010-2022-0-1901-JM-CI-01, first instance (8 Mar 2024) and second instance (29 Aug 2024) recognize the Marañón and tributaries as rights-holders and structure representation involving State entities, GORE Loreto and Indigenous organizations / populations. The appellate decision also ordered effective, immediate and integral maintenance of the Oleoducto Norperuano. A 1 Jul 2025 execution order confirms continuing judicial monitoring. The lesson for Willkamayu is that representation can be designed through litigation in a concrete case — not that the same structure automatically transfers here.
-    </p>
-  </div>
-
-  <div class="focus-head">
-    <div><div class="kicker">Scaling logic</div><h3>Build protection in layers, not through a mechanical ratification chain</h3></div>
-    <p>Each route must be justified by competence, standing, remedy, territorial reach, risks and the concrete protection it adds.</p>
-  </div>
-
-  <div class="pathway-table">
-    <table>
-      <thead><tr><th>Pathway</th><th>What it could add</th><th>Current control</th></tr></thead>
-      <tbody>
-        <tr><td><strong>Municipal / provincial</strong></td><td>Local normative coverage, implementation duties, coordination and territorial legitimacy.</td><td>Canchis is a verified foothold. Additional provinces are options to assess, not mandatory “ratifications”.</td></tr>
-        <tr><td><strong>Regional</strong></td><td>Regional coordination or policy if a legally competent instrument can be designed.</td><td>High caution: Puno / Titicaca provides a current competence controversy, so regional effect cannot be assumed.</td></tr>
-        <tr><td><strong>National / administrative</strong></td><td>Sectoral enforcement, water, environment, sanitation, public investment and regulatory remedies.</td><td>Must be mapped authority-by-authority; a rights declaration does not replace sector competence.</td></tr>
-        <tr><td><strong>Judicial</strong></td><td>Case-specific rights protection, enforceable orders and potentially a representation structure.</td><td>Marañón is a real comparator. Standing, facts, defendants, evidence and remedy must be independently established for Willkamayu.</td></tr>
-  
+      <div class="callout">
+        <div class="status">PRIMARY JUDICIAL RECORD</div>
+        <h3>Courts in the Marañón case ordered guardians, defenders and representatives</h3>
+        <p>
+          In Exp. 00010-2022-0-1901-JM-CI-01, first instance (8 Mar 2024) and second instance (29 Aug 2024) recognize the Marañón and tributaries as rights-holders and structure representation involving State entities, GORE Loreto and Indigenous organizations / populations. The appellate decision also ordered effective, immediate and integral maintenance of the Oleoducto Norperuano. A 1 Jul 2025 execution order confirms continuing judicial monitoring. The lesson for Willkamayu is that representation can be designed through litigation in a concrete case — not that the same structure automatically transfers here.
+        </p>
+      </div>
+    </div>
+  </details>
