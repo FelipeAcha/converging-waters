@@ -83,7 +83,7 @@
   #alliance-architecture[data-rev11="matrix-fit"] td:nth-child(6)::before{content:"Depth layer"}
   #alliance-architecture[data-rev11="matrix-fit"] .group-row td{display:block!important;border-radius:14px;margin:18px 0 8px;padding:8px 10px}
   #alliance-architecture[data-rev11="matrix-fit"] .group-row td::before{display:none}
-  .legal-storyline,.evidence-band,.legal-grid,.source-grid,.pathway-cards{grid-template-columns:1fr=
+  .legal-storyline,.evidence-band,.legal-grid,.source-grid,.pathway-cards{grid-template-columns:1fr}
   .river-reach-strip{grid-template-columns:1fr;gap:7px}.reach-arrow{transform:rotate(90deg);height:24px}.reach-node{min-height:0}
   .legal-details summary{align-items:flex-start;flex-direction:column;gap:5px}.legal-details summary b{text-align:left}.legal-details summary::after{position:absolute;right:18px}
   .pathway-combined{grid-column:auto}
