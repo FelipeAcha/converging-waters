@@ -1,0 +1,1 @@
+REV33 public visual validation route staging. Transport-only; not production promotion. User explicitly authorized GitHub publication for visual inspection on 2026-08-25.
