@@ -1,0 +1,1 @@
+REV23 cumulative progress transport prepared at commit 0ca705a77def9cb3c8d6880dfbf6a5c2c47dfe6b. This file should not be committed; checkpoint is maintained in Issue #14.
