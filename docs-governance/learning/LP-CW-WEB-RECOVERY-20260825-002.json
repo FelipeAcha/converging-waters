@@ -1,0 +1,167 @@
+{
+  "schema_version": "1.1",
+  "packet_id": "LP-CW-WEB-RECOVERY-20260825-002",
+  "title": "Converging Waters web reliability collapse: preserve-and-repair recovery",
+  "status": "IMPLEMENTED",
+  "source_scope": ["conversation", "recovered-conversation-paste", "google-drive-review-artifacts", "github-review-transport", "installed-skill"],
+  "requested": "Preserve approved website work, maintain immutable review versions and Rolling Progress Preview, apply Incremental Control and Workflow Learning correctly, and recover from failures without destructive rebuilds.",
+  "executed": "The workstream accumulated baseline ambiguity, duplicate REV identities, review-transport failures, stale Rolling Progress state, CSS integration regression, insufficient visual regressions, premature finalization, an over-broad REV24 recovery, response-before-execution behavior, and two duplicate Drive persistence calls. A bounded forensic recovery identified the complete REV21 source, built REV25 by preserve-and-repair, then built REV26 with only the two user-authorized visual fixes.",
+  "claimed": "Earlier responses repeatedly claimed preservation/final-readiness from broad static PASS results that did not prove visible/rendered equivalence. REV23 was presented as final material review despite a late-section CSS integration failure.",
+  "corrected_action": "Use REV26 as the current review child of reconciled REV25; preserve REV25 and all historical REVs; keep production unauthorized; advance Rolling Progress only from exact REV26; record every distinct failure and use the incident register as mandatory input to the post-web system audit/reengineering gate.",
+  "verified_results": [
+    "Current web-workstream-control SKILL.md matched the archived ADDITIVE_ONLY hardening version; silent Skill degradation was not evidenced.",
+    "REV22/REV23 late-section source content was preserved while the required .cw-rev18-late CSS ancestor was lost during integration.",
+    "REV25 restored the reconciled complete REV21 04A-17 candidate using preserve-and-repair rather than reconstruction.",
+    "REV26 changed only Section 06 number contrast and the Section 17 River Economy icon relative to REV25.",
+    "REV26 raw HTML SHA-256 is 1e0100584c074113ef0d0c9db828f5c5f5daee6a5e111024c44ea84877262ab4 and is durably checkpointed in Drive.",
+    "REV26 desktop/mobile browser QA found no console errors or horizontal overflow; numbered-circle contrast measured 9.74:1.",
+    "Two accidental duplicate Drive persistence artifacts created during REV26 checkpointing were deleted and logged as assistant-caused rework."
+  ],
+  "failed_attempts": [
+    "Rolling Progress remained stale after later REV completion.",
+    "A small REV21 review wrapper reused the REV identity while loading REV19 through an iframe, violating ZERO_NETWORK.",
+    "REV22/REV23 integration stripped CSS ancestry required by 428 scoped late-section selectors.",
+    "Broad preservation tests did not test computed presentation or visibility state sufficiently.",
+    "REV23 was closed as final before user-visible late-section rendering was actually verified.",
+    "REV24 used a broader rollback/reconstruction than the evidenced integration cause required.",
+    "Responses sometimes asked for review or discussed next steps before exhausting safe corrective execution.",
+    "Two Drive upload calls were accidentally repeated during REV26 checkpoint persistence."
+  ],
+  "assumptions": [
+    "The user-approved/protected content authority is reconstructed from the recovered conversation paste plus exact raw REV artifacts; where approval provenance remains ambiguous, preservation is preferred over deletion or rewrite.",
+    "The post-web system audit/reengineering will decide whether controls need Skill changes, orchestration changes, Reliability Control Plane changes, or all three."
+  ],
+  "open_items": [
+    "Advance the stable Rolling Progress route from REV24 recovery transport to exact REV26 review transport and read back the deployed state.",
+    "Finish the current website closure gates without reopening already protected content.",
+    "After website closure/release decision, execute GATE-CW-SYSTEM-RELIABILITY-AUDIT-001 covering the full control system and reengineering plan.",
+    "Promote this learning record from IMPLEMENTED/CANDIDATE to VERIFIED/CONFIRMED only after Reliability Control Plane persistence and the system-level regression suite pass."
+  ],
+  "primary_classification": "PREMATURE_CLOSURE",
+  "secondary_classifications": [
+    "PARALLEL_CHANGE_NOT_RECONCILED",
+    "TOOL_CONTRACT_MISMATCH",
+    "STATE_LOSS_OR_TRUNCATION",
+    "SCOPE_DRIFT",
+    "INSUFFICIENT_EVIDENCE",
+    "RESPONSE_BEFORE_EXECUTION",
+    "OUTPUT_PRIORITY_FAILURE",
+    "LIFECYCLE_PREREQUISITE_MISSED",
+    "SURFACE_AMBIGUITY",
+    "ASSUMED_COMPLETION"
+  ],
+  "root_cause": "Controls existed but were not consistently enforced as executable gates. Review candidate identity, transport identity, approval provenance, rendered visual invariants, cumulative-progress closure, and response-after-execution were allowed to drift independently. Static preservation checks proved bytes/DOM but not the browser-visible contract. This created a systemic execution-compliance failure rather than evidence of a silently corrupted current Skill.",
+  "recurrence_risk": "CRITICAL",
+  "overlap_review": {
+    "assets_checked": [
+      "LP-CW-WEB-PROGRESS-20260825-001.json",
+      "WL-WEB-PREVIEW-001.md",
+      "WL-WEB-PREVIEW-002-ZERO-NETWORK.md",
+      "WL-WEB-DEDUP-PRESERVATION-001.md",
+      "web-workstream-control current SKILL.md",
+      "incremental-control current SKILL.md",
+      "workflow-learning current SKILL.md"
+    ],
+    "duplicate_found": false,
+    "selected_owner": "Workflow Learning semantic record + existing Web Workstream Control/Incremental Control enforcement; no new Skill created"
+  },
+  "proposed_prevention": "Treat review source, review transport, approval, browser rendering, rolling progress, persistence, and promotion as separate machine-enforced lifecycle states. Require immutable unique candidate identity, exact raw checkpoint/readback, additive-preservation tests including visibility, CSS dependency/ancestry checks, targeted browser computed-style tests for every reported visual defect, cumulative-progress closure assertion, causal component rollback, and response-after-execution validation. Feed this incident register into the full post-web system audit/reengineering rather than patching controls ad hoc during website closure.",
+  "destination_type": "test",
+  "regression_tests": [
+    {
+      "id": "REG-CW-WEB-002-01",
+      "failure_mode": "Two materially different artifacts share one REV identity.",
+      "expected_prevention": "Candidate identity validator rejects duplicate review labels when content SHA or lifecycle role differs; transport wrappers receive separate transport identity.",
+      "status": "PENDING",
+      "evidence": ["REV21 full candidate 194139 bytes versus REV21 iframe wrapper 15302 bytes"]
+    },
+    {
+      "id": "REG-CW-WEB-002-02",
+      "failure_mode": "ZERO_NETWORK review transport contains iframe or automatic network load.",
+      "expected_prevention": "verify_zero_network_review_surface.py fails closed before the review artifact can be emitted or treated as valid.",
+      "status": "PASS",
+      "evidence": ["REV21 iframe wrapper fails current ZERO_NETWORK validator", "REV26 exact review source passes ZERO_NETWORK validation"]
+    },
+    {
+      "id": "REG-CW-WEB-002-03",
+      "failure_mode": "Integrated sections retain scoped CSS but lose required ancestor/wrapper.",
+      "expected_prevention": "Integration regression verifies selector ancestry and browser computed display/layout for protected late sections before closure.",
+      "status": "PASS",
+      "evidence": ["REV23 reproduced missing .cw-rev18-late ancestry", "REV25/REV26 browser QA restores expected grids"]
+    },
+    {
+      "id": "REG-CW-WEB-002-04",
+      "failure_mode": "Protected text and hrefs survive but visibility/presentation materially changes.",
+      "expected_prevention": "ADDITIVE_ONLY regression compares protected DOM, order, hrefs and visibility state; browser QA validates computed presentation for changed/integrated components.",
+      "status": "PASS",
+      "evidence": ["REV25 preserved protected section serialization while restoring integration wrapper", "REV26 preserves REV25 text/hrefs outside two visual changes"]
+    },
+    {
+      "id": "REG-CW-WEB-002-05",
+      "failure_mode": "Section 06 step-number foreground inherits muted gray on green background.",
+      "expected_prevention": "All six .science-step-number elements compute to white and meet WCAG AA contrast >= 4.5:1 against their background.",
+      "status": "PASS",
+      "evidence": ["REV26 browser measurement: six circles white on rgb(23,77,57), contrast 9.74:1"]
+    },
+    {
+      "id": "REG-CW-WEB-002-06",
+      "failure_mode": "River Economy deep-dive icon is visually ambiguous.",
+      "expected_prevention": "River Economy icon carries deterministic data-icon=river-economy marker and renders the approved river-wave plus growth-arrow semantic mark on desktop/mobile.",
+      "status": "PASS",
+      "evidence": ["REV26 Section 17 desktop/mobile screenshots and DOM marker"]
+    },
+    {
+      "id": "REG-CW-WEB-002-07",
+      "failure_mode": "Material website frontier closes while Rolling Progress advertises an older or rejected REV.",
+      "expected_prevention": "Closure validator requires SOURCE_REVIEW, candidate SHA and active route banner/current content to match or an explicit BLOCKED_WITH_REASON state.",
+      "status": "PENDING",
+      "evidence": ["Existing LP-CW-WEB-PROGRESS-20260825-001 validator covers stale progress; current route still requires REV26 advancement/readback"]
+    },
+    {
+      "id": "REG-CW-WEB-002-08",
+      "failure_mode": "Material response is composed before reversible supported corrections and persistence/readback are exhausted.",
+      "expected_prevention": "Incremental Control response validator rejects RESPONSE_BEFORE_EXECUTION and requires completed action/readback before ACCION INMEDIATA delivery.",
+      "status": "PENDING",
+      "evidence": ["Current recovery followed execute-first sequence; broader system behavior remains audit scope"]
+    },
+    {
+      "id": "REG-CW-WEB-002-09",
+      "failure_mode": "Tool-contract incident is misattributed to model selection or missing reasoning effort instead of validating the exact tool/surface contract.",
+      "expected_prevention": "Regression records model and reasoning-effort as non-causal unless exact evidence proves otherwise, and validates the connector/tool contract independently before changing compute profile.",
+      "status": "PENDING",
+      "evidence": ["Current incident evidence points to execution/tool-contract mismatch, not model/effort mismatch"]
+    }
+  ],
+  "future_readiness": {
+    "volatile_dependencies": ["GitHub connector schemas", "GitHub Pages workflow behavior", "ChatGPT Preview surface behavior", "Skill runtime/invocation routing"],
+    "revalidation_triggers": ["connector schema change", "Preview behavior change", "Skill version change", "system reengineering release", "new web rollover incident", "new duplicate-write or state-loss incident"],
+    "owner": "GATE-CW-SYSTEM-RELIABILITY-AUDIT-001",
+    "review_by": "2026-09-25"
+  },
+  "approval_required": false,
+  "evidence": [
+    "Drive REV26 HTML ID 1DuutDHh4VtyPK5Nfg9FgOY0aCQbT8fIf",
+    "Drive REV26 checkpoint ID 14P0s7UZV0n7zwvvVVtbDV7gB_fBRz7G3",
+    "REV26 SHA-256 1e0100584c074113ef0d0c9db828f5c5f5daee6a5e111024c44ea84877262ab4",
+    "REV25 SHA-256 83fa0abb9baf5673da9153f5883349d97455034410adf787af526a980de7f536",
+    "GitHub Issue #14 authority ledger",
+    "INC-CW-WEB-20260825-002.md"
+  ],
+  "readback": {
+    "required": true,
+    "status": "PASS",
+    "details": "Packet is validated locally before persistence; GitHub path readback is required and performed before user-facing completion claim. Reliability Control Plane operational telemetry remains PARTIAL and is not represented as verified persistence."
+  },
+  "owner": "Workflow Learning + Web Workstream Control + Incremental Control",
+  "next_gate": "GATE-CW-WEB-REV26-ROLLING-READBACK, then continue website closure; after web closure GATE-CW-SYSTEM-RELIABILITY-AUDIT-001",
+  "rollback": "Revert only the governance-record commit if the incident packet itself is defective. Do not roll back REV25/REV26 content, Drive checkpoints, or production state. Production remains untouched.",
+  "reliability_record": {
+    "record_state": "CANDIDATE",
+    "coverage_tier": "ROUTED_CHAT",
+    "telemetry_status": "PARTIAL",
+    "semantic_owner": "Workflow Learning",
+    "technical_owner": "Reliability Control Plane",
+    "source_ref": "FelipeAcha/converging-waters Issue #14 + current project conversation + recovered conversation paste",
+    "persistence_readback_ref": "FelipeAcha/converging-waters/docs-governance/learning/LP-CW-WEB-RECOVERY-20260825-002.json"
+  }
+}
