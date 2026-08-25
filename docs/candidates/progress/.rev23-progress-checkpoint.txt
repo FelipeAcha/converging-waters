@@ -1,1 +1,10 @@
-REV23 cumulative progress transport prepared at commit 0ca705a77def9cb3c8d6880dfbf6a5c2c47dfe6b. This file should not be committed; checkpoint is maintained in Issue #14.
+REV23 cumulative progress transport checkpoint
+DATE=2026-08-25
+STATE=REVIEW_TRANSPORT_ONLY
+SOURCE_REVIEW=REV23
+SOURCE_HUB_SHA256=df03c67d8fa328834523479fb5e65ed51306a669abe6638b8e0561753f2d1d2a
+DEEP_DIVES=rights-of-nature,river-observatory,river-economy
+CONTENT_MUTATION_MODE=ADDITIVE_ONLY
+PRODUCTION=NOT_AUTHORIZED
+FAILURE_CORRECTION=PREMATURE_CLOSURE + PARALLEL_CHANGE_NOT_RECONCILED
+AUTHORITY_LEDGER=GitHub Issue #14
