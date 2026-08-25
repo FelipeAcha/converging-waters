@@ -1,0 +1,65 @@
+name: REV33 stage release bundle from Drive
+
+on:
+  push:
+    branches:
+      - rev33-wikimedia-localization
+    paths:
+      - .github/workflows/rev33-publish-from-drive.yml
+
+permissions:
+  contents: write
+
+jobs:
+  stage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: rev33-wikimedia-localization
+      - name: Download exact REV33 release bundle from Drive
+        run: |
+          python -m pip install --quiet gdown
+          gdown 'https://drive.google.com/uc?id=1Hnmv86nTjpCmwVTStGJ2cXYUbVTYtR9U' -O /tmp/rev33-release.zip
+      - name: Verify exact bundle hash
+        run: |
+          echo '9888aade3f04e1afc25900ea86a343ef67c9412cc49a120dc70eb38ec47a8e94  /tmp/rev33-release.zip' | sha256sum -c -
+      - name: Extract exact candidate tree
+        run: |
+          rm -rf /tmp/rev33-release docs/candidates/rev33
+          mkdir -p /tmp/rev33-release docs/candidates
+          unzip -q /tmp/rev33-release.zip -d /tmp/rev33-release
+          test -f /tmp/rev33-release/candidates/rev33/index.html
+          cp -a /tmp/rev33-release/candidates/rev33 docs/candidates/rev33
+      - name: Verify candidate local references
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from html.parser import HTMLParser
+          from urllib.parse import urlsplit
+          root=Path('docs/candidates/rev33').resolve()
+          missing=[]
+          class P(HTMLParser):
+              def __init__(self, html): super().__init__(); self.html=html
+              def handle_starttag(self, tag, attrs):
+                  d=dict(attrs)
+                  for key in ('href','src','poster'):
+                      v=d.get(key)
+                      if not v or v.startswith(('#','http://','https://','mailto:','tel:','data:','javascript:')): continue
+                      p=(self.html.parent/urlsplit(v).path).resolve()
+                      if not p.exists(): missing.append((str(self.html),key,v))
+          for html in root.rglob('*.html'):
+              p=P(html); p.feed(html.read_text(encoding='utf-8'))
+          if missing:
+              print(missing)
+              raise SystemExit(1)
+          print('REV33 local-reference check PASS')
+          PY
+      - name: Commit staged exact REV33 route
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add docs/candidates/rev33
+          git diff --cached --quiet && exit 0
+          git commit -m 'Stage exact REV33 release candidate route'
+          git push origin HEAD:rev33-wikimedia-localization
