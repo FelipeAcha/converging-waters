@@ -1,0 +1,29 @@
+name: Validate cumulative progress
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'docs/candidates/progress/**'
+      - 'tools/validate_cumulative_progress.py'
+      - '.github/workflows/validate-progress.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'docs/candidates/progress/**'
+      - 'tools/validate_cumulative_progress.py'
+      - '.github/workflows/validate-progress.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  cumulative-progress:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Validate cumulative review state
+        run: python tools/validate_cumulative_progress.py docs/candidates/progress
