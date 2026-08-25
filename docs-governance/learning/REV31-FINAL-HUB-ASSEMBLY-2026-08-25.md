@@ -53,6 +53,11 @@ Chromium/Playwright set-content browser validation using intercepted exact local
 - mobile `390px`: no horizontal overflow, 33/33 sections visible, 0 broken/pending images after forced lazy load, 0 console/page errors.
 - River Economy REV4 desktop/mobile: no horizontal overflow; preliminary-research notice rendered; 0 console/page errors.
 
+## Public rolling-preview state
+- `docs/candidates/progress/` remains intentionally at the last stable REV24 transport.
+- REV31 was **not** pointed there without a fully staged public dependency tree; this prevents a repeat of the prior incomplete-loader sequencing failure.
+- The durable exact review artifact is the Drive HTML + integrated bundle above; production remains untouched.
+
 ## Current gate
 `REV31_INTEGRATED_HUB_USER_REVIEW`
 
