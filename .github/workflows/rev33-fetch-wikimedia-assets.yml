@@ -1,0 +1,32 @@
+name: REV33 fetch Wikimedia assets
+
+on:
+  push:
+    branches:
+      - rev33-wikimedia-localization
+    paths:
+      - .github/workflows/rev33-fetch-wikimedia-assets.yml
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch precedent images
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p assets
+          curl -fL --retry 3 --retry-delay 2 'https://upload.wikimedia.org/wikipedia/commons/2/25/Mara%C3%B1%C3%B3n_River_in_2003.jpg' -o assets/maranon.jpg
+          curl -fL --retry 3 --retry-delay 2 'https://upload.wikimedia.org/wikipedia/commons/b/b4/Lago_Titicaca%2C_Puno%2C_Per%C3%BA%2C_2015-08-01%2C_DD_13.JPG' -o assets/titicaca.jpg
+          curl -fL --retry 3 --retry-delay 2 'https://upload.wikimedia.org/wikipedia/commons/1/12/Meliponula_ferruginea.jpg' -o assets/stingless-bee.jpg
+          curl -fL --retry 3 --retry-delay 2 'https://upload.wikimedia.org/wikipedia/commons/c/cb/Whanganui_River.jpg' -o assets/whanganui.jpg
+          curl -fL --retry 3 --retry-delay 2 'https://upload.wikimedia.org/wikipedia/commons/b/bc/Rio_Atrato.JPG' -o assets/atrato.jpg
+          sha256sum assets/* | tee assets/SHA256SUMS.txt
+          file assets/*
+      - name: Upload precedent assets
+        uses: actions/upload-artifact@v4
+        with:
+          name: rev33-wikimedia-assets
+          path: assets
+          if-no-files-found: error
+          retention-days: 1
