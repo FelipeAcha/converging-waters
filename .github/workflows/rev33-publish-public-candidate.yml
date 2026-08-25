@@ -1,0 +1,105 @@
+name: Publish REV33 public review candidate
+
+on:
+  push:
+    branches:
+      - rev33-wikimedia-localization
+    paths:
+      - .github/workflows/rev33-publish-public-candidate.yml
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout staged REV33 transport
+        uses: actions/checkout@v4
+        with:
+          ref: rev33-wikimedia-localization
+          path: staging
+
+      - name: Checkout latest main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: main
+
+      - name: Assemble candidate without touching production root
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf main/docs/candidates/rev33
+          cp -a staging/docs/candidates/rev33-public-test main/docs/candidates/rev33
+          rm -f main/docs/candidates/rev33/README.md
+          rm -f main/docs/candidates/rev33/deep-dives/rights-of-nature/direct-index.html
+          mkdir -p main/docs/candidates/rev33/assets/precedents
+          cp staging/docs/candidates/progress/assets/precedents/maranon.jpg main/docs/candidates/rev33/assets/precedents/
+          cp staging/docs/candidates/progress/assets/precedents/titicaca.jpg main/docs/candidates/rev33/assets/precedents/
+          cp staging/docs/candidates/progress/assets/precedents/stingless-bee.jpg main/docs/candidates/rev33/assets/precedents/
+          cp staging/docs/candidates/progress/assets/precedents/whanganui.jpg main/docs/candidates/rev33/assets/precedents/
+          cp staging/docs/candidates/progress/assets/precedents/atrato.jpg main/docs/candidates/rev33/assets/precedents/
+
+      - name: Validate staged dependency tree and reconstructed HTML
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import base64, gzip, hashlib, re
+
+          root = Path('main/docs/candidates/rev33')
+          cases = [
+              ('hub', root, 12, 33, 19),
+              ('rights', root/'deep-dives/rights-of-nature', 3, 16, 3),
+              ('observatory', root/'deep-dives/river-observatory', 2, 11, None),
+              ('economy', root/'deep-dives/river-economy', 2, 10, None),
+          ]
+          for name, folder, count, expected_sections, expected_images in cases:
+              parts = [folder/f'payload-{i:02d}.b64' for i in range(count)]
+              assert (folder/'index.html').is_file(), (name, 'missing loader')
+              assert all(p.is_file() for p in parts), (name, 'missing payload')
+              b64 = ''.join(p.read_text().strip() for p in parts)
+              html = gzip.decompress(base64.b64decode(b64)).decode('utf-8')
+              sections = len(re.findall(r'<section\b', html, flags=re.I))
+              assert sections == expected_sections, (name, sections, expected_sections)
+              if expected_images is not None:
+                  images = len(re.findall(r'<img\b', html, flags=re.I))
+                  assert images == expected_images, (name, images, expected_images)
+              assert 'REV33 transport failed' not in html
+              assert '<iframe' not in html.lower()
+              print(name, 'PASS', 'bytes', len(html.encode()), 'sha256', hashlib.sha256(html.encode()).hexdigest())
+
+          expected = {
+              'maranon.jpg': 'ab7bd096db3fd462eed7485cd70f1789000bc857796401438a68f8fb024df9f5',
+              'titicaca.jpg': 'e2dc30b9dbe85a7d054b521a62f0664b4ac89c956b9be1c92674a3d3640283cc',
+              'stingless-bee.jpg': '031151b44b85930533e45d0fe0b935a1f62ec988f7ceb3003988d6ff0df2fee7',
+              'whanganui.jpg': '772e86e8c52965b9ffdd25dc13142ec51fdd959304f9cef72cf0b3f3bf8ce08f',
+              'atrato.jpg': 'bf9a515d826b5c063c6f094d76b09375546b4d09591339a19c6afc50a0a1573a',
+          }
+          for name, want in expected.items():
+              p = root/'assets/precedents'/name
+              got = hashlib.sha256(p.read_bytes()).hexdigest()
+              assert got == want, (name, got, want)
+          print('ASSET_HASHES_PASS')
+
+          assert not (root/'README.md').exists()
+          assert not (root/'deep-dives/rights-of-nature/direct-index.html').exists()
+          print('REV33_PUBLIC_TREE_PASS')
+          PY
+
+      - name: Commit candidate route to main
+        working-directory: main
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add docs/candidates/rev33
+          if git diff --cached --quiet; then
+            echo 'REV33 candidate already present; nothing to commit.'
+            exit 0
+          fi
+          git commit -m 'Publish REV33 public review candidate'
+          git push origin HEAD:main
