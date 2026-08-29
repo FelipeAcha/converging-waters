@@ -76,13 +76,18 @@ jobs:
               if candidate.count(before)!=1: raise SystemExit(name+' anchor drift')
               candidate=candidate.replace(before,after,1)
 
+          old_indent='.cw-accordion-source-label{display:none!important}\n#collaboration-framework>.rev19-observatory-bridge'
+          new_indent='.cw-accordion-source-label{display:none!important}\n.cw-rev18-late .cw-section-accordion[data-cw-section="14"]>.cw-accordion-trigger .cw-accordion-summary-inner.container{width:min(1220px,calc(100% - 44px))}\n#collaboration-framework>.rev19-observatory-bridge'
+          if candidate.count(old_indent)!=1: raise SystemExit('14 indentation CSS anchor drift')
+          candidate=candidate.replace(old_indent,new_indent,1)
+
           def stripped(src):
               out=src
               for sid in [context,*pairs.keys()]:
                   try: raw=sec(out,sid)[2]
                   except RuntimeError: continue
                   out=out.replace(raw,'',1)
-              return out.replace(new,old,1).replace(new_reduce,old_reduce,1).replace(new_open,old_open,1)
+              return out.replace(new,old,1).replace(new_reduce,old_reduce,1).replace(new_open,old_open,1).replace(new_indent,old_indent,1)
           if stripped(candidate)!=stripped(baseline): raise SystemExit('Untouched bytes changed')
           if 'id="context"' in candidate or 'This is a new moment' in candidate: raise SystemExit('Context remains')
           for a,(p,n) in pairs.items():
