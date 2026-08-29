@@ -21,30 +21,49 @@ jobs:
           set -euo pipefail
           python - <<'PY'
           from pathlib import Path
-          import base64, gzip, hashlib, re
+          import base64, gzip, hashlib, html, re
 
           payload_dir = Path('docs/payload')
           parts = [payload_dir / f'hub-{i:02d}.txt' for i in range(17)]
           if not all(p.exists() for p in parts):
-              raise SystemExit('Missing one or more hub payload chunks')
+              raise SystemExit('Missing hub payload chunk')
           b64 = re.sub(r'\s+', '', ''.join(p.read_text(encoding='ascii') for p in parts))
           b64 += '=' * (-len(b64) % 4)
           baseline = gzip.decompress(base64.b64decode(b64)).decode('utf-8')
           baseline_sha = hashlib.sha256(baseline.encode()).hexdigest()
-          expected_baseline_sha = '4e88229676854ad35ecee4fa3ed344a0863854e25171493fad78e685aa6ab4fd'
-          if baseline_sha != expected_baseline_sha:
+          expected_sha = '4e88229676854ad35ecee4fa3ed344a0863854e25171493fad78e685aa6ab4fd'
+          if baseline_sha != expected_sha:
               raise SystemExit(f'Baseline drift: {baseline_sha}')
 
-          start_pos = baseline.index('id="changed-since"')
-          numbered_after_start = re.findall(r'<div class="kicker">\s*(\d{2})\s*·\s*([^<]+)</div>', baseline[start_pos:], flags=re.I)
-          expected_nums = ['00','01','02','03','04','01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18']
-          if [n for n,_ in numbered_after_start] != expected_nums:
-              raise SystemExit(f'Numbered-section structure drift: {numbered_after_start}')
+          def top_sections(src):
+              tok = re.compile(r'</?section\b[^>]*>', re.I)
+              stack=[]; out=[]
+              for m in tok.finditer(src):
+                  if m.group(0).lower().startswith('</'):
+                      if not stack: raise RuntimeError('unbalanced section')
+                      start, depth = stack.pop()
+                      if depth == 0: out.append((start,m.end(),src[start:m.end()]))
+                  else:
+                      stack.append((m.start(),len(stack)))
+              if stack: raise RuntimeError('unclosed section')
+              return sorted(out)
 
-          if 'cw-hub-accordion-00-18-styles' in baseline or 'cw-hub-accordion-00-18-script' in baseline:
-              raise SystemExit('Accordion production markers already present')
+          first_target = baseline.index('<section class="section compact-section" id="changed-since">')
+          targets=[]
+          for a,b,raw in top_sections(baseline):
+              if a < first_target: continue
+              matches = re.findall(r'<div class="kicker">\s*(\d{2})\s*·\s*([^<]+)</div>',raw,flags=re.I)
+              if not matches: continue
+              num,title = matches[0]
+              targets.append((a,b,raw,num,html.unescape(title.strip())))
 
-          style = r'''<style id="cw-hub-accordion-00-18-styles">
+          expected_nums=['00','01','02','03','04','01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18']
+          if [x[3] for x in targets] != expected_nums:
+              raise SystemExit('Target sequence drift: '+repr([(x[3],x[4]) for x in targets]))
+          if targets[-1][3] != '18':
+              raise SystemExit('Final numbered target is not 18')
+
+          style='''<style id="cw-hub-accordion-00-18-styles">
           .cw-section-accordion{margin:0;border:0;border-top:1px solid rgba(19,55,47,.12);background:transparent}
           .cw-section-accordion:last-of-type{border-bottom:1px solid rgba(19,55,47,.12)}
           .cw-section-accordion>summary{list-style:none;cursor:pointer;user-select:none;padding:0;background:rgba(255,253,248,.34);transition:background .18s ease}
@@ -63,41 +82,17 @@ jobs:
           @media(prefers-reduced-motion:reduce){.cw-accordion-toggle{transition:none}}
           </style>'''
 
-          script = r'''<script id="cw-hub-accordion-00-18-script">
+          script='''<script id="cw-hub-accordion-00-18-script">
           (()=>{
-            const expected=['00','01','02','03','04','01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18'];
-            const start=document.getElementById('changed-since');
-            if(!start){console.error('Accordion contract failed: changed-since start section missing.');return;}
-            const sections=[...document.querySelectorAll('section')].filter(section=>{
-              const follows=section===start || Boolean(start.compareDocumentPosition(section)&Node.DOCUMENT_POSITION_FOLLOWING);
-              if(!follows || section.parentElement.closest('section'))return false;
-              return [...section.querySelectorAll('.kicker')].some(el=>/^\s*\d{2}\s*[·•-]/.test(el.textContent||''));
-            }).map(section=>{
-              const label=[...section.querySelectorAll('.kicker')].find(el=>/^\s*\d{2}\s*[·•-]/.test(el.textContent||''));
-              const m=(label.textContent||'').trim().match(/^(\d{2})\s*[·•-]\s*(.+)$/);
-              return m?{section,label,num:m[1],title:m[2].trim()}:null;
-            }).filter(Boolean);
-            if(sections.length!==expected.length||sections.map(x=>x.num).join(',')!==expected.join(',')){
-              console.error('Accordion contract failed: numbered section sequence changed.',sections.map(x=>x.num));
-              return;
-            }
-            sections.forEach(item=>{
-              let title=item.title;
-              if(item.num==='00'&&/what has changed/i.test(title))title=title.replace(/\s+since\s+v\s*0\.1\s*$/i,'').trim();
-              const details=document.createElement('details');
-              details.className='cw-section-accordion';
-              details.dataset.cwSection=item.num;
-              const summary=document.createElement('summary');
-              summary.innerHTML='<span class="cw-accordion-summary-inner container"><span class="cw-accordion-label"></span><span class="cw-accordion-toggle" aria-hidden="true">+</span></span>';
-              summary.querySelector('.cw-accordion-label').textContent=item.num+' · '+title;
-              const panel=document.createElement('div');
-              panel.className='cw-accordion-panel';
-              item.label.classList.add('cw-accordion-source-label');
-              item.label.hidden=true;
-              const parent=item.section.parentNode;
-              parent.insertBefore(details,item.section);
-              panel.appendChild(item.section);
-              details.append(summary,panel);
+            const all=[...document.querySelectorAll('.cw-section-accordion')];
+            if(all.length!==23){console.error('Accordion contract failed: expected 23 existing numbered blocks.');return;}
+            all.forEach(details=>{
+              const panel=details.querySelector(':scope>.cw-accordion-panel');
+              const source=[...panel.querySelectorAll('.kicker')].find(el=>/^\\s*\\d{2}\\s*[·•-]/.test(el.textContent||''));
+              if(!source){console.error('Accordion source label missing',details.dataset.cwSection);return;}
+              source.classList.add('cw-accordion-source-label');
+              source.hidden=true;
+              const summary=details.querySelector(':scope>summary');
               const duration=240;
               summary.addEventListener('click',ev=>{
                 ev.preventDefault();
@@ -105,14 +100,14 @@ jobs:
                 if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){details.open=!details.open;return;}
                 details.dataset.animating='1';
                 if(details.open){
-                  const startHeight=panel.getBoundingClientRect().height;
-                  const anim=panel.animate([{height:startHeight+'px',opacity:1},{height:'0px',opacity:0}],{duration,easing:'ease-in-out'});
+                  const h=panel.getBoundingClientRect().height;
+                  const anim=panel.animate([{height:h+'px',opacity:1},{height:'0px',opacity:0}],{duration,easing:'ease-in-out'});
                   anim.onfinish=()=>{details.open=false;delete details.dataset.animating;};
                   anim.oncancel=()=>{delete details.dataset.animating;};
                 }else{
                   details.open=true;
-                  const endHeight=panel.scrollHeight;
-                  const anim=panel.animate([{height:'0px',opacity:0},{height:endHeight+'px',opacity:1}],{duration,easing:'ease-out'});
+                  const h=panel.scrollHeight;
+                  const anim=panel.animate([{height:'0px',opacity:0},{height:h+'px',opacity:1}],{duration,easing:'ease-out'});
                   anim.onfinish=()=>{delete details.dataset.animating;};
                   anim.oncancel=()=>{delete details.dataset.animating;};
                 }
@@ -121,71 +116,86 @@ jobs:
           })();
           </script>'''
 
-          if '</head>' not in baseline or '</body>' not in baseline:
-              raise SystemExit('Expected head/body closing tags not found')
-          candidate = baseline.replace('</head>', style + '</head>', 1).replace('</body>', script + '</body>', 1)
-          restored = candidate.replace(style, '', 1).replace(script, '', 1)
-          if restored != baseline:
-              raise SystemExit('Preservation failure: removing only authorized additions does not restore baseline byte-for-byte')
-          if candidate.count('cw-hub-accordion-00-18-styles') != 1 or candidate.count('cw-hub-accordion-00-18-script') != 1:
-              raise SystemExit('Accordion injection count mismatch')
-          if '#collaboration-framework>.rev19-observatory-bridge' not in candidate:
-              raise SystemExit('Observatory bridge width fix missing')
+          def wrap(num,title,raw,idx):
+              if idx == 0:
+                  title = re.sub(r'\s+since\s+v\s*0\.1\s*$','',title,flags=re.I).strip()
+              label = html.escape(f'{num} · {title}')
+              return f'<details class="cw-section-accordion" data-cw-section="{num}"><summary><span class="cw-accordion-summary-inner container"><span class="cw-accordion-label">{label}</span><span class="cw-accordion-toggle" aria-hidden="true">+</span></span></summary><div class="cw-accordion-panel">{raw}</div></details>'
 
-          test_helper = r'''<script>
+          cursor=0; pieces=[]; wrappers=[]
+          for idx,(a,b,raw,num,title) in enumerate(targets):
+              pieces.append(baseline[cursor:a])
+              w=wrap(num,title,raw,idx); wrappers.append((w,raw)); pieces.append(w)
+              cursor=b
+          pieces.append(baseline[cursor:])
+          candidate=''.join(pieces)
+          candidate=candidate.replace('</head>',style+'</head>',1).replace('</body>',script+'</body>',1)
+
+          # Exact preservation: remove only the two additions and unwrap exact wrappers.
+          restored=candidate.replace(style,'',1).replace(script,'',1)
+          for w,raw in wrappers:
+              restored=restored.replace(w,raw,1)
+          if restored != baseline:
+              raise SystemExit('Preservation failure: untouched source did not restore byte-for-byte')
+          if candidate.count('class="cw-section-accordion"') != 23:
+              raise SystemExit('Expected 23 static accordion wrappers')
+          if '<span class="cw-accordion-label">00 · What has changed</span>' not in candidate:
+              raise SystemExit('First compact title incorrect')
+          if '#collaboration-framework>.rev19-observatory-bridge' not in candidate:
+              raise SystemExit('Observatory bridge fix missing')
+
+          helper='''<script>
           setTimeout(()=>{
             const all=[...document.querySelectorAll('.cw-section-accordion')];
+            const d0=all[0],s0=d0&&d0.querySelector(':scope>summary');
+            const names=all.map(d=>(d.querySelector('.cw-accordion-label')||{}).textContent||'');
             const labels=[...document.querySelectorAll('.cw-accordion-source-label')];
-            const names=all.map(x=>(x.querySelector('.cw-accordion-label')||{}).textContent||'');
-            const d0=all[0], s0=d0&&d0.querySelector('summary');
             const collab=document.getElementById('collaboration-framework');
-            const dCollab=collab&&collab.closest('.cw-section-accordion');
-            if(!d0||!s0||!dCollab||all.length!==23||labels.length!==23){document.body.dataset.accordionTest='fail-setup';return;}
-            const namingOk=/^00 · What has changed$/i.test(names[0].trim())&&/^01 · Where we are now$/i.test(names[1].trim());
-            const duplicateLabelsHidden=labels.every(el=>getComputedStyle(el).display==='none');
-            dCollab.open=true;
+            const dc=collab&&collab.closest('.cw-section-accordion');
+            const setup=all.length===23&&labels.length===23&&d0&&s0&&dc;
+            if(!setup){document.body.dataset.accordionTest='fail-setup';document.body.dataset.accordionCount=all.length;document.body.dataset.labelCount=labels.length;return;}
+            const naming=/^00 · What has changed$/i.test(names[0].trim())&&/^01 · Where we are now$/i.test(names[1].trim());
+            const hidden=labels.every(el=>getComputedStyle(el).display==='none');
+            dc.open=true;
             const bridge=document.querySelector('#collaboration-framework>.rev19-observatory-bridge');
-            const widthOk=Boolean(bridge)&&bridge.getBoundingClientRect().width < window.innerWidth&&bridge.getBoundingClientRect().width<=1221;
-            dCollab.open=false;
+            const bw=bridge?bridge.getBoundingClientRect().width:0;
+            const widthOk=bw>0&&bw<window.innerWidth&&bw<=1221;
+            dc.open=false;
+            document.body.dataset.namingOk=String(naming);document.body.dataset.hiddenOk=String(hidden);document.body.dataset.widthOk=String(widthOk);document.body.dataset.bridgeWidth=String(Math.round(bw));
             s0.click();
             setTimeout(()=>{
               const opened=d0.open;
               s0.click();
-              setTimeout(()=>{document.body.dataset.accordionTest=(opened&&!d0.open&&widthOk&&namingOk&&duplicateLabelsHidden)?'pass':'fail-behavior';},320);
-            },320);
-          },120);
+              setTimeout(()=>{
+                const closed=!d0.open;
+                document.body.dataset.opened=String(opened);document.body.dataset.closed=String(closed);
+                document.body.dataset.accordionTest=(naming&&hidden&&widthOk&&opened&&closed)?'pass':'fail-behavior';
+              },500);
+            },500);
+          },180);
           </script>'''
-          test_html = candidate.replace('</body>', test_helper + '</body>', 1)
-          Path('/tmp/cw-accordion-test.html').write_text(test_html, encoding='utf-8')
+          Path('/tmp/cw-accordion-test.html').write_text(candidate.replace('</body>',helper+'</body>',1),encoding='utf-8')
 
-          encoded = base64.b64encode(gzip.compress(candidate.encode('utf-8'), compresslevel=9, mtime=0)).decode('ascii')
-          size = (len(encoded) + 16) // 17
-          chunks = [encoded[i*size:(i+1)*size] for i in range(16)] + [encoded[16*size:]]
-          if len(chunks) != 17 or any(not c for c in chunks):
-              raise SystemExit('Failed to create 17 non-empty payload chunks')
-          for i,c in enumerate(chunks):
-              (payload_dir / f'hub-{i:02d}.txt').write_text(c, encoding='ascii')
-
-          rb = ''.join((payload_dir / f'hub-{i:02d}.txt').read_text(encoding='ascii') for i in range(17))
-          rb += '=' * (-len(rb) % 4)
-          roundtrip = gzip.decompress(base64.b64decode(rb)).decode('utf-8')
-          if roundtrip != candidate:
-              raise SystemExit('Payload roundtrip mismatch')
-
-          print('SOURCE_PRESERVATION=BYTE_EXACT_AFTER_REMOVING_AUTHORIZED_ADDITIONS')
-          print('NUMBERED_ACCORDION_BLOCKS=23_FROM_FIRST_00_THROUGH_LAST_18')
+          encoded=base64.b64encode(gzip.compress(candidate.encode(),compresslevel=9,mtime=0)).decode('ascii')
+          size=(len(encoded)+16)//17
+          chunks=[encoded[i*size:(i+1)*size] for i in range(16)]+[encoded[16*size:]]
+          if len(chunks)!=17 or any(not c for c in chunks): raise SystemExit('chunking failure')
+          for i,c in enumerate(chunks): (payload_dir/f'hub-{i:02d}.txt').write_text(c,encoding='ascii')
+          rb=''.join((payload_dir/f'hub-{i:02d}.txt').read_text(encoding='ascii') for i in range(17)); rb+='='*(-len(rb)%4)
+          if gzip.decompress(base64.b64decode(rb)).decode()!=candidate: raise SystemExit('payload roundtrip mismatch')
+          print('SOURCE_PRESERVATION=BYTE_EXACT_AFTER_UNWRAP')
+          print('ACCORDION_WRAPPERS=23')
           print('BASELINE_SHA256='+baseline_sha)
           print('CANDIDATE_SHA256='+hashlib.sha256(candidate.encode()).hexdigest())
           PY
 
           chrome=$(command -v google-chrome || command -v google-chrome-stable || command -v chromium || command -v chromium-browser || true)
           test -n "$chrome"
-          "$chrome" --headless=new --no-sandbox --disable-gpu --disable-dev-shm-usage --virtual-time-budget=2200 --dump-dom "file:///tmp/cw-accordion-test.html" > /tmp/cw-accordion-rendered.html
+          "$chrome" --headless=new --no-sandbox --disable-gpu --disable-dev-shm-usage --virtual-time-budget=3500 --dump-dom "file:///tmp/cw-accordion-test.html" > /tmp/cw-accordion-rendered.html
+          grep -o '<body[^>]*>' /tmp/cw-accordion-rendered.html | head -1 || true
           grep -q 'data-accordion-test="pass"' /tmp/cw-accordion-rendered.html
-          count=$(grep -o 'class="cw-section-accordion"' /tmp/cw-accordion-rendered.html | wc -l | tr -d ' ')
-          test "$count" = 23
+          test "$(grep -o 'class="cw-section-accordion"' /tmp/cw-accordion-rendered.html | wc -l | tr -d ' ')" = 23
           echo 'BROWSER_ACCORDION_OPEN_CLOSE=PASS'
-          echo 'BROWSER_NUMBERED_ACCORDIONS=23'
           echo 'BROWSER_DUPLICATE_LABEL_SUPPRESSION=PASS'
           echo 'BROWSER_OBSERVATORY_BRIDGE_WIDTH=PASS'
       - name: Commit only production hub payload
