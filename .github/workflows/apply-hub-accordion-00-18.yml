@@ -1,0 +1,189 @@
+name: Apply hub accordion 00-18
+on:
+  push:
+    branches:
+      - fix/hub-accordion-00-18-20260829
+    paths:
+      - .github/workflows/apply-hub-accordion-00-18.yml
+permissions:
+  contents: write
+jobs:
+  transform:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout candidate branch
+        uses: actions/checkout@v4
+        with:
+          ref: fix/hub-accordion-00-18-20260829
+      - name: Build, preserve, and browser-test accordion candidate
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import base64, gzip, hashlib, re
+
+          payload_dir = Path('docs/payload')
+          parts = [payload_dir / f'hub-{i:02d}.txt' for i in range(17)]
+          if not all(p.exists() for p in parts):
+              raise SystemExit('Missing one or more hub payload chunks')
+          b64 = re.sub(r'\s+', '', ''.join(p.read_text(encoding='ascii') for p in parts))
+          b64 += '=' * (-len(b64) % 4)
+          baseline = gzip.decompress(base64.b64decode(b64)).decode('utf-8')
+          baseline_sha = hashlib.sha256(baseline.encode()).hexdigest()
+          expected_baseline_sha = '4e88229676854ad35ecee4fa3ed344a0863854e25171493fad78e685aa6ab4fd'
+          if baseline_sha != expected_baseline_sha:
+              raise SystemExit(f'Baseline drift: {baseline_sha}')
+
+          numbered = re.findall(r'<div class="kicker">\s*(\d{2})\s*·\s*([^<]+)</div>', baseline, flags=re.I)
+          nums = [n for n,_ in numbered]
+          if nums != [f'{i:02d}' for i in range(19)]:
+              raise SystemExit(f'Expected numbered sections 00..18 exactly once and in order, found {nums}')
+
+          if 'cw-hub-accordion-00-18-styles' in baseline or 'cw-hub-accordion-00-18-script' in baseline:
+              raise SystemExit('Accordion production markers already present')
+
+          style = r'''<style id="cw-hub-accordion-00-18-styles">
+          .cw-section-accordion{margin:0;border:0;border-top:1px solid rgba(19,55,47,.12);background:transparent}
+          .cw-section-accordion:last-of-type{border-bottom:1px solid rgba(19,55,47,.12)}
+          .cw-section-accordion>summary{list-style:none;cursor:pointer;user-select:none;padding:0;background:rgba(255,253,248,.34);transition:background .18s ease}
+          .cw-section-accordion>summary::-webkit-details-marker{display:none}
+          .cw-section-accordion>summary:hover{background:rgba(255,253,248,.7)}
+          .cw-section-accordion>summary:focus-visible{outline:2px solid var(--gold,#c8952f);outline-offset:-2px}
+          .cw-accordion-summary-inner{min-height:64px;display:flex;align-items:center;justify-content:space-between;gap:18px;padding-top:14px;padding-bottom:14px}
+          .cw-accordion-label{color:var(--gold,#c8952f);font-weight:950;letter-spacing:.15em;text-transform:uppercase;font-size:.78rem;line-height:1.25}
+          .cw-accordion-toggle{width:28px;height:28px;border:1px solid rgba(19,55,47,.14);border-radius:999px;display:grid;place-items:center;font-size:1rem;font-weight:800;line-height:1;color:var(--green,#174d39);background:var(--paper,#fffdf8);transition:transform .24s ease;flex:0 0 auto}
+          .cw-section-accordion[open] .cw-accordion-toggle{transform:rotate(45deg)}
+          .cw-section-accordion[open]>summary{background:rgba(255,253,248,.56)}
+          .cw-accordion-panel{overflow:hidden}
+          .cw-accordion-source-label{display:none!important}
+          #collaboration-framework>.rev19-observatory-bridge{width:min(1220px,calc(100% - 44px));margin:16px auto 0}
+          @media(max-width:900px){.cw-accordion-summary-inner{min-height:58px;padding-top:12px;padding-bottom:12px}.cw-accordion-label{font-size:.72rem}#collaboration-framework>.rev19-observatory-bridge{width:min(100% - 28px,1220px)}}
+          @media(prefers-reduced-motion:reduce){.cw-accordion-toggle{transition:none}}
+          </style>'''
+
+          script = r'''<script id="cw-hub-accordion-00-18-script">
+          (()=>{
+            const expected=Array.from({length:19},(_,i)=>String(i).padStart(2,'0'));
+            const sections=[...document.querySelectorAll('section')].map(section=>{
+              const label=[...section.querySelectorAll('.kicker')].find(el=>/^\s*\d{2}\s*[·•-]/.test(el.textContent||''));
+              if(!label)return null;
+              const m=(label.textContent||'').trim().match(/^(\d{2})\s*[·•-]\s*(.+)$/);
+              return m?{section,label,num:m[1],title:m[2].trim()}:null;
+            }).filter(Boolean);
+            if(sections.length!==19||sections.map(x=>x.num).join(',')!==expected.join(',')){
+              console.error('Accordion contract failed: expected sections 00–18 exactly once and in order.');
+              return;
+            }
+            sections.forEach(item=>{
+              let title=item.title;
+              if(item.num==='00')title=title.replace(/\s+since\s+v\s*0\.1\s*$/i,'').trim();
+              const details=document.createElement('details');
+              details.className='cw-section-accordion';
+              details.dataset.cwSection=item.num;
+              const summary=document.createElement('summary');
+              summary.innerHTML='<span class="cw-accordion-summary-inner container"><span class="cw-accordion-label"></span><span class="cw-accordion-toggle" aria-hidden="true">+</span></span>';
+              summary.querySelector('.cw-accordion-label').textContent=item.num+' · '+title;
+              const panel=document.createElement('div');
+              panel.className='cw-accordion-panel';
+              item.label.classList.add('cw-accordion-source-label');
+              item.label.hidden=true;
+              const parent=item.section.parentNode;
+              parent.insertBefore(details,item.section);
+              panel.appendChild(item.section);
+              details.append(summary,panel);
+              const duration=240;
+              summary.addEventListener('click',ev=>{
+                ev.preventDefault();
+                if(details.dataset.animating==='1')return;
+                if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){details.open=!details.open;return;}
+                details.dataset.animating='1';
+                if(details.open){
+                  const start=panel.getBoundingClientRect().height;
+                  const anim=panel.animate([{height:start+'px',opacity:1},{height:'0px',opacity:0}],{duration,easing:'ease-in-out'});
+                  anim.onfinish=()=>{details.open=false;delete details.dataset.animating;};
+                  anim.oncancel=()=>{delete details.dataset.animating;};
+                }else{
+                  details.open=true;
+                  const end=panel.scrollHeight;
+                  const anim=panel.animate([{height:'0px',opacity:0},{height:end+'px',opacity:1}],{duration,easing:'ease-out'});
+                  anim.onfinish=()=>{delete details.dataset.animating;};
+                  anim.oncancel=()=>{delete details.dataset.animating;};
+                }
+              });
+            });
+          })();
+          </script>'''
+
+          if '</head>' not in baseline or '</body>' not in baseline:
+              raise SystemExit('Expected head/body closing tags not found')
+          candidate = baseline.replace('</head>', style + '</head>', 1).replace('</body>', script + '</body>', 1)
+
+          restored = candidate.replace(style, '', 1).replace(script, '', 1)
+          if restored != baseline:
+              raise SystemExit('Preservation failure: removing only authorized additions does not restore baseline byte-for-byte')
+          if candidate.count('cw-hub-accordion-00-18-styles') != 1 or candidate.count('cw-hub-accordion-00-18-script') != 1:
+              raise SystemExit('Accordion injection count mismatch')
+          if '#collaboration-framework>.rev19-observatory-bridge' not in candidate:
+              raise SystemExit('Observatory bridge width fix missing')
+          if '.cw-accordion-source-label{display:none!important}' not in candidate:
+              raise SystemExit('Duplicate source-label suppression missing')
+
+          # Build a browser-test copy that opens then closes 00 and checks all 19 wrappers + bridge width.
+          test_helper = r'''<script>
+          setTimeout(()=>{
+            const all=[...document.querySelectorAll('.cw-section-accordion')];
+            const d=all[0], s=d&&d.querySelector('summary');
+            const bridge=document.querySelector('#collaboration-framework>.rev19-observatory-bridge');
+            const labels=[...document.querySelectorAll('.cw-accordion-source-label')];
+            if(!d||!s||all.length!==19||labels.length!==19||!bridge){document.body.dataset.accordionTest='fail-setup';return;}
+            const widthOk=bridge.getBoundingClientRect().width < window.innerWidth && bridge.getBoundingClientRect().width <= 1221;
+            s.click();
+            setTimeout(()=>{
+              const opened=d.open;
+              s.click();
+              setTimeout(()=>{document.body.dataset.accordionTest=(opened&&!d.open&&widthOk)?'pass':'fail-behavior';},320);
+            },320);
+          },120);
+          </script>'''
+          test_html = candidate.replace('</body>', test_helper + '</body>', 1)
+          Path('/tmp/cw-accordion-test.html').write_text(test_html, encoding='utf-8')
+
+          encoded = base64.b64encode(gzip.compress(candidate.encode('utf-8'), compresslevel=9, mtime=0)).decode('ascii')
+          size = (len(encoded) + 16) // 17
+          chunks = [encoded[i*size:(i+1)*size] for i in range(16)] + [encoded[16*size:]]
+          if len(chunks) != 17 or any(not c for c in chunks):
+              raise SystemExit('Failed to create 17 non-empty payload chunks')
+          for i,c in enumerate(chunks):
+              (payload_dir / f'hub-{i:02d}.txt').write_text(c, encoding='ascii')
+
+          # Roundtrip payload validation.
+          rb = ''.join((payload_dir / f'hub-{i:02d}.txt').read_text(encoding='ascii') for i in range(17))
+          rb += '=' * (-len(rb) % 4)
+          roundtrip = gzip.decompress(base64.b64decode(rb)).decode('utf-8')
+          if roundtrip != candidate:
+              raise SystemExit('Payload roundtrip mismatch')
+
+          print('SOURCE_PRESERVATION=BYTE_EXACT_AFTER_REMOVING_AUTHORIZED_ADDITIONS')
+          print('NUMBERED_SECTIONS=19 (00..18)')
+          print('BASELINE_SHA256='+baseline_sha)
+          print('CANDIDATE_SHA256='+hashlib.sha256(candidate.encode()).hexdigest())
+          PY
+
+          chrome=$(command -v google-chrome || command -v google-chrome-stable || command -v chromium || command -v chromium-browser || true)
+          test -n "$chrome"
+          "$chrome" --headless=new --no-sandbox --disable-gpu --disable-dev-shm-usage --virtual-time-budget=2200 --dump-dom "file:///tmp/cw-accordion-test.html" > /tmp/cw-accordion-rendered.html
+          grep -q 'data-accordion-test="pass"' /tmp/cw-accordion-rendered.html
+          count=$(grep -o 'class="cw-section-accordion"' /tmp/cw-accordion-rendered.html | wc -l | tr -d ' ')
+          test "$count" = 19
+          echo 'BROWSER_ACCORDION_OPEN_CLOSE=PASS'
+          echo 'BROWSER_NUMBERED_ACCORDIONS=19'
+      - name: Commit only production hub payload
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add docs/payload/hub-*.txt
+          git commit -m 'Apply accordion navigation to hub sections 00-18'
+          git push origin HEAD:fix/hub-accordion-00-18-20260829
