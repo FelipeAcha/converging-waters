@@ -1,0 +1,164 @@
+name: Restore REV30 section 14 visual system
+
+on:
+  push:
+    branches:
+      - fix/section14-rev30-styles-20260829
+    paths:
+      - docs-governance/recovery/section14-rev30-full-00.b64
+      - docs-governance/recovery/section14-rev30-tail-*.b64
+      - .github/workflows/section14-rev30-visual-restore.yml
+
+permissions:
+  contents: write
+
+jobs:
+  restore:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          ref: fix/section14-rev30-styles-20260829
+
+      - name: RED - prove current section lacks the exact REV30 visual contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          if python - <<'PY'
+          from pathlib import Path
+          import base64, gzip, re
+          paths=sorted(Path('docs/payload').glob('hub-*.txt'))
+          b64=re.sub(r'\s+','',''.join(p.read_text() for p in paths)); b64+='='*(-len(b64)%4)
+          html=gzip.decompress(base64.b64decode(b64)).decode()
+          required=['id="cw-rev18-scoped-styles"','class="cw-rev18-late"','.cw-rev18-late .focus-grid{','.cw-rev18-late .meeting-strip{','.cw-rev18-late .matrix-overview{']
+          missing=[x for x in required if x not in html]
+          if missing:
+              raise SystemExit('EXPECTED_RED missing: '+', '.join(missing))
+          raise SystemExit(0)
+          PY
+          then
+            echo 'RED test unexpectedly passed; refusing to mutate.'
+            exit 1
+          else
+            echo 'RED confirmed: current hub is missing the REV30 visual dependency.'
+          fi
+
+      - name: Restore exact REV30 section 14 plus its scoped visual dependency
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import base64, gzip, hashlib, re
+
+          FRAGMENT_SHA='1ae1565acb97bdc3bda7b38d541f7b5d8b1addb77786c5ad35a6dc1b00a2a251'
+          payloads=sorted(Path('docs/payload').glob('hub-*.txt'))
+          if len(payloads)!=17: raise SystemExit(f'expected 17 hub chunks, found {len(payloads)}')
+
+          def decode_payload(ps):
+              s=re.sub(r'\s+','',''.join(p.read_text(encoding='ascii') for p in ps)); s+='='*(-len(s)%4)
+              return gzip.decompress(base64.b64decode(s)).decode('utf-8')
+
+          def span_section(html, element_id):
+              m=re.search(r'<section\b(?=[^>]*\bid\s*=\s*["\']'+re.escape(element_id)+r'["\'])[^>]*>',html,re.I)
+              if not m: raise RuntimeError('missing section #'+element_id)
+              tok=re.compile(r'</?section\b[^>]*>',re.I); depth=0
+              for t in tok.finditer(html,m.start()):
+                  if t.group(0).startswith('</'):
+                      depth-=1
+                      if depth==0: return m.start(),t.end(),html[m.start():t.end()]
+                  else: depth+=1
+              raise RuntimeError('unclosed section #'+element_id)
+
+          baseline=decode_payload(payloads)
+
+          # Exact user-provided REV30 fragment: first 6000 chars + verified 2000-char tail pieces.
+          source_b64=Path('docs-governance/recovery/section14-rev30-full-00.b64').read_text(encoding='ascii')
+          for p in sorted(Path('docs-governance/recovery').glob('section14-rev30-tail-*.b64')):
+              source_b64 += p.read_text(encoding='ascii')
+          fragment=gzip.decompress(base64.b64decode(source_b64)).decode('utf-8')
+          actual=hashlib.sha256(fragment.encode()).hexdigest()
+          if actual!=FRAGMENT_SHA: raise RuntimeError(f'REV30 fragment SHA mismatch: {actual}')
+          if fragment.count('id="cw-rev18-scoped-styles"')!=1: raise RuntimeError('REV30 scoped style missing/duplicated in source')
+          if '<div class="cw-rev18-late"><section' not in fragment: raise RuntimeError('REV30 wrapper missing in source')
+          for marker in ('.cw-rev18-late .focus-grid{','.cw-rev18-late .meeting-strip{','.cw-rev18-late .matrix-overview{','.cw-rev18-late #alliance-architecture[data-rev11="matrix-fit"]'):
+              if marker not in fragment: raise RuntimeError('REV30 visual marker missing: '+marker)
+
+          # Fail closed if a copy of the scoped stylesheet already exists elsewhere.
+          if 'id="cw-rev18-scoped-styles"' in baseline:
+              raise RuntimeError('baseline unexpectedly already contains scoped REV30 style')
+
+          sa,sb,_=span_section(baseline,'alliance-architecture')
+          rs,repl_end=sa,sb
+
+          # If an old cw-rev18-late wrapper surrounds the section, replace that wrapper too.
+          pre=baseline[:sa]
+          wm=re.search(r'<div\s+class=["\']cw-rev18-late["\']>\s*$',pre,re.I)
+          if wm:
+              post=baseline[sb:]
+              cm=re.match(r'\s*</div>',post,re.I)
+              if not cm: raise RuntimeError('existing cw-rev18-late wrapper is not directly closed after section')
+              rs=wm.start(); repl_end=sb+cm.end()
+
+          candidate=baseline[:rs]+fragment+baseline[repl_end:]
+
+          # Preservation gate: outside the authorized section-14 replacement boundary is byte exact.
+          if baseline[:rs] != candidate[:rs]: raise RuntimeError('prefix outside section 14 changed')
+          if baseline[repl_end:] != candidate[rs+len(fragment):]: raise RuntimeError('suffix outside section 14 changed')
+
+          before_ids=re.findall(r'<section\b[^>]*\bid\s*=\s*["\']([^"\']+)["\']',baseline,re.I)
+          after_ids=re.findall(r'<section\b[^>]*\bid\s*=\s*["\']([^"\']+)["\']',candidate,re.I)
+          if before_ids!=after_ids: raise RuntimeError('section order changed')
+          if candidate.count('id="alliance-architecture"')!=1: raise RuntimeError('section 14 duplicated')
+          if candidate.count('id="cw-rev18-scoped-styles"')!=1: raise RuntimeError('scoped style not unique')
+          if candidate[rs:rs+len(fragment)] != fragment: raise RuntimeError('inserted REV30 fragment not byte exact')
+
+          packed=gzip.compress(candidate.encode('utf-8'),compresslevel=9,mtime=0)
+          out=base64.b64encode(packed).decode('ascii')
+          n=len(payloads); size=(len(out)+n-1)//n
+          chunks=[out[i:i+size] for i in range(0,len(out),size)]
+          while len(chunks)<n: chunks.append('')
+          if len(chunks)!=n: raise RuntimeError('unexpected payload chunk count')
+          for p,c in zip(payloads,chunks): p.write_text(c,encoding='ascii')
+          if decode_payload(payloads)!=candidate: raise RuntimeError('payload round-trip mismatch')
+
+          print('RESTORE_PASS')
+          print('fragment_sha256='+FRAGMENT_SHA)
+          print('outside_section14=BYTE_EXACT')
+          print('section_order=UNCHANGED')
+          PY
+
+      - name: GREEN - require exact REV30 visual contract and isolated delta
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import base64,gzip,re
+          ps=sorted(Path('docs/payload').glob('hub-*.txt'))
+          s=re.sub(r'\s+','',''.join(p.read_text() for p in ps)); s+='='*(-len(s)%4)
+          html=gzip.decompress(base64.b64decode(s)).decode()
+          required=['id="cw-rev18-scoped-styles"','<div class="cw-rev18-late"><section','.cw-rev18-late .focus-grid{','.cw-rev18-late .meeting-strip{','.cw-rev18-late .matrix-overview{','.cw-rev18-late #alliance-architecture[data-rev11="matrix-fit"]']
+          missing=[x for x in required if x not in html]
+          if missing: raise SystemExit('GREEN failed: '+', '.join(missing))
+          if html.count('id="cw-rev18-scoped-styles"')!=1: raise SystemExit('style duplicate')
+          if html.count('id="alliance-architecture"')!=1: raise SystemExit('section duplicate')
+          print('GREEN_PASS exact REV30 visual contract present')
+          PY
+          changed=$(git diff --name-only)
+          test -n "$changed"
+          bad=$(printf '%s\n' "$changed" | grep -Ev '^docs/payload/hub-[0-9][0-9]\.txt$' || true)
+          test -z "$bad"
+          count=$(printf '%s\n' "$changed" | grep -Ec '^docs/payload/hub-[0-9][0-9]\.txt$')
+          test "$count" -eq 17
+
+      - name: Commit repaired hub payload
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add docs/payload/hub-*.txt
+          git commit -m 'Restore REV30 section 14 visual system exactly'
+          git push origin HEAD:fix/section14-rev30-styles-20260829
