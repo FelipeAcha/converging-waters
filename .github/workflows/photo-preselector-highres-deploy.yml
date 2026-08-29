@@ -5,11 +5,13 @@ on:
     branches: [main]
     paths:
       - 'scripts/build_photo_preselector_highres.py'
+      - 'tests/test_build_photo_preselector_highres.py'
       - '.github/workflows/photo-preselector-highres-deploy.yml'
   push:
     branches: [main]
     paths:
       - 'scripts/build_photo_preselector_highres.py'
+      - 'tests/test_build_photo_preselector_highres.py'
       - '.github/workflows/photo-preselector-highres-deploy.yml'
   workflow_run:
     workflows: ['Deploy and validate GitHub Pages']
@@ -45,6 +47,11 @@ jobs:
         run: |
           set -euo pipefail
           python -m pip install --disable-pip-version-check beautifulsoup4 pillow requests gdown
+
+      - name: Run image-resolution regression test
+        run: |
+          set -euo pipefail
+          python -m unittest tests.test_build_photo_preselector_highres
 
       - name: Build high-resolution review assets only
         run: |
