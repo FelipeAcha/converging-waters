@@ -35,10 +35,36 @@ jobs:
           if baseline_sha != expected_baseline_sha:
               raise SystemExit(f'Baseline drift: {baseline_sha}')
 
-          numbered = re.findall(r'<div class="kicker">\s*(\d{2})\s*·\s*([^<]+)</div>', baseline, flags=re.I)
-          nums = [n for n,_ in numbered]
+          def top_level_sections(src):
+              token = re.compile(r'</?section\b[^>]*>', re.I)
+              stack = []
+              spans = []
+              for m in token.finditer(src):
+                  if m.group(0).lower().startswith('</'):
+                      if not stack:
+                          raise RuntimeError('Unbalanced closing section')
+                      start, depth = stack.pop()
+                      if depth == 0:
+                          spans.append((start, m.end(), src[start:m.end()]))
+                  else:
+                      stack.append((m.start(), len(stack)))
+              if stack:
+                  raise RuntimeError('Unclosed section tag')
+              return sorted(spans)
+
+          selected = []
+          after_start = False
+          for _,_,raw in top_level_sections(baseline):
+              if 'id="changed-since"' in raw:
+                  after_start = True
+              if not after_start:
+                  continue
+              m = re.search(r'<div class="section-head">.*?<div class="kicker">\s*(\d{2})\s*·\s*([^<]+)</div>', raw, flags=re.I|re.S)
+              if m:
+                  selected.append((m.group(1), m.group(2).strip()))
+          nums = [n for n,_ in selected]
           if nums != [f'{i:02d}' for i in range(19)]:
-              raise SystemExit(f'Expected numbered sections 00..18 exactly once and in order, found {nums}')
+              raise SystemExit(f'Expected target section headers 00..18 exactly once from changed-since onward, found {selected}')
 
           if 'cw-hub-accordion-00-18-styles' in baseline or 'cw-hub-accordion-00-18-script' in baseline:
               raise SystemExit('Accordion production markers already present')
@@ -65,14 +91,19 @@ jobs:
           script = r'''<script id="cw-hub-accordion-00-18-script">
           (()=>{
             const expected=Array.from({length:19},(_,i)=>String(i).padStart(2,'0'));
-            const sections=[...document.querySelectorAll('section')].map(section=>{
-              const label=[...section.querySelectorAll('.kicker')].find(el=>/^\s*\d{2}\s*[·•-]/.test(el.textContent||''));
-              if(!label)return null;
+            const start=document.getElementById('changed-since');
+            if(!start){console.error('Accordion contract failed: changed-since start section missing.');return;}
+            const sections=[...document.querySelectorAll('section')].filter(section=>{
+              const follows=section===start || Boolean(start.compareDocumentPosition(section)&Node.DOCUMENT_POSITION_FOLLOWING);
+              if(!follows || section.parentElement.closest('section'))return false;
+              return Boolean(section.querySelector('.section-head .kicker'));
+            }).map(section=>{
+              const label=section.querySelector('.section-head .kicker');
               const m=(label.textContent||'').trim().match(/^(\d{2})\s*[·•-]\s*(.+)$/);
               return m?{section,label,num:m[1],title:m[2].trim()}:null;
             }).filter(Boolean);
             if(sections.length!==19||sections.map(x=>x.num).join(',')!==expected.join(',')){
-              console.error('Accordion contract failed: expected sections 00–18 exactly once and in order.');
+              console.error('Accordion contract failed: expected target sections 00–18 exactly once and in order.',sections.map(x=>x.num));
               return;
             }
             sections.forEach(item=>{
@@ -99,14 +130,14 @@ jobs:
                 if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){details.open=!details.open;return;}
                 details.dataset.animating='1';
                 if(details.open){
-                  const start=panel.getBoundingClientRect().height;
-                  const anim=panel.animate([{height:start+'px',opacity:1},{height:'0px',opacity:0}],{duration,easing:'ease-in-out'});
+                  const startHeight=panel.getBoundingClientRect().height;
+                  const anim=panel.animate([{height:startHeight+'px',opacity:1},{height:'0px',opacity:0}],{duration,easing:'ease-in-out'});
                   anim.onfinish=()=>{details.open=false;delete details.dataset.animating;};
                   anim.oncancel=()=>{delete details.dataset.animating;};
                 }else{
                   details.open=true;
-                  const end=panel.scrollHeight;
-                  const anim=panel.animate([{height:'0px',opacity:0},{height:end+'px',opacity:1}],{duration,easing:'ease-out'});
+                  const endHeight=panel.scrollHeight;
+                  const anim=panel.animate([{height:'0px',opacity:0},{height:endHeight+'px',opacity:1}],{duration,easing:'ease-out'});
                   anim.onfinish=()=>{delete details.dataset.animating;};
                   anim.oncancel=()=>{delete details.dataset.animating;};
                 }
@@ -129,20 +160,24 @@ jobs:
           if '.cw-accordion-source-label{display:none!important}' not in candidate:
               raise SystemExit('Duplicate source-label suppression missing')
 
-          # Build a browser-test copy that opens then closes 00 and checks all 19 wrappers + bridge width.
           test_helper = r'''<script>
           setTimeout(()=>{
             const all=[...document.querySelectorAll('.cw-section-accordion')];
-            const d=all[0], s=d&&d.querySelector('summary');
-            const bridge=document.querySelector('#collaboration-framework>.rev19-observatory-bridge');
             const labels=[...document.querySelectorAll('.cw-accordion-source-label')];
-            if(!d||!s||all.length!==19||labels.length!==19||!bridge){document.body.dataset.accordionTest='fail-setup';return;}
-            const widthOk=bridge.getBoundingClientRect().width < window.innerWidth && bridge.getBoundingClientRect().width <= 1221;
-            s.click();
+            const names=all.map(x=>(x.querySelector('.cw-accordion-label')||{}).textContent||'');
+            const d0=all[0], s0=d0&&d0.querySelector('summary');
+            const d6=all[6];
+            if(!d0||!s0||!d6||all.length!==19||labels.length!==19){document.body.dataset.accordionTest='fail-setup';return;}
+            const namingOk=/^00 · What has changed$/i.test(names[0].trim())&&/^01 · Where we are now$/i.test(names[1].trim());
+            d6.open=true;
+            const bridge=document.querySelector('#collaboration-framework>.rev19-observatory-bridge');
+            const widthOk=Boolean(bridge)&&bridge.getBoundingClientRect().width < window.innerWidth&&bridge.getBoundingClientRect().width<=1221;
+            d6.open=false;
+            s0.click();
             setTimeout(()=>{
-              const opened=d.open;
-              s.click();
-              setTimeout(()=>{document.body.dataset.accordionTest=(opened&&!d.open&&widthOk)?'pass':'fail-behavior';},320);
+              const opened=d0.open;
+              s0.click();
+              setTimeout(()=>{document.body.dataset.accordionTest=(opened&&!d0.open&&widthOk&&namingOk)?'pass':'fail-behavior';},320);
             },320);
           },120);
           </script>'''
@@ -157,7 +192,6 @@ jobs:
           for i,c in enumerate(chunks):
               (payload_dir / f'hub-{i:02d}.txt').write_text(c, encoding='ascii')
 
-          # Roundtrip payload validation.
           rb = ''.join((payload_dir / f'hub-{i:02d}.txt').read_text(encoding='ascii') for i in range(17))
           rb += '=' * (-len(rb) % 4)
           roundtrip = gzip.decompress(base64.b64decode(rb)).decode('utf-8')
@@ -165,7 +199,7 @@ jobs:
               raise SystemExit('Payload roundtrip mismatch')
 
           print('SOURCE_PRESERVATION=BYTE_EXACT_AFTER_REMOVING_AUTHORIZED_ADDITIONS')
-          print('NUMBERED_SECTIONS=19 (00..18)')
+          print('TARGET_NUMBERED_SECTIONS=19 (00..18)')
           print('BASELINE_SHA256='+baseline_sha)
           print('CANDIDATE_SHA256='+hashlib.sha256(candidate.encode()).hexdigest())
           PY
@@ -178,6 +212,8 @@ jobs:
           test "$count" = 19
           echo 'BROWSER_ACCORDION_OPEN_CLOSE=PASS'
           echo 'BROWSER_NUMBERED_ACCORDIONS=19'
+          echo 'BROWSER_DUPLICATE_LABEL_SUPPRESSION=PASS'
+          echo 'BROWSER_OBSERVATORY_BRIDGE_WIDTH=PASS'
       - name: Commit only production hub payload
         shell: bash
         run: |
