@@ -91,3 +91,4 @@ jobs:
               if hrefs.count(url)!=1: raise SystemExit('RED canonical href missing/non-unique: '+url)
           print('FIELD_DATA_REENGINEERING_CONTRACT=PASS')
           PY
+# GREEN rerun marker: candidate c8979e3968260aa3ddf9bf11dd0411f5eb0bb28a
