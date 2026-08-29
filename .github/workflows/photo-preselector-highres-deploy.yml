@@ -33,12 +33,9 @@ env:
   REVIEW_URL: https://felipeacha.github.io/converging-waters/review/photo-preselector/
 
 jobs:
-  build_and_validate:
+  build_validate:
     if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -88,26 +85,44 @@ jobs:
           print('PASS high-resolution assets:', min(x['long_edge'] for x in assets), 'to', max(x['long_edge'] for x in assets), 'px')
           PY
 
-      - name: Configure GitHub Pages
+      - name: Upload validated site for deployment
         if: github.event_name != 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: highres-docs
+          path: docs
+          if-no-files-found: error
+
+  deploy:
+    if: github.event_name != 'pull_request' && (github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success')
+    needs: build_validate
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Download validated site
+        uses: actions/download-artifact@v4
+        with:
+          name: highres-docs
+          path: docs
+
+      - name: Configure GitHub Pages
         id: configure
         uses: actions/configure-pages@v5
         with:
           enablement: true
 
       - name: Upload Pages artifact
-        if: github.event_name != 'pull_request'
         uses: actions/upload-pages-artifact@v4
         with:
           path: docs
 
       - name: Deploy high-resolution review surface
-        if: github.event_name != 'pull_request'
         id: deployment
         uses: actions/deploy-pages@v4
 
       - name: Verify public high-resolution selector in Chrome
-        if: github.event_name != 'pull_request'
         run: |
           set -euo pipefail
           code=000
