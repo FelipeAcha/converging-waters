@@ -41,7 +41,11 @@ def localize_legacy_assets(raw: str) -> str:
 
 
 def decode_chunks(paths: list[Path]) -> str:
-    b64 = "".join(p.read_text(encoding="ascii").strip() for p in paths)
+    # The historical browser transport used atob(), which accepts omitted trailing
+    # padding. Normalize whitespace and restore only the mathematically required
+    # terminal '=' padding before Python's stricter decoder.
+    b64 = re.sub(r"\s+", "", "".join(p.read_text(encoding="ascii") for p in paths))
+    b64 += "=" * (-len(b64) % 4)
     return gzip.decompress(base64.b64decode(b64)).decode("utf-8")
 
 
@@ -97,7 +101,6 @@ def restore(baseline: str, approved_early: str, approved_alliance: str) -> tuple
     if strip_authorized_baseline(baseline) != strip_authorized_candidate(out):
         raise RuntimeError("unauthorized bytes changed outside the three restoration regions")
 
-    # Exact target checks.
     principal_out = span_by_id(out, "principal-infographic")[2]
     stanley_out = span_by_id(out, "stanley-update")[2]
     alliance_out = span_by_id(out, "alliance-architecture")[2]
@@ -108,7 +111,6 @@ def restore(baseline: str, approved_early: str, approved_alliance: str) -> tuple
     if alliance_out != alliance:
         raise RuntimeError("alliance section is not exact REV24/REV17 recovery block")
 
-    # Historical preservation assertions recorded in approved v16.5/v16.6 lineage.
     if len(re.findall(r"<img\b", stanley, re.I)) != 13:
         raise RuntimeError("approved Stanley section no longer has 13 images")
     if len(re.findall(r"<a\b", stanley, re.I)) != 17:
@@ -116,7 +118,6 @@ def restore(baseline: str, approved_early: str, approved_alliance: str) -> tuple
     if PRINCIPAL_ASSET not in principal:
         raise RuntimeError("principal infographic did not localize to canonical legacy asset")
 
-    # Section ordering must remain exactly unchanged; principal infographic is a div, not a section.
     section_id_re = re.compile(r'<section\b[^>]*\bid\s*=\s*["\']([^"\']+)["\']', re.I)
     before_ids = section_id_re.findall(baseline)
     after_ids = section_id_re.findall(out)
