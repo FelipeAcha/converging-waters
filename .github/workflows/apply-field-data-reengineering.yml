@@ -1,0 +1,239 @@
+name: Apply field-data section reengineering
+on:
+  push:
+    branches:
+      - review/reengineer-field-data-20260829
+    paths:
+      - .github/workflows/apply-field-data-reengineering.yml
+permissions:
+  contents: write
+jobs:
+  transform:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: review/reengineer-field-data-20260829
+      - name: Reengineer only stanley-update and validate
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import base64,gzip,hashlib,re,html as h
+
+          d=Path('docs/payload')
+          parts=[d/f'hub-{i:02d}.txt' for i in range(17)]
+          b64=re.sub(r'\s+','',''.join(p.read_text(encoding='ascii') for p in parts)); b64+='='*(-len(b64)%4)
+          page=gzip.decompress(base64.b64decode(b64)).decode('utf-8')
+          baseline_sha=hashlib.sha256(page.encode()).hexdigest()
+          if baseline_sha!='09b6f1ce37e01acae07fc5e309b9b835b2450f3f81a4285b4bcb8b2b4accff7d':
+              raise SystemExit('Baseline drift: '+baseline_sha)
+
+          def section_span(src,sid):
+              m=re.search(r'<section\b[^>]*\bid=["\']'+re.escape(sid)+r'["\'][^>]*>',src,re.I)
+              if not m: raise SystemExit('missing section '+sid)
+              tok=re.compile(r'</?section\b[^>]*>',re.I); depth=0
+              for t in tok.finditer(src,m.start()):
+                  if t.group(0).lower().startswith('</'):
+                      depth-=1
+                      if depth==0:return m.start(),t.end()
+                  else: depth+=1
+              raise SystemExit('unclosed section '+sid)
+
+          def enclosing_div(src,marker):
+              pos=src.find(marker)
+              if pos<0: raise SystemExit('missing marker '+marker)
+              tok=re.compile(r'</?div\b[^>]*>',re.I); stack=[]; spans=[]
+              for m in tok.finditer(src):
+                  if m.group(0).lower().startswith('</'):
+                      if stack:
+                          sm=stack.pop(); spans.append((sm.start(),m.end()))
+                  else: stack.append(m)
+              candidates=[src[a:b] for a,b in spans if a<=pos<b and '1. Match' in src[a:b] and '4. Define' in src[a:b] and 'Review outcome:' in src[a:b]]
+              if not candidates: raise SystemExit('review block not found')
+              return min(candidates,key=len)
+
+          ss,se=section_span(page,'stanley-update')
+          old=page[ss:se]
+          outside=page[:ss]+page[se:]
+          outside_sha=hashlib.sha256(outside.encode()).hexdigest()
+          if outside_sha!='bfbd2114f82a4bd103860c62d0524b1eb22495384f7133cc352c0a711b4f5ca9':
+              raise SystemExit('Baseline outside hash drift')
+          review=enclosing_div(old,'Turn the references into one technical next step')
+          if hashlib.sha256(review.encode()).hexdigest()!='3d2665f5bcfcf6dee86bad939660bd26aa5ce7019cc29aa5d8684c281466ffeb':
+              raise SystemExit('Point 6 baseline block drift')
+          open_tag=re.match(r'<section\b[^>]*>',old,re.I).group(0)
+
+          inner=r'''
+          <style>
+          #stanley-update .fd2-wrap{display:grid;gap:34px}
+          #stanley-update .fd2-hero{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(280px,.8fr);gap:34px;align-items:end}
+          #stanley-update .fd2-kicker,#stanley-update .fd2-eyebrow{color:#c58b18;font-size:.72rem;font-weight:900;letter-spacing:.16em;text-transform:uppercase}
+          #stanley-update .fd2-hero h2{margin:.45rem 0 0;font-size:clamp(2.6rem,5vw,5.7rem);line-height:.92;letter-spacing:-.055em;color:#0c342a}
+          #stanley-update .fd2-hero p{margin:0;color:#5e7068;font-size:1.05rem;line-height:1.55}
+          #stanley-update .fd2-note{margin-top:16px;padding:12px 15px;border:1px solid rgba(18,83,66,.14);border-radius:14px;background:rgba(227,244,236,.62);font-size:.9rem;color:#245246}
+          #stanley-update .fd2-block{display:grid;gap:16px}
+          #stanley-update .fd2-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(260px,.72fr);gap:24px;align-items:end}
+          #stanley-update .fd2-head h3{margin:.3rem 0 0;color:#0c342a;font-size:clamp(1.55rem,2.5vw,2.4rem);line-height:1.04;letter-spacing:-.035em}
+          #stanley-update .fd2-head p{margin:0;color:#65766f;line-height:1.5}
+          #stanley-update .fd2-grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+          #stanley-update .fd2-function-card,#stanley-update .fd2-ref-card,#stanley-update .fd2-territory-card{overflow:hidden;border:1px solid #e4d9c9;border-radius:22px;background:#fffdf8}
+          #stanley-update .fd2-function-card img,#stanley-update .fd2-ref-card img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;background:#eef2ed}
+          #stanley-update .fd2-card-body{padding:18px;display:grid;gap:9px}
+          #stanley-update .fd2-card-body h4{margin:0;color:#0c342a;font-size:1.18rem;line-height:1.15}
+          #stanley-update .fd2-card-body p{margin:0;color:#5e7068;line-height:1.48;font-size:.94rem}
+          #stanley-update .fd2-source-status{display:inline-flex;width:max-content;max-width:100%;padding:5px 9px;border-radius:999px;background:#edf6f1;color:#1a5c49;font-size:.67rem;font-weight:850;letter-spacing:.08em;text-transform:uppercase}
+          #stanley-update .fd2-catalogue{padding:22px;border:1px solid #dfd6c8;border-radius:26px;background:linear-gradient(120deg,#f6fbf8 0%,#fff9df 100%)}
+          #stanley-update .fd2-catalogue-top{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;margin-bottom:16px}
+          #stanley-update .fd2-catalogue-top h3{margin:.3rem 0 0;color:#0c342a;font-size:clamp(1.55rem,2.5vw,2.35rem);line-height:1.05}
+          #stanley-update .fd2-master-link{display:inline-flex;align-items:center;gap:8px;padding:10px 13px;border-radius:999px;border:1px solid rgba(18,83,66,.2);background:#fffdf8;color:#134f40;font-weight:800;text-decoration:none;white-space:nowrap}
+          #stanley-update .fd2-source-links{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+          #stanley-update .fd2-source-links a,#stanley-update .fd2-context-links a{display:inline-flex;padding:7px 10px;border-radius:999px;background:#edf6f1;border:1px solid rgba(18,83,66,.14);color:#14503f;text-decoration:none;font-size:.8rem;font-weight:800}
+          #stanley-update .fd2-flow{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;align-items:stretch}
+          #stanley-update .fd2-step{position:relative;padding:17px 15px;border:1px solid #e3d7c7;border-radius:18px;background:#fffdf8;min-height:138px}
+          #stanley-update .fd2-step:not(:last-child)::after{content:'→';position:absolute;right:-15px;top:50%;transform:translateY(-50%);z-index:2;color:#c99527;font-weight:900;font-size:1.2rem}
+          #stanley-update .fd2-step b{display:block;color:#0c342a;margin-bottom:7px}
+          #stanley-update .fd2-step p{margin:0;color:#64756e;font-size:.86rem;line-height:1.42}
+          #stanley-update .fd2-step small{display:block;margin-top:10px;color:#8a6c2c;font-weight:800;font-size:.69rem;line-height:1.35;text-transform:uppercase;letter-spacing:.07em}
+          #stanley-update .fd2-territory-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+          #stanley-update .fd2-territory-card{padding:18px}
+          #stanley-update .fd2-territory-card h4{margin:0 0 8px;color:#0c342a;font-size:1.05rem}
+          #stanley-update .fd2-territory-card p{margin:0;color:#5f7069;line-height:1.48;font-size:.91rem}
+          #stanley-update .fd2-principle{padding:18px 20px;border-radius:20px;background:linear-gradient(100deg,#155743,#2d8584);color:white}
+          #stanley-update .fd2-principle b{font-size:1.05rem}
+          #stanley-update .fd2-principle p{margin:5px 0 0;color:rgba(255,255,255,.88);line-height:1.45}
+          #stanley-update .fd2-clarify{padding:22px;border-radius:24px;background:#123e34;color:white;display:grid;gap:14px}
+          #stanley-update .fd2-clarify h3{margin:0;font-size:1.45rem}
+          #stanley-update .fd2-clarify p{margin:0;color:rgba(255,255,255,.82);line-height:1.5}
+          #stanley-update .fd2-chips{display:flex;flex-wrap:wrap;gap:8px}
+          #stanley-update .fd2-chip{padding:7px 10px;border:1px solid rgba(255,255,255,.22);border-radius:999px;background:rgba(255,255,255,.09);font-size:.78rem;font-weight:800}
+          #stanley-update .fd2-context{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-top:2px}
+          #stanley-update .fd2-context span{color:#63746d;font-size:.82rem;font-weight:800}
+          #stanley-update .fd2-context-links{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:8px}
+          @media(max-width:900px){#stanley-update .fd2-hero,#stanley-update .fd2-head{grid-template-columns:1fr}#stanley-update .fd2-grid3,#stanley-update .fd2-territory-grid{grid-template-columns:1fr}#stanley-update .fd2-flow{grid-template-columns:1fr 1fr}#stanley-update .fd2-step:not(:last-child)::after{display:none}#stanley-update .fd2-catalogue-top,#stanley-update .fd2-context{align-items:flex-start;flex-direction:column}#stanley-update .fd2-context-links{justify-content:flex-start}}
+          @media(max-width:560px){#stanley-update .fd2-flow{grid-template-columns:1fr}#stanley-update .fd2-hero h2{font-size:2.7rem}#stanley-update .fd2-catalogue{padding:15px}}
+          </style>
+          <div class="container fd2-wrap">
+            <div class="fd2-hero">
+              <div><div class="fd2-kicker">New since v0.1 · Stanley / WGA</div><h2>A more tangible field-and-data possibility</h2></div>
+              <div><p>Stanley's contributions, Simona's review invitation and the technical catalogue now make a possible field architecture easier to see. The references below separate what Stanley proposed, what official sources verify and what Converging Waters is still interpreting.</p><div class="fd2-note"><b>Exploratory by design.</b> These are emerging possibilities, not confirmed WGA commitments. Questions and protection needs come before hardware.</div></div>
+            </div>
+
+            <div class="fd2-block">
+              <div class="fd2-head"><div><div class="fd2-eyebrow">1 · Functional view</div><h3>What a field-and-data system could actually do</h3></div><p>Three functions organize the references below. The photos are examples, not a declaration that these exact configurations have been selected.</p></div>
+              <div class="fd2-grid3">
+                <article class="fd2-function-card"><img src="assets/legacy/asset-925e0999fc1b.webp" alt="Portable field science and sampling as an example of sample-to-sequence work"><div class="fd2-card-body"><div class="fd2-eyebrow">Biological layer</div><h4>Sample + sequence</h4><p>Portable eDNA and metagenomic observation across water, soil and other environmental samples — with sampling, preparation, controls and interpretation treated as one workflow.</p></div></article>
+                <article class="fd2-function-card"><img src="assets/legacy/asset-e92857647d5c.webp" alt="Compact field node illustrating sensors and environmental metadata capture"><div class="fd2-card-body"><div class="fd2-eyebrow">Context layer</div><h4>Context + verify</h4><p>Sensors, GPS, time, calibration, field notes and traceable provenance give each biological or environmental observation enough context to be useful and auditable.</p></div></article>
+                <article class="fd2-function-card"><img src="assets/legacy/asset-4eb7e31bb6ca.webp" alt="Sacred Valley field context illustrating place-based learning and stewardship"><div class="fd2-card-body"><div class="fd2-eyebrow">Learning layer</div><h4>Learn + steward</h4><p>Bioacoustics, comparable observations, a longitudinal atlas and community participation can turn isolated measurements into cumulative learning with appropriate data stewardship.</p></div></article>
+              </div>
+            </div>
+
+            <div class="fd2-catalogue">
+              <div class="fd2-catalogue-top"><div><div class="fd2-eyebrow">2 · Source-of-truth references</div><h3>Technical reference catalogue</h3></div><a class="fd2-master-link" href="https://docs.google.com/spreadsheets/d/1ogEMPnctnCcFq2xZHwlyfT-fvjBpWJihnv2LfKTQhC0/edit" target="_blank" rel="noopener">Open master catalogue ↗</a></div>
+              <div class="fd2-grid3">
+                <article class="fd2-ref-card"><img src="assets/legacy/asset-89b5baa66258.webp" alt="Bacterioplankton network reference used to illustrate metagenomic ecosystem relationships"><div class="fd2-card-body"><span class="fd2-source-status">Stanley + verified scientific reference</span><h4>WGA / biological layer</h4><p>eDNA and metagenomics are most useful here as an integrated biological layer: samples become more interpretable when they connect to environmental context, comparable sites and time. Stanley's “force multiplier” framing remains attributed to him.</p><div class="fd2-source-links"><a href="https://worldgeno.me/" target="_blank" rel="noopener">World Genome Academy</a><a href="https://nanoporetech.com/products/sequence/minion" target="_blank" rel="noopener">MinION reference</a><a href="https://doi.org/10.1128/spectrum.04793-22" target="_blank" rel="noopener">Amazon network paper</a></div></div></article>
+                <article class="fd2-ref-card"><img src="assets/legacy/asset-534f40aa7faf.webp" alt="Autonomous marine monitoring system used as a Raspberry Pi field-sensing reference"><div class="fd2-card-body"><span class="fd2-source-status">Official external reference shared by Stanley</span><h4>Biomonitoring / edge + environmental context</h4><p>Small field computers, ecosystem-specific sensors, timestamped metadata and ruggedized nodes can support low-footprint monitoring. Raspberry Pi is a concrete reference; Jetson remains only an option category until a real need and model are defined.</p><div class="fd2-source-links"><a href="https://www.raspberrypi.com/news/exploring-the-ocean-with-raspberry-pi-powered-marine-robots/" target="_blank" rel="noopener">Marine monitoring example</a><a href="https://www.raspberrypi.com/products/compute-module-4/" target="_blank" rel="noopener">Compute Module 4</a></div></div></article>
+                <article class="fd2-ref-card"><img src="assets/legacy/asset-731976ddf41b.webp" alt="Citizen-science bioacoustics reference illustrating distributed biodiversity monitoring"><div class="fd2-card-body"><span class="fd2-source-status">Official citizen-science reference</span><h4>Citizen Science / bioacoustics</h4><p>BirdNET shows how accessible sensing, edge analysis and distributed participation can produce biodiversity observations. It is a useful low-complexity reference for testing installation, metadata, participation and data-quality practice before more advanced deployments.</p><div class="fd2-source-links"><a href="https://birdnet.cornell.edu/" target="_blank" rel="noopener">BirdNET platform</a><a href="https://birdnet.cornell.edu/birdnet-pi/" target="_blank" rel="noopener">BirdNET-Pi</a></div></div></article>
+              </div>
+            </div>
+
+            <div class="fd2-block">
+              <div class="fd2-head"><div><div class="fd2-eyebrow">3 · Integration logic</div><h3>How these pieces could work together</h3></div><p>The value is not a pile of gadgets. It comes from linking biological observation, environmental context, provenance, interpretation and stewardship.</p></div>
+              <div class="fd2-flow">
+                <div class="fd2-step"><b>Observe / sample</b><p>Collect biological or environmental signals with a clear question and protocol.</p><small>WGA · Citizen Science</small></div>
+                <div class="fd2-step"><b>Contextualize</b><p>Add place, time, environmental variables and field conditions around each observation.</p><small>Biomonitoring</small></div>
+                <div class="fd2-step"><b>Verify / trace</b><p>Keep provenance, calibration, custody and QA/QC reconstructible rather than implied.</p><small>All three layers</small></div>
+                <div class="fd2-step"><b>Aggregate / interpret</b><p>Compare sites and time so patterns become more legible than isolated measurements.</p><small>WGA · Biomonitoring</small></div>
+                <div class="fd2-step"><b>Learn / steward</b><p>Return usable knowledge to the people monitoring, caring for and deciding about the territory.</p><small>Citizen Science · Stewards</small></div>
+              </div>
+            </div>
+
+            <div class="fd2-block">
+              <div class="fd2-head"><div><div class="fd2-eyebrow">4 · Territorial fit</div><h3>What this could look like in the territories</h3></div><p>The two territories can share learning infrastructure without assuming they need the same instruments, sampling geometry or level of technical complexity.</p></div>
+              <div class="fd2-territory-grid">
+                <article class="fd2-territory-card"><h4>Willkamayu / Sacred Valley</h4><p>River Observation Core + safe sampling + contextual sensors + schools/citizen science, with a possible hub-and-spoke eDNA layer only when QA/QC, laboratory support and field questions justify it.</p></article>
+                <article class="fd2-territory-card"><h4>Amazonas Sagrada</h4><p>Start from ecosystem-specific questions and biodiversity baselines; use metagenomic, acoustic or environmental layers only where they answer a real territorial need and can be maintained responsibly.</p></article>
+                <article class="fd2-territory-card"><h4>Shared learning layer</h4><p>Protocols, metadata, provenance, QA/QC, data stewardship and comparable learning can be shared even when equipment, operators and field methods differ by territory.</p></article>
+              </div>
+              <div class="fd2-principle"><b>People closest to a fragmented system should help build its infrastructure.</b><p>That principle stays paired with the catalogue's strongest design rule: questions and protection needs first; hardware second.</p></div>
+            </div>
+          '''
+
+          tail=r'''
+            <div class="fd2-clarify">
+              <div><div class="fd2-eyebrow" style="color:#d8b65b">5 · Open technical boundary</div><h3>What still needs to be clarified</h3></div>
+              <p>The catalogue makes the possibility legible; it does not close the implementation questions. The next technical conversation still has to confirm what exists, what is supportable and what is scientifically appropriate for each territory.</p>
+              <div class="fd2-chips"><span class="fd2-chip">Equipment</span><span class="fd2-chip">Technical support</span><span class="fd2-chip">Costs</span><span class="fd2-chip">Timing</span><span class="fd2-chip">Field requirements</span><span class="fd2-chip">Permissions + QA/QC</span><span class="fd2-chip">Data governance</span><span class="fd2-chip">Territorial fit</span></div>
+            </div>
+            <div class="fd2-context"><span>Context references retained once, without duplicating the technical links above.</span><div class="fd2-context-links"><a href="https://simonaaw.github.io/world-genome/" target="_blank" rel="noopener">WGA working site</a><a href="https://www.stanley.science/rare-disease/" target="_blank" rel="noopener">Stanley storytelling reference</a><a href="https://www.weforum.org/publications/making-rare-diseases-count-how-better-data-can-unlock-a-multitrillion-dollar-opportunity/" target="_blank" rel="noopener">Data-infrastructure analogy</a></div></div>
+          </div>
+          '''
+
+          new_section=open_tag+inner+review+tail+'</section>'
+          candidate=page[:ss]+new_section+page[se:]
+
+          css,ce=section_span(candidate,'stanley-update')
+          new_outside=candidate[:css]+candidate[ce:]
+          if hashlib.sha256(new_outside.encode()).hexdigest()!=outside_sha:
+              raise SystemExit('Unauthorized change outside stanley-update')
+          new_review=enclosing_div(candidate[css:ce],'Turn the references into one technical next step')
+          if hashlib.sha256(new_review.encode()).hexdigest()!='3d2665f5bcfcf6dee86bad939660bd26aa5ce7019cc29aa5d8684c281466ffeb':
+              raise SystemExit('Point 6 review block changed')
+
+          s=candidate[css:ce]
+          text=h.unescape(re.sub(r'\s+',' ',re.sub(r'<[^>]+>',' ',s)))
+          required=['What a field-and-data system could actually do','Technical reference catalogue','How these pieces could work together','What this could look like in the territories','Turn the references into one technical next step','What still needs to be clarified']
+          for x in required:
+              if x not in text: raise SystemExit('Missing required content: '+x)
+          imgs=re.findall(r'<img\b[^>]*\bsrc=["\']([^"\']+)',s,re.I)
+          hrefs=re.findall(r'<a\b[^>]*\bhref=["\']([^"\']+)',s,re.I)
+          if len(imgs)!=6 or len(set(imgs))!=6: raise SystemExit('Image uniqueness/count failure')
+          if len(hrefs)!=len(set(hrefs)): raise SystemExit('Duplicate hrefs remain')
+          if s.count('fd2-function-card')<3: raise SystemExit('Three function cards required')
+          for img in imgs:
+              if not img.startswith('assets/legacy/'): raise SystemExit('Unexpected image source '+img)
+              if not (Path('docs')/img).exists(): raise SystemExit('Missing local image '+img)
+          canonical=['https://docs.google.com/spreadsheets/d/1ogEMPnctnCcFq2xZHwlyfT-fvjBpWJihnv2LfKTQhC0/edit','https://worldgeno.me/','https://nanoporetech.com/products/sequence/minion','https://www.raspberrypi.com/news/exploring-the-ocean-with-raspberry-pi-powered-marine-robots/','https://www.raspberrypi.com/products/compute-module-4/','https://birdnet.cornell.edu/','https://birdnet.cornell.edu/birdnet-pi/','https://doi.org/10.1128/spectrum.04793-22']
+          for url in canonical:
+              if hrefs.count(url)!=1: raise SystemExit('Canonical link missing/non-unique '+url)
+          if 'Key pages already mentioned in the conversation' in text or 'Concrete examples already on the table' in text:
+              raise SystemExit('Old redundant reference-bank framing remains')
+
+          qa=r'''<script>setTimeout(async()=>{const sleep=ms=>new Promise(r=>setTimeout(r,ms));let ok=true,diag=[];const s=document.getElementById('stanley-update');const p=s?.closest('.cw-accordion-panel');const a=p?.closest('.cw-section-accordion');const b=a?.querySelector(':scope>.cw-accordion-trigger');const parent=a?.dataset.cwSection==='04';const hidden0=s?.getClientRects().length===0;if(!b){ok=false;diag.push('button:false')}else{b.click();await sleep(700);const visible=s.getClientRects().length>0;const imgs=[...s.querySelectorAll('img')];const loaded=imgs.length===6&&imgs.every(i=>i.complete&&i.naturalWidth>0);const srcs=imgs.map(i=>i.getAttribute('src'));const links=[...s.querySelectorAll('a[href]')].map(x=>x.href);const uniqueImgs=new Set(srcs).size===srcs.length;const uniqueLinks=new Set(links).size===links.length;const funcs=s.querySelectorAll('.fd2-function-card').length===3;ok=ok&&parent&&hidden0&&visible&&loaded&&uniqueImgs&&uniqueLinks&&funcs;diag.push('parent:'+parent,'hidden:'+hidden0,'visible:'+visible,'loaded:'+loaded,'uniqueImgs:'+uniqueImgs,'uniqueLinks:'+uniqueLinks,'funcs:'+funcs);b.click();await sleep(500);const hidden1=s.getClientRects().length===0;ok=ok&&hidden1;diag.push('closed:'+hidden1)}document.body.dataset.fd2Qa=ok?'pass':'fail';document.body.dataset.fd2Diag=diag.join('|');},350);</script>'''
+          Path('docs/__fd2qa.html').write_text(candidate.replace('</body>',qa+'</body>',1),encoding='utf-8')
+
+          enc=base64.b64encode(gzip.compress(candidate.encode(),compresslevel=9,mtime=0)).decode('ascii')
+          size=(len(enc)+16)//17
+          chunks=[enc[i*size:(i+1)*size] for i in range(16)]+[enc[16*size:]]
+          if len(chunks)!=17 or any(not x for x in chunks): raise SystemExit('Chunking failure')
+          for i,x in enumerate(chunks):(d/f'hub-{i:02d}.txt').write_text(x,encoding='ascii')
+          rb=''.join((d/f'hub-{i:02d}.txt').read_text(encoding='ascii') for i in range(17)); rb+='='*(-len(rb)%4)
+          if gzip.decompress(base64.b64decode(rb)).decode('utf-8')!=candidate: raise SystemExit('Payload roundtrip failure')
+          print('BASELINE_SHA256='+baseline_sha)
+          print('OUTSIDE_SECTION_PRESERVED=PASS')
+          print('POINT_6_BLOCK_PRESERVED=PASS')
+          print('IMAGES_UNIQUE=6/6')
+          print('HREFS_UNIQUE='+str(len(hrefs))+'/'+str(len(hrefs)))
+          print('CANDIDATE_SHA256='+hashlib.sha256(candidate.encode()).hexdigest())
+          PY
+          chrome=$(command -v google-chrome || command -v google-chrome-stable || command -v chromium || command -v chromium-browser || true)
+          test -n "$chrome"
+          "$chrome" --headless=new --no-sandbox --disable-gpu --disable-dev-shm-usage --window-size=1920,1080 --virtual-time-budget=7000 --dump-dom "file://$GITHUB_WORKSPACE/docs/__fd2qa.html" > /tmp/fd2-desktop.html
+          grep -o '<body[^>]*>' /tmp/fd2-desktop.html | head -1 || true
+          grep -q 'data-fd2-qa="pass"' /tmp/fd2-desktop.html
+          echo BROWSER_DESKTOP=PASS
+          "$chrome" --headless=new --no-sandbox --disable-gpu --disable-dev-shm-usage --window-size=390,844 --virtual-time-budget=7000 --dump-dom "file://$GITHUB_WORKSPACE/docs/__fd2qa.html" > /tmp/fd2-mobile.html
+          grep -o '<body[^>]*>' /tmp/fd2-mobile.html | head -1 || true
+          grep -q 'data-fd2-qa="pass"' /tmp/fd2-mobile.html
+          echo BROWSER_MOBILE=PASS
+          rm -f docs/__fd2qa.html
+      - name: Commit only hub payload
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add docs/payload/hub-*.txt
+          git commit -m 'Reengineer field-data possibility section'
+          git push origin HEAD:review/reengineer-field-data-20260829
