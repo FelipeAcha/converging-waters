@@ -46,16 +46,20 @@ jobs:
               raise SystemExit('unclosed section')
           ss,se=section_span(page,'stanley-update'); s=page[ss:se]
           outside=page[:ss]+page[se:]
+          outside_sha=hashlib.sha256(outside.encode()).hexdigest()
           print('PAGE_SHA256='+hashlib.sha256(page.encode()).hexdigest())
           print('SECTION_SHA256='+hashlib.sha256(s.encode()).hexdigest())
-          print('OUTSIDE_SHA256='+hashlib.sha256(outside.encode()).hexdigest())
+          print('OUTSIDE_SHA256='+outside_sha)
+          if outside_sha!='bfbd2114f82a4bd103860c62d0524b1eb22495384f7133cc352c0a711b4f5ca9': raise SystemExit('Unauthorized change outside stanley-update')
           marker='Turn the references into one technical next step'
           mp=s.find(marker)
           divs=span_tag(s,'div',mp)
           candidates=[s[a:b] for a,b in divs if '1. Match' in s[a:b] and '4. Define' in s[a:b] and 'Review outcome:' in s[a:b]]
           if not candidates: raise SystemExit('review block not found')
           review=min(candidates,key=len)
-          print('REVIEW_BLOCK_SHA256='+hashlib.sha256(review.encode()).hexdigest())
+          review_sha=hashlib.sha256(review.encode()).hexdigest()
+          print('REVIEW_BLOCK_SHA256='+review_sha)
+          if review_sha!='3d2665f5bcfcf6dee86bad939660bd26aa5ce7019cc29aa5d8684c281466ffeb': raise SystemExit('Point 6 review block changed')
           text=h.unescape(re.sub(r'\s+',' ',re.sub(r'<[^>]+>',' ',s)))
           hrefs=re.findall(r'<a\b[^>]*\bhref=["\']([^"\']+)',s,re.I)
           imgs=re.findall(r'<img\b[^>]*\bsrc=["\']([^"\']+)',s,re.I)
