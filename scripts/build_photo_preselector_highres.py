@@ -10,15 +10,17 @@ QUALITY = 92
 
 def _fetch_source(spec: dict, cache_dir: Path, session) -> tuple[bytes, str]:
     kind = spec.get('kind')
-    if kind == 'embedded-cache':
+    if kind in ('embedded-cache', 'embedded-file'):
         name = spec.get('file')
         if not name:
-            raise RuntimeError('embedded-cache source missing file')
+            raise RuntimeError(f'{kind} source missing file')
         path = (cache_dir / name).resolve()
         path.relative_to(cache_dir.resolve())
         if not path.is_file():
             raise RuntimeError(f'missing cached source: {path}')
-        return base64.b64decode(path.read_text(encoding='ascii').strip()), f'cache:{name}'
+        if kind == 'embedded-cache':
+            return base64.b64decode(path.read_text(encoding='ascii').strip()), f'cache:{name}'
+        return path.read_bytes(), f'cache:{name}'
     if kind == 'remote':
         url = spec.get('url')
         if not url:
