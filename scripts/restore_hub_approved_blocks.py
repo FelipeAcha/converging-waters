@@ -3,7 +3,7 @@ from __future__ import annotations
 import argparse, base64, gzip, hashlib, json, re
 from pathlib import Path
 
-REV24_SHA256 = "50f69031f11af071fb7d0938a8951d32fc7a17fbd0126e31233f25a62fb40260"
+ALLIANCE_REV24_SHA256 = "21929e6c37f70fd52f5e18a18efa16e2afa5801af2f601e5ea5152a487c3328e"
 PRINCIPAL_ASSET = "assets/legacy/asset-be0fa6e11454.webp"
 
 
@@ -41,9 +41,6 @@ def localize_legacy_assets(raw: str) -> str:
 
 
 def decode_chunks(paths: list[Path]) -> str:
-    # The historical browser transport used atob(), which accepts omitted trailing
-    # padding. Normalize whitespace and restore only the mathematically required
-    # terminal '=' padding before Python's stricter decoder.
     b64 = re.sub(r"\s+", "", "".join(p.read_text(encoding="ascii") for p in paths))
     b64 += "=" * (-len(b64) % 4)
     return gzip.decompress(base64.b64decode(b64)).decode("utf-8")
@@ -56,15 +53,19 @@ def load_current_hub(repo: Path):
     return decode_chunks(paths), paths
 
 
-def load_rev24(repo: Path) -> str:
-    paths = sorted((repo / "docs/candidates/progress").glob("rev24-recovery-*.txt"))
-    if not paths:
-        raise RuntimeError("REV24 recovery chunks missing")
-    html = decode_chunks(paths)
-    got = hashlib.sha256(html.encode("utf-8")).hexdigest()
-    if got != REV24_SHA256:
-        raise RuntimeError(f"REV24 SHA mismatch: {got}")
-    return html
+def load_approved_alliance(repo: Path) -> str:
+    path = repo / "docs-governance/recovery/alliance-rev24.b64"
+    if not path.is_file():
+        raise RuntimeError(f"missing exact REV24 alliance checkpoint: {path}")
+    b64 = re.sub(r"\s+", "", path.read_text(encoding="ascii"))
+    raw = gzip.decompress(base64.b64decode(b64)).decode("utf-8")
+    got = hashlib.sha256(raw.encode("utf-8")).hexdigest()
+    if got != ALLIANCE_REV24_SHA256:
+        raise RuntimeError(f"REV24 alliance SHA mismatch: {got}")
+    _, _, exact = span_by_id(raw, "alliance-architecture")
+    if exact != raw:
+        raise RuntimeError("REV24 alliance checkpoint contains bytes outside the section")
+    return raw
 
 
 def strip_authorized_baseline(html: str) -> str:
@@ -111,6 +112,8 @@ def restore(baseline: str, approved_early: str, approved_alliance: str) -> tuple
     if alliance_out != alliance:
         raise RuntimeError("alliance section is not exact REV24/REV17 recovery block")
 
+    if hashlib.sha256(alliance.encode("utf-8")).hexdigest() != ALLIANCE_REV24_SHA256:
+        raise RuntimeError("restored alliance block does not match exact REV24/REV17 checkpoint")
     if len(re.findall(r"<img\b", stanley, re.I)) != 13:
         raise RuntimeError("approved Stanley section no longer has 13 images")
     if len(re.findall(r"<a\b", stanley, re.I)) != 17:
@@ -130,6 +133,7 @@ def restore(baseline: str, approved_early: str, approved_alliance: str) -> tuple
         "principal_infographic": "RESTORED_FROM_v16.1.1",
         "stanley_update": "RESTORED_FROM_v16.1.1_APPROVED_LINEAGE",
         "alliance_architecture": "RESTORED_FROM_REV24_RECOVERY_SOURCE_REV17",
+        "alliance_sha256": ALLIANCE_REV24_SHA256,
         "stanley_images": 13,
         "stanley_links": 17,
         "untouched_bytes": "EXACT_AFTER_REMOVING_3_AUTHORIZED_REGIONS",
@@ -161,7 +165,7 @@ def main():
     repo = args.repo.resolve()
     baseline, hub_paths = load_current_hub(repo)
     approved_early = (repo / "docs/candidates/v16.1.1/index.html").read_text(encoding="utf-8")
-    approved_alliance = load_rev24(repo)
+    approved_alliance = load_approved_alliance(repo)
     candidate, report = restore(baseline, approved_early, approved_alliance)
     asset = repo / "docs" / PRINCIPAL_ASSET
     if not asset.is_file() or asset.stat().st_size == 0:
