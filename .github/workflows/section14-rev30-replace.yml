@@ -1,0 +1,124 @@
+name: Replace section 14 from REV30
+
+on:
+  push:
+    branches:
+      - fix/section14-rev30-20260829
+    paths:
+      - docs-governance/recovery/section14-rev30.b64
+      - .github/workflows/section14-rev30-replace.yml
+
+permissions:
+  contents: write
+
+jobs:
+  replace:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          ref: fix/section14-rev30-20260829
+
+      - name: Replace only section 14
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import base64, gzip, hashlib, re
+
+          EXPECTED = '03adaa4acb6456d6606fa7ab9796eaa5d6af8a59a58e119f298c0ff8e406e65a'
+          ROOT = Path('.')
+          paths = sorted((ROOT / 'docs/payload').glob('hub-*.txt'))
+          if len(paths) != 17:
+              raise SystemExit(f'expected 17 hub chunks, found {len(paths)}')
+
+          def decode_chunks(ps):
+              b64 = re.sub(r'\s+', '', ''.join(p.read_text(encoding='ascii') for p in ps))
+              b64 += '=' * (-len(b64) % 4)
+              return gzip.decompress(base64.b64decode(b64)).decode('utf-8')
+
+          def span_section(html, element_id):
+              m = re.search(r'<section\b(?=[^>]*\bid\s*=\s*["\']' + re.escape(element_id) + r'["\'])[^>]*>', html, re.I)
+              if not m:
+                  raise RuntimeError(f'missing section #{element_id}')
+              tok = re.compile(r'</?section\b[^>]*>', re.I)
+              depth = 0
+              for t in tok.finditer(html, m.start()):
+                  s = t.group(0)
+                  if s.startswith('</'):
+                      depth -= 1
+                      if depth == 0:
+                          return m.start(), t.end(), html[m.start():t.end()]
+                  else:
+                      depth += 1
+              raise RuntimeError(f'unclosed section #{element_id}')
+
+          baseline = decode_chunks(paths)
+          source_b64 = re.sub(r'\s+', '', (ROOT / 'docs-governance/recovery/section14-rev30.b64').read_text(encoding='ascii'))
+          source = gzip.decompress(base64.b64decode(source_b64)).decode('utf-8')
+          if hashlib.sha256(source.encode('utf-8')).hexdigest() != EXPECTED:
+              raise RuntimeError('REV30 section 14 source SHA mismatch')
+
+          sa, sb, old = span_section(baseline, 'alliance-architecture')
+          _, _, source_exact = span_section(source, 'alliance-architecture')
+          if source_exact != source:
+              raise RuntimeError('REV30 checkpoint contains bytes outside section 14')
+
+          candidate = baseline[:sa] + source + baseline[sb:]
+          ca, cb, new = span_section(candidate, 'alliance-architecture')
+          if new != source:
+              raise RuntimeError('candidate section 14 is not exact REV30 section')
+
+          if baseline[:sa] != candidate[:ca] or baseline[sb:] != candidate[cb:]:
+              raise RuntimeError('bytes outside section 14 changed')
+
+          before_ids = re.findall(r'<section\b[^>]*\bid\s*=\s*["\']([^"\']+)["\']', baseline, re.I)
+          after_ids = re.findall(r'<section\b[^>]*\bid\s*=\s*["\']([^"\']+)["\']', candidate, re.I)
+          if before_ids != after_ids:
+              raise RuntimeError('section order changed')
+
+          packed = gzip.compress(candidate.encode('utf-8'), compresslevel=9, mtime=0)
+          out = base64.b64encode(packed).decode('ascii')
+          size = (len(out) + len(paths) - 1) // len(paths)
+          chunks = [out[i:i+size] for i in range(0, len(out), size)]
+          while len(chunks) < len(paths):
+              chunks.append('')
+          if len(chunks) != len(paths):
+              raise RuntimeError('unexpected chunk count')
+          for p, chunk in zip(paths, chunks):
+              p.write_text(chunk, encoding='ascii')
+
+          reread = decode_chunks(paths)
+          if reread != candidate:
+              raise RuntimeError('payload round-trip mismatch')
+
+          print('SECTION14_REV30_PASS')
+          print('baseline_sha256=' + hashlib.sha256(baseline.encode()).hexdigest())
+          print('candidate_sha256=' + hashlib.sha256(candidate.encode()).hexdigest())
+          print('section14_sha256=' + EXPECTED)
+          print('outside_section14=BYTE_EXACT')
+          PY
+
+      - name: Require hub payload only
+        shell: bash
+        run: |
+          set -euo pipefail
+          changed=$(git diff --name-only)
+          echo "$changed"
+          test -n "$changed"
+          bad=$(printf '%s\n' "$changed" | grep -Ev '^docs/payload/hub-[0-9][0-9]\.txt$' || true)
+          test -z "$bad"
+          count=$(printf '%s\n' "$changed" | grep -Ec '^docs/payload/hub-[0-9][0-9]\.txt$')
+          test "$count" -eq 17
+
+      - name: Commit replacement
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add docs/payload/hub-*.txt
+          git commit -m 'Restore section 14 exactly from REV30'
+          git push origin HEAD:fix/section14-rev30-20260829
