@@ -82,7 +82,7 @@ def strip_authorized_candidate(html: str) -> str:
     return html
 
 
-def restore(baseline: str, approved_early: str, approved_alliance: str) -> tuple[str, dict]:
+def restore(baseline: str, approved_early: str, approved_alliance: str, verify_alliance_hash: bool = True) -> tuple[str, dict]:
     principal = span_by_id(approved_early, "principal-infographic")[2]
     stanley = span_by_id(approved_early, "stanley-update")[2]
     alliance = span_by_id(approved_alliance, "alliance-architecture")[2]
@@ -110,9 +110,10 @@ def restore(baseline: str, approved_early: str, approved_alliance: str) -> tuple
     if stanley_out != stanley:
         raise RuntimeError("stanley section is not exact approved block after asset localization")
     if alliance_out != alliance:
-        raise RuntimeError("alliance section is not exact REV24/REV17 recovery block")
+        raise RuntimeError("alliance section is not exact approved recovery block")
 
-    if hashlib.sha256(alliance.encode("utf-8")).hexdigest() != ALLIANCE_REV24_SHA256:
+    alliance_sha = hashlib.sha256(alliance.encode("utf-8")).hexdigest()
+    if verify_alliance_hash and alliance_sha != ALLIANCE_REV24_SHA256:
         raise RuntimeError("restored alliance block does not match exact REV24/REV17 checkpoint")
     if len(re.findall(r"<img\b", stanley, re.I)) != 13:
         raise RuntimeError("approved Stanley section no longer has 13 images")
@@ -133,7 +134,7 @@ def restore(baseline: str, approved_early: str, approved_alliance: str) -> tuple
         "principal_infographic": "RESTORED_FROM_v16.1.1",
         "stanley_update": "RESTORED_FROM_v16.1.1_APPROVED_LINEAGE",
         "alliance_architecture": "RESTORED_FROM_REV24_RECOVERY_SOURCE_REV17",
-        "alliance_sha256": ALLIANCE_REV24_SHA256,
+        "alliance_sha256": alliance_sha,
         "stanley_images": 13,
         "stanley_links": 17,
         "untouched_bytes": "EXACT_AFTER_REMOVING_3_AUTHORIZED_REGIONS",
@@ -166,7 +167,7 @@ def main():
     baseline, hub_paths = load_current_hub(repo)
     approved_early = (repo / "docs/candidates/v16.1.1/index.html").read_text(encoding="utf-8")
     approved_alliance = load_approved_alliance(repo)
-    candidate, report = restore(baseline, approved_early, approved_alliance)
+    candidate, report = restore(baseline, approved_early, approved_alliance, verify_alliance_hash=True)
     asset = repo / "docs" / PRINCIPAL_ASSET
     if not asset.is_file() or asset.stat().st_size == 0:
         raise RuntimeError(f"principal infographic asset missing: {asset}")
