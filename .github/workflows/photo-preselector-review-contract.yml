@@ -1,0 +1,168 @@
+name: Photo preselector review contract
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'docs/review/photo-preselector/**'
+      - 'scripts/validate_photo_preselector_review.py'
+      - 'docs-governance/learning/CW-PREVIEW-HANDOFF-REGRESSION-2026-08-29.md'
+      - '.github/workflows/photo-preselector-review-contract.yml'
+  workflow_run:
+    workflows: ['Deploy GitHub Pages']
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: photo-preselector-review-contract
+  cancel-in-progress: false
+
+env:
+  PHOTO_REVIEW_URL: https://felipeacha.github.io/converging-waters/review/photo-preselector/
+  PHOTO_REVIEW_LAST_CHUNK_URL: https://felipeacha.github.io/converging-waters/review/photo-preselector/payload2/025.txt
+  EXPECTED_GZIP_SHA256: 277700a35c7dfa03de1d575ceae93571e601b550c1206c3d3239e43a61c05c40
+
+jobs:
+  local_contract:
+    if: github.event_name != 'workflow_run'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate exact local review transport
+        run: |
+          set -euo pipefail
+          python scripts/validate_photo_preselector_review.py docs/review/photo-preselector
+
+  deployed_contract:
+    if: github.event_name == 'workflow_run'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require successful Pages deployment
+        run: |
+          set -euo pipefail
+          test '${{ github.event.workflow_run.conclusion }}' = success
+
+      - name: Resolve Chrome
+        id: chrome
+        uses: browser-actions/setup-chrome@v1
+
+      - name: Validate public review route in browser
+        env:
+          CHROME: ${{ steps.chrome.outputs.chrome-path }}
+        run: |
+          set -euo pipefail
+
+          check_url() {
+            url="$1"
+            output="$2"
+            code=000
+            for attempt in $(seq 1 36); do
+              code=$(curl -L --silent --show-error --output "$output" --write-out '%{http_code}' "$url" || true)
+              if [ "$code" = 200 ] && [ -s "$output" ]; then
+                break
+              fi
+              sleep 5
+            done
+            test "$code" = 200
+            test -s "$output"
+          }
+
+          check_url "$PHOTO_REVIEW_URL" /tmp/photo-review-loader.html
+          check_url "$PHOTO_REVIEW_LAST_CHUNK_URL" /tmp/photo-review-last-chunk.txt
+          grep -q "$EXPECTED_GZIP_SHA256" /tmp/photo-review-loader.html
+
+          timeout 120s "$CHROME" \
+            --headless=new \
+            --no-sandbox \
+            --disable-gpu \
+            --disable-dev-shm-usage \
+            --virtual-time-budget=45000 \
+            --dump-dom \
+            "$PHOTO_REVIEW_URL" > /tmp/photo-review-rendered.html
+
+          grep -q 'data-selector-ready="true"' /tmp/photo-review-rendered.html
+          if grep -q 'Error de transporte' /tmp/photo-review-rendered.html; then
+            echo 'FAIL: public photo preselector displayed its transport error state.' >&2
+            exit 1
+          fi
+
+          python - <<'PY'
+          from html.parser import HTMLParser
+          from pathlib import Path
+
+          class Audit(HTMLParser):
+              def __init__(self):
+                  super().__init__()
+                  self.needs = 0
+                  self.candidates = 0
+                  self.checkboxes = 0
+                  self.images = []
+              def handle_starttag(self, tag, attrs):
+                  data = dict(attrs)
+                  classes = set(data.get('class', '').split())
+                  if tag == 'section' and 'need' in classes:
+                      self.needs += 1
+                  if tag == 'article' and 'candidate' in classes:
+                      self.candidates += 1
+                  if tag == 'input' and data.get('type') == 'checkbox':
+                      self.checkboxes += 1
+                  if tag == 'img':
+                      self.images.append(data.get('src', ''))
+
+          html = Path('/tmp/photo-review-rendered.html').read_text(encoding='utf-8', errors='replace')
+          audit = Audit()
+          audit.feed(html)
+          observed = (audit.needs, audit.candidates, audit.checkboxes, len(audit.images))
+          expected = (18, 77, 77, 77)
+          if observed != expected:
+              raise SystemExit(f'FAIL: public DOM counts {observed} != {expected}')
+          remote = [src for src in audit.images if not src.startswith('data:image/')]
+          if remote:
+              raise SystemExit('FAIL: public DOM contains non-embedded review images: ' + repr(remote[:3]))
+          print('PASS: deployed photo preselector browser contract 18/77/77/77 with embedded images')
+          PY
+
+      - name: Persist verified public review checkpoint
+        env:
+          DEPLOYED_SOURCE_SHA: ${{ github.event.workflow_run.head_sha }}
+          PAGES_RUN_ID: ${{ github.event.workflow_run.id }}
+        run: |
+          set -euo pipefail
+          git clone --depth 1 "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" /tmp/repo
+          cd /tmp/repo
+          mkdir -p .github
+          python - <<'PY'
+          import json
+          import os
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          report = {
+              'contract': 'CW-PHOTO-PRESELECTOR-PUBLIC-REVIEW-v1',
+              'source_commit': os.environ['DEPLOYED_SOURCE_SHA'],
+              'pages_workflow_run_id': os.environ['PAGES_RUN_ID'],
+              'public_url': os.environ['PHOTO_REVIEW_URL'],
+              'expected_gzip_sha256': os.environ['EXPECTED_GZIP_SHA256'],
+              'expected_counts': {'needs': 18, 'candidates': 77, 'controls': 77, 'images': 77},
+              'browser_contract': 'PASS',
+              'remote_review_images': 0,
+              'verified_at_utc': datetime.now(timezone.utc).isoformat(),
+          }
+          Path('.github/photo-preselector-review-status.json').write_text(
+              json.dumps(report, indent=2) + '\n', encoding='utf-8'
+          )
+          print(json.dumps(report, indent=2))
+          PY
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add .github/photo-preselector-review-status.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'Record verified photo preselector public review status'
+            git push origin HEAD:main
+          fi
