@@ -1,0 +1,61 @@
+name: Inspect hub uncontained blocks
+on:
+  push:
+    branches:
+      - fix/hub-accordion-contained-blocks-20260829
+    paths:
+      - .github/workflows/inspect-hub-uncontained-blocks.yml
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/hub-accordion-contained-blocks-20260829
+      - shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import base64,gzip,hashlib,re
+          d=Path('docs/payload')
+          parts=[d/f'hub-{i:02d}.txt' for i in range(17)]
+          b64=re.sub(r'\s+','',''.join(p.read_text(encoding='ascii') for p in parts)); b64+='='*(-len(b64)%4)
+          html=gzip.decompress(base64.b64decode(b64)).decode('utf-8')
+          print('HTML_SHA256='+hashlib.sha256(html.encode()).hexdigest())
+          terms=[
+            'A more tangible field-and-data possibility',
+            'Three different questions — keep all three',
+            'Territory first, then technical options, then financing fit',
+          ]
+          st=re.compile(r'</?section\b[^>]*>',re.I)
+          sections=[]; stack=[]
+          for m in st.finditer(html):
+            tag=m.group(0)
+            if tag.lower().startswith('</'):
+              if stack:
+                sm=stack.pop()
+                idm=re.search(r'\bid=["\']([^"\']+)["\']',sm.group(0),re.I)
+                sections.append((sm.start(),m.end(),idm.group(1) if idm else ''))
+            else:
+              stack.append(m)
+          sections.sort()
+          for term in terms:
+            pos=html.find(term)
+            print('\nTERM='+term)
+            print('POS='+str(pos))
+            containing=[x for x in sections if x[0]<=pos<x[1]]
+            print('CONTAINING_SECTIONS='+','.join(x[2] for x in containing))
+            prev=list(re.finditer(r'data-cw-section=["\']([^"\']+)["\']',html[:pos]))
+            nxt=re.search(r'data-cw-section=["\']([^"\']+)["\']',html[pos:])
+            print('PREV_ACCORDION='+(prev[-1].group(1) if prev else 'NONE'))
+            print('NEXT_ACCORDION='+(nxt.group(1) if nxt else 'NONE'))
+            print('SNIP='+re.sub(r'\s+',' ',html[max(0,pos-260):pos+380]))
+          for n in ['14','15','16','17','18']:
+            m=re.search(r'<div class="cw-section-accordion" data-cw-section="'+n+r'"',html)
+            print('ACCORDION_'+n+'_POS='+(str(m.start()) if m else 'MISSING'))
+          for pat in ['cw-accordion-summary-inner.container','data-cw-section="14"','data-cw-section="15"','data-cw-section="16"','data-cw-section="17"']:
+            print('COUNT_'+pat+'='+str(html.count(pat)))
+          PY
