@@ -36,7 +36,9 @@ jobs:
             pos=html.find(term); containing=[x for x in sections if x[0]<=pos<x[1]]
             prev=list(re.finditer(r'data-cw-section=["\']([^"\']+)["\']',html[:pos])); nxt=re.search(r'data-cw-section=["\']([^"\']+)["\']',html[pos:])
             print('TERM='+term); print('CONTAINING_SECTIONS='+','.join(x[2] for x in containing)); print('PREV_ACCORDION='+(prev[-1].group(1) if prev else 'NONE')); print('NEXT_ACCORDION='+(nxt.group(1) if nxt else 'NONE'))
-          helper='''<script>setTimeout(()=>{const ns=['12','13','14','15','16','17','18'];const out=[];for(const n of ns){const b=document.querySelector('.cw-section-accordion[data-cw-section="'+n+'"]>.cw-accordion-trigger');const c=b?.querySelector('.cw-accordion-summary-inner');const l=c?.getBoundingClientRect().left;out.push(n+':'+(Number.isFinite(l)?l.toFixed(1):'NA'));}document.body.dataset.indentDiag=out.join('|');},250);</script>'''
+          for m in re.finditer('cw-accordion-summary-inner',html):
+            print('CSS_OR_MARKUP='+re.sub(r'\s+',' ',html[max(0,m.start()-220):m.start()+420]))
+          helper='''<script>setTimeout(()=>{const ns=['12','13','14','15','16','17','18'];const out=[];for(const n of ns){const b=document.querySelector('.cw-section-accordion[data-cw-section="'+n+'"]>.cw-accordion-trigger');const c=b?.querySelector('.cw-accordion-summary-inner');const r=c?.getBoundingClientRect();const cs=c?getComputedStyle(c):null;out.push(n+':'+(r?`${r.left.toFixed(1)},${r.width.toFixed(1)},${cs.width},${cs.marginLeft},${cs.marginRight}`:'NA'));}document.body.dataset.indentDiag=out.join('|');},250);</script>'''
           Path('/tmp/cw-indent.html').write_text(html.replace('</body>',helper+'</body>',1),encoding='utf-8')
           PY
           chrome=$(command -v google-chrome || command -v google-chrome-stable || command -v chromium || command -v chromium-browser || true)
