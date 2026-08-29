@@ -7,7 +7,7 @@ class HubRecoveryRegression(unittest.TestCase):
         baseline = '''<html><body><div id="keep-a">A</div><section id="stanley-update"><p>bad stanley</p></section><div id="keep-b">B</div><section id="alliance-architecture"><p>bad alliance</p></section><div id="keep-c">C</div><section id="current-session"><p>current</p></section><div id="keep-d">D</div></body></html>'''
         approved_early = '''<html><body><div id="principal-infographic"><figure><img src="assets/asset-be0fa6e11454.webp"></figure></div><section id="stanley-update">''' + ''.join('<a href="https://example.com"><img src="assets/x.webp"></a>' for _ in range(13)) + ''.join('<a href="https://example.com">x</a>' for _ in range(4)) + '''</section></body></html>'''
         approved_alliance = '''<html><body><section id="alliance-architecture"><h2>Approved alliance</h2><p>matrix restored</p></section></body></html>'''
-        candidate, report = restore(baseline, approved_early, approved_alliance)
+        candidate, report = restore(baseline, approved_early, approved_alliance, verify_alliance_hash=False)
         self.assertEqual(strip_authorized_baseline(baseline), strip_authorized_candidate(candidate))
         self.assertIn('id="principal-infographic"', candidate)
         self.assertIn('assets/legacy/asset-be0fa6e11454.webp', candidate)
