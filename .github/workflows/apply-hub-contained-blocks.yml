@@ -1,0 +1,169 @@
+name: Apply hub contained blocks
+on:
+  push:
+    branches:
+      - fix/hub-accordion-contained-blocks-20260829
+    paths:
+      - .github/workflows/apply-hub-contained-blocks.yml
+permissions:
+  contents: write
+jobs:
+  transform:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout candidate branch
+        uses: actions/checkout@v4
+        with:
+          ref: fix/hub-accordion-contained-blocks-20260829
+      - name: Build and validate bounded accordion fix
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import base64,gzip,hashlib,re
+
+          d=Path('docs/payload')
+          parts=[d/f'hub-{i:02d}.txt' for i in range(17)]
+          if not all(p.exists() for p in parts): raise SystemExit('Missing hub payload chunk')
+          b64=re.sub(r'\s+','',''.join(p.read_text(encoding='ascii') for p in parts)); b64+='='*(-len(b64)%4)
+          baseline=gzip.decompress(base64.b64decode(b64)).decode('utf-8')
+          baseline_sha=hashlib.sha256(baseline.encode()).hexdigest()
+          expected='c8a6e295c0107ff5f77c7d36f132b29fe0b3bf8e36fc76fc44804716eb3d1f7f'
+          if baseline_sha!=expected: raise SystemExit('Baseline drift: '+baseline_sha)
+
+          def sec(src,sid):
+              m=re.search(r'<section\b[^>]*\bid=["\']'+re.escape(sid)+r'["\'][^>]*>',src,re.I)
+              if not m: raise RuntimeError('Missing section '+sid)
+              tok=re.compile(r'</?section\b[^>]*>',re.I); depth=0
+              for t in tok.finditer(src,m.start()):
+                  if t.group(0).lower().startswith('</'):
+                      depth-=1
+                      if depth==0: return m.start(),t.end(),src[m.start():t.end()]
+                  else: depth+=1
+              raise RuntimeError('Unclosed section '+sid)
+
+          def panel_for_section(src,sid):
+              s,_,_=sec(src,sid)
+              tok=re.compile(r'</?div\b[^>]*>',re.I); stack=[]
+              for m in tok.finditer(src,0,s):
+                  if m.group(0).lower().startswith('</'):
+                      if stack: stack.pop()
+                  else:
+                      stack.append((m.start(),m.end(),m.group(0)))
+              chosen=None
+              for item in reversed(stack):
+                  if 'cw-accordion-panel' in item[2]: chosen=item; break
+              if not chosen: raise RuntimeError('No accordion panel for '+sid)
+              ps,pe,_=chosen; depth=0
+              for m in tok.finditer(src,ps):
+                  if m.group(0).lower().startswith('</'):
+                      depth-=1
+                      if depth==0: return ps,pe,m.start(),m.end()
+                  else: depth+=1
+              raise RuntimeError('Unclosed panel for '+sid)
+
+          moved={
+              'stanley-update':('emerged-since-call','after'),
+              'rev20-roadmap-orientation':('open-decisions','before'),
+              'rev20-enabling-orientation':('amazonas-application','before'),
+          }
+          raw={sid:sec(baseline,sid)[2] for sid in moved}
+          target_raw={target:sec(baseline,target)[2] for target,_ in moved.values()}
+          for sid,r in raw.items():
+              if baseline.count(r)!=1: raise SystemExit('Moved section not unique: '+sid)
+
+          candidate=baseline
+          for sid,r in raw.items(): candidate=candidate.replace(r,'',1)
+
+          # 04: Stanley/WGA is part of the preceding 04 exploration block.
+          target='emerged-since-call'; ps,pe,pcs,pce=panel_for_section(candidate,target)
+          candidate=candidate[:pcs]+raw['stanley-update']+candidate[pcs:]
+
+          # 08: roadmap orientation introduces 08–10, so it belongs at the start of 08.
+          target='open-decisions'; ts,_,_=sec(candidate,target)
+          candidate=candidate[:ts]+raw['rev20-roadmap-orientation']+candidate[ts:]
+
+          # 11: enabling-systems orientation introduces 11–13, so it belongs at the start of 11.
+          target='amazonas-application'; ts,_,_=sec(candidate,target)
+          candidate=candidate[:ts]+raw['rev20-enabling-orientation']+candidate[ts:]
+
+          old_css='.cw-rev18-late .cw-section-accordion[data-cw-section="14"]>.cw-accordion-trigger .cw-accordion-summary-inner.container{width:min(1220px,calc(100% - 44px))}'
+          new_css='@media(min-width:901px){.cw-rev18-late .cw-section-accordion[data-cw-section="14"]>.cw-accordion-trigger .cw-accordion-summary-inner.container,.cw-rev18-late .cw-section-accordion[data-cw-section="15"]>.cw-accordion-trigger .cw-accordion-summary-inner.container,.cw-rev18-late .cw-section-accordion[data-cw-section="16"]>.cw-accordion-trigger .cw-accordion-summary-inner.container,.cw-rev18-late .cw-section-accordion[data-cw-section="17"]>.cw-accordion-trigger .cw-accordion-summary-inner.container{width:min(1180px,calc(100% - 44px))}}'
+          if candidate.count(old_css)!=1: raise SystemExit('Alignment CSS anchor drift')
+          candidate=candidate.replace(old_css,new_css,1)
+
+          # Raw sections themselves must not change a byte.
+          for sid,r in raw.items():
+              if candidate.count(f'id="{sid}"')!=1: raise SystemExit('Moved section ID count: '+sid)
+              if sec(candidate,sid)[2]!=r: raise SystemExit('Moved section bytes changed: '+sid)
+          for sid,r in target_raw.items():
+              if sec(candidate,sid)[2]!=r: raise SystemExit('Target section bytes changed: '+sid)
+
+          # Everything outside the three moves and the one scoped alignment rule must remain byte-identical.
+          def normalized(src, css_from=None, css_to=None):
+              out=src
+              for sid in moved:
+                  try: rr=sec(out,sid)[2]
+                  except RuntimeError: continue
+                  out=out.replace(rr,'',1)
+              if css_from and css_to: out=out.replace(css_from,css_to,1)
+              return out
+          if normalized(candidate,new_css,old_css)!=normalized(baseline):
+              raise SystemExit('Preservation failure outside authorized accordion fixes')
+
+          if candidate.count('class="cw-section-accordion"')!=23: raise SystemExit('Accordion count changed')
+
+          # Physical nesting contracts.
+          expected_panels={
+              'stanley-update':'emerged-since-call',
+              'rev20-roadmap-orientation':'open-decisions',
+              'rev20-enabling-orientation':'amazonas-application',
+          }
+          for sid,target in expected_panels.items():
+              ps,pe,pcs,pce=panel_for_section(candidate,target)
+              ss,se,_=sec(candidate,sid)
+              if not (pe<=ss<se<=pcs): raise SystemExit('Section not inside target panel: '+sid)
+          if not (sec(candidate,'emerged-since-call')[1] <= sec(candidate,'stanley-update')[0]): raise SystemExit('Stanley order incorrect')
+          if not (sec(candidate,'rev20-roadmap-orientation')[1] <= sec(candidate,'open-decisions')[0]): raise SystemExit('Roadmap orientation order incorrect')
+          if not (sec(candidate,'rev20-enabling-orientation')[1] <= sec(candidate,'amazonas-application')[0]): raise SystemExit('Enabling orientation order incorrect')
+
+          helper='''<script>setTimeout(async()=>{const sleep=ms=>new Promise(r=>setTimeout(r,ms));let ok=true,diag=[];const pairs=[['stanley-update','emerged-since-call','after'],['rev20-roadmap-orientation','open-decisions','before'],['rev20-enabling-orientation','amazonas-application','before']];for(const [sid,tid,ord] of pairs){const s=document.getElementById(sid),t=document.getElementById(tid),p=t?.closest('.cw-accordion-panel'),b=p?.closest('.cw-section-accordion'),btn=b?.querySelector(':scope>.cw-accordion-trigger');if(!s||!t||!p||!b||!btn){ok=false;diag.push(sid+':missing');continue;}const nested=s.closest('.cw-accordion-panel')===p;const startHidden=s.getClientRects().length===0;const order=ord==='before'?Boolean(s.compareDocumentPosition(t)&Node.DOCUMENT_POSITION_FOLLOWING):Boolean(t.compareDocumentPosition(s)&Node.DOCUMENT_POSITION_FOLLOWING);btn.click();await sleep(420);const opened=btn.getAttribute('aria-expanded')==='true'&&s.getClientRects().length>0;btn.click();await sleep(420);const closed=btn.getAttribute('aria-expanded')==='false'&&s.getClientRects().length===0;const pass=nested&&startHidden&&order&&opened&&closed;ok=ok&&pass;diag.push(sid+':'+[nested,startHidden,order,opened,closed].join(','));}const xs={};for(const n of ['13','14','15','16','17','18']){const el=document.querySelector('.cw-section-accordion[data-cw-section="'+n+'"]>.cw-accordion-trigger .cw-accordion-summary-inner');xs[n]=el?.getBoundingClientRect().left;}const ref=xs['13'];const aligned=['14','15','16','17','18'].every(n=>Number.isFinite(xs[n])&&Math.abs(xs[n]-ref)<=1.5);ok=ok&&aligned;diag.push('align:'+Object.entries(xs).map(([k,v])=>k+':'+(Number.isFinite(v)?v.toFixed(1):'NA')).join('/'));document.body.dataset.containmentTest=ok?'pass':'fail';document.body.dataset.containmentDiag=diag.join('|');},220);</script>'''
+          Path('/tmp/cw-candidate.html').write_text(candidate,encoding='utf-8')
+          Path('/tmp/cw-test.html').write_text(candidate.replace('</body>',helper+'</body>',1),encoding='utf-8')
+
+          enc=base64.b64encode(gzip.compress(candidate.encode(),compresslevel=9,mtime=0)).decode('ascii')
+          size=(len(enc)+16)//17
+          chunks=[enc[i*size:(i+1)*size] for i in range(16)]+[enc[16*size:]]
+          if len(chunks)!=17 or any(not x for x in chunks): raise SystemExit('Chunking failure')
+          for i,x in enumerate(chunks): (d/f'hub-{i:02d}.txt').write_text(x,encoding='ascii')
+          rb=''.join((d/f'hub-{i:02d}.txt').read_text(encoding='ascii') for i in range(17)); rb+='='*(-len(rb)%4)
+          if gzip.decompress(base64.b64decode(rb)).decode()!=candidate: raise SystemExit('Payload roundtrip failure')
+
+          print('BASELINE_SHA256='+baseline_sha)
+          print('MOVED_SECTION_BYTES_PRESERVED=PASS')
+          print('TARGET_SECTION_BYTES_PRESERVED=PASS')
+          print('UNTOUCHED_BYTES_PRESERVED=PASS')
+          print('ACCORDION_COUNT=23')
+          print('CANDIDATE_SHA256='+hashlib.sha256(candidate.encode()).hexdigest())
+          PY
+
+          chrome=$(command -v google-chrome || command -v google-chrome-stable || command -v chromium || command -v chromium-browser || true)
+          test -n "$chrome"
+          "$chrome" --headless=new --no-sandbox --disable-gpu --disable-dev-shm-usage --window-size=1920,1080 --virtual-time-budget=6500 --dump-dom file:///tmp/cw-test.html > /tmp/cw-test-desktop.html
+          grep -o '<body[^>]*>' /tmp/cw-test-desktop.html | head -1 || true
+          grep -q 'data-containment-test="pass"' /tmp/cw-test-desktop.html
+          echo 'BROWSER_DESKTOP_CONTAINMENT_AND_ALIGNMENT=PASS'
+          "$chrome" --headless=new --no-sandbox --disable-gpu --disable-dev-shm-usage --window-size=390,844 --virtual-time-budget=6500 --dump-dom file:///tmp/cw-test.html > /tmp/cw-test-mobile.html
+          grep -o '<body[^>]*>' /tmp/cw-test-mobile.html | head -1 || true
+          grep -q 'data-containment-test="pass"' /tmp/cw-test-mobile.html
+          echo 'BROWSER_MOBILE_CONTAINMENT_AND_ALIGNMENT=PASS'
+      - name: Commit only hub payload
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add docs/payload/hub-*.txt
+          git commit -m 'Contain remaining hub blocks within accordions'
+          git push origin HEAD:fix/hub-accordion-contained-blocks-20260829
