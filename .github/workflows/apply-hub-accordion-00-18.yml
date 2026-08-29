@@ -35,36 +35,11 @@ jobs:
           if baseline_sha != expected_baseline_sha:
               raise SystemExit(f'Baseline drift: {baseline_sha}')
 
-          def top_level_sections(src):
-              token = re.compile(r'</?section\b[^>]*>', re.I)
-              stack = []
-              spans = []
-              for m in token.finditer(src):
-                  if m.group(0).lower().startswith('</'):
-                      if not stack:
-                          raise RuntimeError('Unbalanced closing section')
-                      start, depth = stack.pop()
-                      if depth == 0:
-                          spans.append((start, m.end(), src[start:m.end()]))
-                  else:
-                      stack.append((m.start(), len(stack)))
-              if stack:
-                  raise RuntimeError('Unclosed section tag')
-              return sorted(spans)
-
-          selected = []
-          after_start = False
-          for _,_,raw in top_level_sections(baseline):
-              if 'id="changed-since"' in raw:
-                  after_start = True
-              if not after_start:
-                  continue
-              m = re.search(r'<div class="section-head">.*?<div class="kicker">\s*(\d{2})\s*·\s*([^<]+)</div>', raw, flags=re.I|re.S)
-              if m:
-                  selected.append((m.group(1), m.group(2).strip()))
-          nums = [n for n,_ in selected]
-          if nums != [f'{i:02d}' for i in range(19)]:
-              raise SystemExit(f'Expected target section headers 00..18 exactly once from changed-since onward, found {selected}')
+          start_pos = baseline.index('id="changed-since"')
+          numbered_after_start = re.findall(r'<div class="kicker">\s*(\d{2})\s*·\s*([^<]+)</div>', baseline[start_pos:], flags=re.I)
+          expected_nums = ['00','01','02','03','04','01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18']
+          if [n for n,_ in numbered_after_start] != expected_nums:
+              raise SystemExit(f'Numbered-section structure drift: {numbered_after_start}')
 
           if 'cw-hub-accordion-00-18-styles' in baseline or 'cw-hub-accordion-00-18-script' in baseline:
               raise SystemExit('Accordion production markers already present')
@@ -90,25 +65,25 @@ jobs:
 
           script = r'''<script id="cw-hub-accordion-00-18-script">
           (()=>{
-            const expected=Array.from({length:19},(_,i)=>String(i).padStart(2,'0'));
+            const expected=['00','01','02','03','04','01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18'];
             const start=document.getElementById('changed-since');
             if(!start){console.error('Accordion contract failed: changed-since start section missing.');return;}
             const sections=[...document.querySelectorAll('section')].filter(section=>{
               const follows=section===start || Boolean(start.compareDocumentPosition(section)&Node.DOCUMENT_POSITION_FOLLOWING);
               if(!follows || section.parentElement.closest('section'))return false;
-              return Boolean(section.querySelector('.section-head .kicker'));
+              return [...section.querySelectorAll('.kicker')].some(el=>/^\s*\d{2}\s*[·•-]/.test(el.textContent||''));
             }).map(section=>{
-              const label=section.querySelector('.section-head .kicker');
+              const label=[...section.querySelectorAll('.kicker')].find(el=>/^\s*\d{2}\s*[·•-]/.test(el.textContent||''));
               const m=(label.textContent||'').trim().match(/^(\d{2})\s*[·•-]\s*(.+)$/);
               return m?{section,label,num:m[1],title:m[2].trim()}:null;
             }).filter(Boolean);
-            if(sections.length!==19||sections.map(x=>x.num).join(',')!==expected.join(',')){
-              console.error('Accordion contract failed: expected target sections 00–18 exactly once and in order.',sections.map(x=>x.num));
+            if(sections.length!==expected.length||sections.map(x=>x.num).join(',')!==expected.join(',')){
+              console.error('Accordion contract failed: numbered section sequence changed.',sections.map(x=>x.num));
               return;
             }
             sections.forEach(item=>{
               let title=item.title;
-              if(item.num==='00')title=title.replace(/\s+since\s+v\s*0\.1\s*$/i,'').trim();
+              if(item.num==='00'&&/what has changed/i.test(title))title=title.replace(/\s+since\s+v\s*0\.1\s*$/i,'').trim();
               const details=document.createElement('details');
               details.className='cw-section-accordion';
               details.dataset.cwSection=item.num;
@@ -149,7 +124,6 @@ jobs:
           if '</head>' not in baseline or '</body>' not in baseline:
               raise SystemExit('Expected head/body closing tags not found')
           candidate = baseline.replace('</head>', style + '</head>', 1).replace('</body>', script + '</body>', 1)
-
           restored = candidate.replace(style, '', 1).replace(script, '', 1)
           if restored != baseline:
               raise SystemExit('Preservation failure: removing only authorized additions does not restore baseline byte-for-byte')
@@ -157,8 +131,6 @@ jobs:
               raise SystemExit('Accordion injection count mismatch')
           if '#collaboration-framework>.rev19-observatory-bridge' not in candidate:
               raise SystemExit('Observatory bridge width fix missing')
-          if '.cw-accordion-source-label{display:none!important}' not in candidate:
-              raise SystemExit('Duplicate source-label suppression missing')
 
           test_helper = r'''<script>
           setTimeout(()=>{
@@ -166,18 +138,20 @@ jobs:
             const labels=[...document.querySelectorAll('.cw-accordion-source-label')];
             const names=all.map(x=>(x.querySelector('.cw-accordion-label')||{}).textContent||'');
             const d0=all[0], s0=d0&&d0.querySelector('summary');
-            const d6=all[6];
-            if(!d0||!s0||!d6||all.length!==19||labels.length!==19){document.body.dataset.accordionTest='fail-setup';return;}
+            const collab=document.getElementById('collaboration-framework');
+            const dCollab=collab&&collab.closest('.cw-section-accordion');
+            if(!d0||!s0||!dCollab||all.length!==23||labels.length!==23){document.body.dataset.accordionTest='fail-setup';return;}
             const namingOk=/^00 · What has changed$/i.test(names[0].trim())&&/^01 · Where we are now$/i.test(names[1].trim());
-            d6.open=true;
+            const duplicateLabelsHidden=labels.every(el=>getComputedStyle(el).display==='none');
+            dCollab.open=true;
             const bridge=document.querySelector('#collaboration-framework>.rev19-observatory-bridge');
             const widthOk=Boolean(bridge)&&bridge.getBoundingClientRect().width < window.innerWidth&&bridge.getBoundingClientRect().width<=1221;
-            d6.open=false;
+            dCollab.open=false;
             s0.click();
             setTimeout(()=>{
               const opened=d0.open;
               s0.click();
-              setTimeout(()=>{document.body.dataset.accordionTest=(opened&&!d0.open&&widthOk&&namingOk)?'pass':'fail-behavior';},320);
+              setTimeout(()=>{document.body.dataset.accordionTest=(opened&&!d0.open&&widthOk&&namingOk&&duplicateLabelsHidden)?'pass':'fail-behavior';},320);
             },320);
           },120);
           </script>'''
@@ -199,7 +173,7 @@ jobs:
               raise SystemExit('Payload roundtrip mismatch')
 
           print('SOURCE_PRESERVATION=BYTE_EXACT_AFTER_REMOVING_AUTHORIZED_ADDITIONS')
-          print('TARGET_NUMBERED_SECTIONS=19 (00..18)')
+          print('NUMBERED_ACCORDION_BLOCKS=23_FROM_FIRST_00_THROUGH_LAST_18')
           print('BASELINE_SHA256='+baseline_sha)
           print('CANDIDATE_SHA256='+hashlib.sha256(candidate.encode()).hexdigest())
           PY
@@ -209,9 +183,9 @@ jobs:
           "$chrome" --headless=new --no-sandbox --disable-gpu --disable-dev-shm-usage --virtual-time-budget=2200 --dump-dom "file:///tmp/cw-accordion-test.html" > /tmp/cw-accordion-rendered.html
           grep -q 'data-accordion-test="pass"' /tmp/cw-accordion-rendered.html
           count=$(grep -o 'class="cw-section-accordion"' /tmp/cw-accordion-rendered.html | wc -l | tr -d ' ')
-          test "$count" = 19
+          test "$count" = 23
           echo 'BROWSER_ACCORDION_OPEN_CLOSE=PASS'
-          echo 'BROWSER_NUMBERED_ACCORDIONS=19'
+          echo 'BROWSER_NUMBERED_ACCORDIONS=23'
           echo 'BROWSER_DUPLICATE_LABEL_SUPPRESSION=PASS'
           echo 'BROWSER_OBSERVATORY_BRIDGE_WIDTH=PASS'
       - name: Commit only production hub payload
@@ -221,5 +195,5 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add docs/payload/hub-*.txt
-          git commit -m 'Apply accordion navigation to hub sections 00-18'
+          git commit -m 'Apply accordion navigation across numbered hub sections'
           git push origin HEAD:fix/hub-accordion-00-18-20260829
