@@ -1,7 +1,0 @@
-CW-PHOTO-PRESELECTOR-HIGHRES-v1
-source_drive_id=14yTW3jxECQGe8aUM5CKxE9EmXujylsG5
-source_sha256=bce202a8f29cdbd1fd0827f36b29f464e30d1812f9f5397cae1ef50ff8521ff8
-max_long_edge=1600
-minimum_source_long_edge=800
-webp_quality=92
-user_visible_change=image resolution only
