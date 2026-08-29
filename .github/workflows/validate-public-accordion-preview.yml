@@ -1,0 +1,43 @@
+name: Validate public accordion preview
+
+on:
+  push:
+    branches:
+      - review/hub-accordion-00-01-20260829
+    paths:
+      - .github/workflows/validate-public-accordion-preview.yml
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate public route and rendered DOM
+        shell: bash
+        run: |
+          set -euo pipefail
+          URL='https://felipeacha.github.io/converging-waters/review-hub-accordion-00-01.html'
+          code=000
+          for attempt in $(seq 1 24); do
+            code=$(curl -L --silent --show-error --output /tmp/preview.html --write-out '%{http_code}' "$URL" || true)
+            if [ "$code" = 200 ] && [ -s /tmp/preview.html ]; then break; fi
+            sleep 5
+          done
+          test "$code" = 200
+          test -s /tmp/preview.html
+          grep -q 'data-cw-section="00"' /tmp/preview.html
+          grep -q 'data-cw-section="01"' /tmp/preview.html
+          grep -q '<span class="cw-accordion-title">What has changed</span>' /tmp/preview.html
+          grep -q '<span class="cw-accordion-title">Where we are now</span>' /tmp/preview.html
+          test "$(grep -o '<details class="cw-section-accordion"' /tmp/preview.html | wc -l)" -eq 2
+          if grep -q '<details class="cw-section-accordion"[^>]* open' /tmp/preview.html; then
+            echo 'Accordion unexpectedly open by default' >&2
+            exit 1
+          fi
+          chrome=$(command -v google-chrome || command -v google-chrome-stable || command -v chromium || command -v chromium-browser || true)
+          test -n "$chrome"
+          "$chrome" --headless=new --no-sandbox --disable-gpu --disable-dev-shm-usage --virtual-time-budget=5000 --dump-dom "$URL" > /tmp/rendered.html
+          grep -q 'data-cw-section="00"' /tmp/rendered.html
+          grep -q 'data-cw-section="01"' /tmp/rendered.html
+          grep -q '>What has changed<' /tmp/rendered.html
+          grep -q '>Where we are now<' /tmp/rendered.html
+          echo 'PUBLIC_PREVIEW_PASS HTTP_200 + RENDERED_DOM + 2_CLOSED_DETAILS'
