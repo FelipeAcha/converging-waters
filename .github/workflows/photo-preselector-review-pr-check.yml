@@ -1,0 +1,25 @@
+name: Photo preselector review PR check
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'docs/review/photo-preselector/**'
+      - 'scripts/validate_photo_preselector_review.py'
+      - 'docs-governance/learning/CW-PREVIEW-HANDOFF-REGRESSION-2026-08-29.md'
+      - '.github/workflows/photo-preselector-review-contract.yml'
+      - '.github/workflows/photo-preselector-review-pr-check.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout proposed change
+        uses: actions/checkout@v4
+      - name: Validate exact photo preselector review transport
+        run: |
+          set -euo pipefail
+          python scripts/validate_photo_preselector_review.py docs/review/photo-preselector
