@@ -1,0 +1,65 @@
+name: Test field-data section reengineering
+on:
+  push:
+    branches:
+      - review/reengineer-field-data-20260829
+    paths:
+      - .github/workflows/test-field-data-reengineering.yml
+      - docs/payload/hub-*.txt
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: review/reengineer-field-data-20260829
+      - name: Validate target section contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import base64,gzip,hashlib,re,html as h
+          d=Path('docs/payload')
+          parts=[d/f'hub-{i:02d}.txt' for i in range(17)]
+          b64=re.sub(r'\s+','',''.join(p.read_text(encoding='ascii') for p in parts)); b64+='='*(-len(b64)%4)
+          page=gzip.decompress(base64.b64decode(b64)).decode('utf-8')
+          print('PAGE_SHA256='+hashlib.sha256(page.encode()).hexdigest())
+          def section(src,sid):
+              m=re.search(r'<section\b[^>]*\bid=["\']'+re.escape(sid)+r'["\'][^>]*>',src,re.I)
+              if not m: raise SystemExit('missing section '+sid)
+              tok=re.compile(r'</?section\b[^>]*>',re.I); depth=0
+              for t in tok.finditer(src,m.start()):
+                  if t.group(0).lower().startswith('</'):
+                      depth-=1
+                      if depth==0:return src[m.start():t.end()]
+                  else: depth+=1
+              raise SystemExit('unclosed section')
+          s=section(page,'stanley-update')
+          print('SECTION_SHA256='+hashlib.sha256(s.encode()).hexdigest())
+          text=re.sub(r'<[^>]+>',' ',s); text=h.unescape(re.sub(r'\s+',' ',text))
+          print('TEXT='+text[:5000])
+          hrefs=re.findall(r'<a\b[^>]*\bhref=["\']([^"\']+)',s,re.I)
+          imgs=re.findall(r'<img\b[^>]*\bsrc=["\']([^"\']+)',s,re.I)
+          print('HREF_COUNT',len(hrefs),'UNIQUE',len(set(hrefs)))
+          for x in hrefs: print('HREF',x)
+          print('IMG_COUNT',len(imgs),'UNIQUE',len(set(imgs)))
+          for i,x in enumerate(imgs):
+              print('IMG',i,hashlib.sha256(x.encode()).hexdigest()[:16],x[:120])
+          required=[
+            'What a field-and-data system could actually do',
+            'Technical reference catalogue',
+            'How these pieces could work together',
+            'What this could look like in the territories',
+            'Turn the references into one technical next step',
+            'What still needs to be clarified',
+          ]
+          for marker in required:
+              if marker not in text: raise SystemExit('RED missing marker: '+marker)
+          if len(imgs)<6: raise SystemExit('RED insufficient images')
+          if len(imgs)!=len(set(imgs)): raise SystemExit('RED duplicate image sources remain')
+          if len(hrefs)!=len(set(hrefs)): raise SystemExit('RED duplicate hrefs remain')
+          print('FIELD_DATA_REENGINEERING_CONTRACT=PASS')
+          PY
