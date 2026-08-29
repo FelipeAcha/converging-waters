@@ -8,22 +8,29 @@ from PIL import Image, ImageOps
 QUALITY = 92
 
 
-def _decode_data_url(src: str) -> bytes:
-    if not src.startswith('data:image/') or ',' not in src:
-        raise ValueError('not an image data URL')
-    return base64.b64decode(src.split(',', 1)[1])
-
-
-def _fetch_source(src: str, session) -> bytes:
-    if src.startswith('data:image/'):
-        return _decode_data_url(src)
-    if session is None:
-        raise RuntimeError(f'remote source requires HTTP session: {src}')
-    r = session.get(src, timeout=90, allow_redirects=True, headers={
-        'User-Agent': 'Mozilla/5.0 (compatible; ConvergingWatersReview/1.0)'
-    })
-    r.raise_for_status()
-    return r.content
+def _fetch_source(spec: dict, cache_dir: Path, session) -> tuple[bytes, str]:
+    kind = spec.get('kind')
+    if kind == 'embedded-cache':
+        name = spec.get('file')
+        if not name:
+            raise RuntimeError('embedded-cache source missing file')
+        path = (cache_dir / name).resolve()
+        path.relative_to(cache_dir.resolve())
+        if not path.is_file():
+            raise RuntimeError(f'missing cached source: {path}')
+        return base64.b64decode(path.read_text(encoding='ascii').strip()), f'cache:{name}'
+    if kind == 'remote':
+        url = spec.get('url')
+        if not url:
+            raise RuntimeError('remote source missing url')
+        if session is None:
+            raise RuntimeError(f'remote source requires HTTP session: {url}')
+        r = session.get(url, timeout=90, allow_redirects=True, headers={
+            'User-Agent': 'Mozilla/5.0 (compatible; ConvergingWatersReview/1.0)'
+        })
+        r.raise_for_status()
+        return r.content, url
+    raise RuntimeError(f'unsupported source kind: {kind}')
 
 
 def _read_payload(root: Path) -> tuple[str, list[Path], bytes]:
@@ -47,26 +54,25 @@ def _semantic_snapshot(soup: BeautifulSoup) -> list[tuple[str, str]]:
     return out
 
 
-def build(root: Path, source_html: Path, max_edge: int = 1600, min_edge: int = 800,
+def build(root: Path, source_manifest: Path, source_cache_dir: Path,
+          max_edge: int = 1600, min_edge: int = 700,
           chunk_count: int | None = None, session=None) -> dict:
-    root = Path(root).resolve(); source_html = Path(source_html).resolve()
+    root = Path(root).resolve()
+    source_manifest = Path(source_manifest).resolve()
+    source_cache_dir = Path(source_cache_dir).resolve()
     current_html, parts, old_gz = _read_payload(root)
     if chunk_count is None:
         chunk_count=len(parts)
 
     current = BeautifulSoup(current_html, 'html.parser')
-    canonical = BeautifulSoup(source_html.read_text(encoding='utf-8'), 'html.parser')
     before = _semantic_snapshot(BeautifulSoup(current_html, 'html.parser'))
-
-    source_map={}
-    for c in canonical.select('.candidate'):
-        code=c.select_one('code'); img=c.select_one('img')
-        if code and img and img.get('src'):
-            source_map[code.get_text(strip=True)] = img['src']
+    source_map = json.loads(source_manifest.read_text(encoding='utf-8'))
 
     candidates=current.select('.candidate')
-    if len(candidates) != len(source_map):
-        raise RuntimeError(f'candidate/source mismatch: {len(candidates)} != {len(source_map)}')
+    codes=[c.select_one('code').get_text(strip=True) for c in candidates]
+    if set(codes) != set(source_map):
+        missing=sorted(set(codes)-set(source_map)); extra=sorted(set(source_map)-set(codes))
+        raise RuntimeError(f'candidate/source mismatch missing={missing} extra={extra}')
 
     assets_dir=root/'assets'
     if assets_dir.exists(): shutil.rmtree(assets_dir)
@@ -76,10 +82,7 @@ def build(root: Path, source_html: Path, max_edge: int = 1600, min_edge: int = 8
     for c in candidates:
         code=c.select_one('code').get_text(strip=True)
         img=c.select_one('img')
-        src=source_map.get(code)
-        if not src:
-            raise RuntimeError(f'missing high-resolution source for {code}')
-        raw=_fetch_source(src, session)
+        raw, source_label = _fetch_source(source_map[code], source_cache_dir, session)
         with Image.open(io.BytesIO(raw)) as opened:
             im=ImageOps.exif_transpose(opened).convert('RGB')
             ow,oh=im.size
@@ -93,7 +96,7 @@ def build(root: Path, source_html: Path, max_edge: int = 1600, min_edge: int = 8
             im.save(out,'WEBP',quality=QUALITY,method=6)
         img['src']=f'assets/{code}.webp'
         report_assets.append({
-            'code':code,'source':src,'source_width':ow,'source_height':oh,
+            'code':code,'source':source_label,'source_width':ow,'source_height':oh,
             'width':w,'height':h,'long_edge':max(w,h),'bytes':out.stat().st_size
         })
 
@@ -125,7 +128,7 @@ def build(root: Path, source_html: Path, max_edge: int = 1600, min_edge: int = 8
     shell_path.write_text(shell2,encoding='utf-8')
 
     report={
-        'source_html':str(source_html),'old_payload_sha256':hashlib.sha256(old_gz).hexdigest(),
+        'source_manifest':str(source_manifest),'old_payload_sha256':hashlib.sha256(old_gz).hexdigest(),
         'payload_sha256':sha,'quality':QUALITY,'max_edge':max_edge,'min_source_edge':min_edge,
         'counts':counts,'assets':report_assets
     }
@@ -135,11 +138,14 @@ def build(root: Path, source_html: Path, max_edge: int = 1600, min_edge: int = 8
 
 def main():
     ap=argparse.ArgumentParser()
-    ap.add_argument('review_root', type=Path); ap.add_argument('source_html', type=Path)
-    ap.add_argument('--max-edge', type=int, default=1600); ap.add_argument('--min-edge', type=int, default=800)
+    ap.add_argument('review_root', type=Path)
+    ap.add_argument('source_manifest', type=Path)
+    ap.add_argument('source_cache_dir', type=Path)
+    ap.add_argument('--max-edge', type=int, default=1600)
+    ap.add_argument('--min-edge', type=int, default=700)
     args=ap.parse_args()
     import requests
-    report=build(args.review_root,args.source_html,args.max_edge,args.min_edge,session=requests.Session())
+    report=build(args.review_root,args.source_manifest,args.source_cache_dir,args.max_edge,args.min_edge,session=requests.Session())
     print(json.dumps({'payload_sha256':report['payload_sha256'],'counts':report['counts'],
                       'min_long_edge':min(x['long_edge'] for x in report['assets']),
                       'max_long_edge':max(x['long_edge'] for x in report['assets']),
