@@ -26,28 +26,39 @@ jobs:
           parts=[d/f'hub-{i:02d}.txt' for i in range(17)]
           b64=re.sub(r'\s+','',''.join(p.read_text(encoding='ascii') for p in parts)); b64+='='*(-len(b64)%4)
           page=gzip.decompress(base64.b64decode(b64)).decode('utf-8')
-          print('PAGE_SHA256='+hashlib.sha256(page.encode()).hexdigest())
-          def section(src,sid):
+          def span_tag(src,tag,needle_pos):
+              tok=re.compile(r'</?'+tag+r'\b[^>]*>',re.I); stack=[]; spans=[]
+              for m in tok.finditer(src):
+                  if m.group(0).lower().startswith('</'):
+                      if stack:
+                          sm=stack.pop(); spans.append((sm.start(),m.end()))
+                  else: stack.append(m)
+              return [x for x in spans if x[0] <= needle_pos < x[1]]
+          def section_span(src,sid):
               m=re.search(r'<section\b[^>]*\bid=["\']'+re.escape(sid)+r'["\'][^>]*>',src,re.I)
               if not m: raise SystemExit('missing section '+sid)
               tok=re.compile(r'</?section\b[^>]*>',re.I); depth=0
               for t in tok.finditer(src,m.start()):
                   if t.group(0).lower().startswith('</'):
                       depth-=1
-                      if depth==0:return src[m.start():t.end()]
+                      if depth==0:return m.start(),t.end()
                   else: depth+=1
               raise SystemExit('unclosed section')
-          s=section(page,'stanley-update')
+          ss,se=section_span(page,'stanley-update'); s=page[ss:se]
+          outside=page[:ss]+page[se:]
+          print('PAGE_SHA256='+hashlib.sha256(page.encode()).hexdigest())
           print('SECTION_SHA256='+hashlib.sha256(s.encode()).hexdigest())
-          text=re.sub(r'<[^>]+>',' ',s); text=h.unescape(re.sub(r'\s+',' ',text))
-          print('TEXT='+text[:5000])
+          print('OUTSIDE_SHA256='+hashlib.sha256(outside.encode()).hexdigest())
+          marker='Turn the references into one technical next step'
+          mp=s.find(marker)
+          divs=span_tag(s,'div',mp)
+          candidates=[s[a:b] for a,b in divs if '1. Match' in s[a:b] and '4. Define' in s[a:b] and 'Review outcome:' in s[a:b]]
+          if not candidates: raise SystemExit('review block not found')
+          review=min(candidates,key=len)
+          print('REVIEW_BLOCK_SHA256='+hashlib.sha256(review.encode()).hexdigest())
+          text=h.unescape(re.sub(r'\s+',' ',re.sub(r'<[^>]+>',' ',s)))
           hrefs=re.findall(r'<a\b[^>]*\bhref=["\']([^"\']+)',s,re.I)
           imgs=re.findall(r'<img\b[^>]*\bsrc=["\']([^"\']+)',s,re.I)
-          print('HREF_COUNT',len(hrefs),'UNIQUE',len(set(hrefs)))
-          for x in hrefs: print('HREF',x)
-          print('IMG_COUNT',len(imgs),'UNIQUE',len(set(imgs)))
-          for i,x in enumerate(imgs):
-              print('IMG',i,hashlib.sha256(x.encode()).hexdigest()[:16],x[:120])
           required=[
             'What a field-and-data system could actually do',
             'Technical reference catalogue',
@@ -58,8 +69,21 @@ jobs:
           ]
           for marker in required:
               if marker not in text: raise SystemExit('RED missing marker: '+marker)
-          if len(imgs)<6: raise SystemExit('RED insufficient images')
-          if len(imgs)!=len(set(imgs)): raise SystemExit('RED duplicate image sources remain')
+          if s.count('fd2-function-card') < 3: raise SystemExit('RED function-card structure missing')
+          if len(imgs)!=6 or len(imgs)!=len(set(imgs)): raise SystemExit(f'RED images must be exactly 6 unique; got {len(imgs)}/{len(set(imgs))}')
+          if not all(x.startswith('assets/legacy/') for x in imgs): raise SystemExit('RED images must use stable local reviewed assets')
           if len(hrefs)!=len(set(hrefs)): raise SystemExit('RED duplicate hrefs remain')
+          canonical=[
+            'https://docs.google.com/spreadsheets/d/1ogEMPnctnCcFq2xZHwlyfT-fvjBpWJihnv2LfKTQhC0/edit',
+            'https://worldgeno.me/',
+            'https://nanoporetech.com/products/sequence/minion',
+            'https://www.raspberrypi.com/news/exploring-the-ocean-with-raspberry-pi-powered-marine-robots/',
+            'https://www.raspberrypi.com/products/compute-module-4/',
+            'https://birdnet.cornell.edu/',
+            'https://birdnet.cornell.edu/birdnet-pi/',
+            'https://doi.org/10.1128/spectrum.04793-22',
+          ]
+          for url in canonical:
+              if hrefs.count(url)!=1: raise SystemExit('RED canonical href missing/non-unique: '+url)
           print('FIELD_DATA_REENGINEERING_CONTRACT=PASS')
           PY
