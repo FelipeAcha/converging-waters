@@ -57,7 +57,7 @@ jobs:
           preview_before=$(sha256sum docs/preview/index.html | awk '{print $1}')
           release_before=$(sha256sum docs/releases/v13/index.html | awk '{print $1}')
 
-          gdown --id "$SOURCE_FILE_ID" -O /tmp/photo-preselector-source.html
+          gdown "$SOURCE_FILE_ID" -O /tmp/photo-preselector-source.html
           echo "$SOURCE_SHA256  /tmp/photo-preselector-source.html" | sha256sum --check --strict
 
           python scripts/build_photo_preselector_highres.py \
