@@ -1,0 +1,11 @@
+Converging Waters v16.8
+Status: USER APPROVED
+Approved: 2026-08-20
+Review surface: ChatGPT Project conversation
+Baseline: v16.7 REV 4 approved candidate
+Current review frontier: #finance-hypotheses
+Approved review object: CW-WEB-v16.8 Amazonas Sagrada + technical options + financing hypotheses
+Scope: Amazonas Sagrada territorial application; Chelsea individual operating lens carried without institutional inference; controlled technical options with Patrick individual technical lens; financing hypotheses; person/project/organization authority separation.
+User-reported visual regression corrected in this candidate: #first-outcome shared-convergence callout list text is forced to high-contrast near-white and runtime-checked via computed style.
+Preservation: #people remains the single authoritative current-participant contribution map; v16.7 sections through #what-we-need-now preserved; external href count expected unchanged at 46; downstream #allies and later sections remain inherited and unreviewed unless explicitly changed later.
+Production promotion: NOT AUTHORIZED by this approval.

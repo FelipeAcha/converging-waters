@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" role="img" aria-label="Abstract stingless bees illustration">
+  <rect width="1200" height="700" fill="#fff4ce"/>
+  <circle cx="980" cy="160" r="110" fill="#ca9a2e" opacity="0.28"/>
+  <path d="M0 610 C180 510 315 560 475 455 C650 340 800 420 970 315 C1080 250 1140 250 1200 210 V700 H0 Z" fill="#16402e" opacity="0.9"/>
+  <g transform="translate(335 230)">
+    <ellipse cx="0" cy="0" rx="70" ry="42" fill="#1e3b2e"/><ellipse cx="52" cy="0" rx="75" ry="45" fill="#ca9a2e"/><path d="M20 -40 C0 -110 100 -112 85 -36" fill="#dceee7" opacity=".78"/><path d="M38 40 C20 110 120 112 92 34" fill="#dceee7" opacity=".78"/><circle cx="103" cy="-4" r="8" fill="#10261d"/></g>
+  <g transform="translate(700 325) scale(.78)">
+    <ellipse cx="0" cy="0" rx="70" ry="42" fill="#1e3b2e"/><ellipse cx="52" cy="0" rx="75" ry="45" fill="#ca9a2e"/><path d="M20 -40 C0 -110 100 -112 85 -36" fill="#dceee7" opacity=".78"/><path d="M38 40 C20 110 120 112 92 34" fill="#dceee7" opacity=".78"/><circle cx="103" cy="-4" r="8" fill="#10261d"/></g>
+  <text x="70" y="120" font-family="Georgia, serif" font-size="62" fill="#183425" font-weight="700">Stingless bees</text>
+  <text x="72" y="168" font-family="Arial, sans-serif" font-size="26" fill="#6a501f">Peru · species rights imagination</text>
+</svg>

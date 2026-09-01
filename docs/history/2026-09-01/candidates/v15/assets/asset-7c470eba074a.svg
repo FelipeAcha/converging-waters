@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" role="img" aria-label="Abstract Willkamayu river illustration">
+  <defs>
+    <linearGradient id="sky" x1="0" x2="0" y1="0" y2="1"><stop stop-color="#e8f1ee"/><stop offset="1" stop-color="#f7efd9"/></linearGradient>
+    <linearGradient id="river" x1="0" x2="1"><stop stop-color="#2a7f83"/><stop offset="1" stop-color="#174d39"/></linearGradient>
+    <filter id="soft"><feGaussianBlur stdDeviation="12"/></filter>
+  </defs>
+  <rect width="1200" height="700" fill="url(#sky)"/>
+  <path d="M0 430 C160 300 250 355 385 240 C520 125 670 205 795 125 C930 40 1040 100 1200 20 L1200 700 L0 700 Z" fill="#163524" opacity="0.9"/>
+  <path d="M0 500 C170 390 295 475 420 345 C555 205 710 285 825 235 C960 175 1055 210 1200 120 L1200 700 L0 700 Z" fill="#2d6b4b" opacity="0.78"/>
+  <path d="M0 640 C190 560 270 620 430 510 C590 400 715 445 870 330 C1010 225 1080 250 1200 185 L1200 700 L0 700 Z" fill="#7c8f67" opacity="0.72"/>
+  <path d="M20 700 C180 640 285 660 410 590 C570 495 650 560 790 465 C930 370 1025 385 1180 310" stroke="url(#river)" stroke-width="115" fill="none" stroke-linecap="round" opacity="0.92"/>
+  <path d="M20 700 C180 640 285 660 410 590 C570 495 650 560 790 465 C930 370 1025 385 1180 310" stroke="#ca9a2e" stroke-width="8" fill="none" stroke-linecap="round" opacity="0.75"/>
+  <circle cx="185" cy="180" r="54" fill="#ca9a2e" opacity="0.22" filter="url(#soft)"/>
+  <circle cx="185" cy="180" r="30" fill="#ca9a2e" opacity="0.65"/>
+  <text x="70" y="92" font-family="Georgia, serif" font-size="58" fill="#163524" font-weight="700">Willkamayu</text>
+  <text x="72" y="135" font-family="Arial, sans-serif" font-size="24" fill="#315145">source · valley · tributaries · downstream life</text>
+</svg>

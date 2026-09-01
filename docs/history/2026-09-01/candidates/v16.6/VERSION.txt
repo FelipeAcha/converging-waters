@@ -1,0 +1,9 @@
+Converging Waters v16.6
+Status: USER APPROVED
+Approved: 2026-08-20
+Review surface: ChatGPT Project conversation
+Baseline: v16.5 approved candidate
+Current review frontier: #what-we-need-now
+Scope of v16.6: sections 08-10 as one readiness / decision component; semantic redundancy correction; person / organization authority separation; 60-90 Day Readiness Package with differentiated Willkamayu, Amazonas Sagrada and WGA tracks; component-sized review rule.
+Preservation: v16.5 #system, people contribution map, Stanley/WGA protected content, external hrefs and all downstream sections remain inherited from v16.5 unless explicitly changed in this component.
+Production promotion: NOT AUTHORIZED by this approval.

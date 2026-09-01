@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Converging Waters — v16.7 approved candidate</title>
+<meta name="robots" content="noindex,nofollow">
+<style>html,body{margin:0;min-height:100%;background:#f5efe6;color:#13251d;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif}.status{min-height:100vh;display:grid;place-items:center;padding:32px;text-align:center}.status div{max-width:720px;background:#fffdf8;border:1px solid #e4dccf;border-radius:28px;padding:32px}</style>
+</head>
+<body>
+<div class="status"><div><b>Converging Waters</b><br><span>Loading approved v16.7 candidate…</span></div></div>
+<script>
+(async()=>{
+  try{
+    const names=['payload-00.b64','payload-01a.b64','payload-01b.b64','payload-02.b64','payload-03.b64','payload-04.b64'];
+    const parts=await Promise.all(names.map(async n=>{const r=await fetch(n,{cache:'no-store'});if(!r.ok)throw new Error(n+' '+r.status);return (await r.text()).trim();}));
+    const bytes=Uint8Array.from(atob(parts.join('')),c=>c.charCodeAt(0));
+    const html=new TextDecoder('utf-8').decode(bytes);
+    document.open();document.write(html);document.close();
+  }catch(err){document.body.innerHTML='<div class="status"><div><b>Candidate could not load</b><br><span>'+String(err.message||err)+'</span></div></div>';}
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" role="img" aria-label="Abstract Atrato river illustration">
+  <rect width="1200" height="700" fill="#f0ecd9"/>
+  <path d="M0 700 V430 C150 365 270 400 420 315 C560 236 710 290 850 200 C980 115 1100 120 1200 80 V700 Z" fill="#16402e"/>
+  <path d="M80 700 C205 555 345 630 470 500 C590 375 700 430 810 325 C925 215 1015 250 1130 155" stroke="#278085" stroke-width="120" fill="none" stroke-linecap="round"/>
+  <circle cx="820" cy="315" r="56" fill="#ca9a2e" opacity=".35"/>
+  <circle cx="905" cy="230" r="38" fill="#ca9a2e" opacity=".32"/>
+  <text x="70" y="120" font-family="Georgia, serif" font-size="66" fill="#183425" font-weight="700">Atrato</text>
+  <text x="72" y="168" font-family="Arial, sans-serif" font-size="26" fill="#385647">Colombia · guardians and implementation risk</text>
+</svg>

@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Converging Waters — v16.6 approved candidate</title>
+<meta name="robots" content="noindex,nofollow">
+<style>
+html,body{margin:0;min-height:100%;background:#f5efe6;color:#13251d;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
+.cw-loading{min-height:100vh;display:grid;place-items:center;padding:30px;text-align:center}
+.cw-loading div{max-width:720px;background:#fffdf8;border:1px solid #e4dccf;border-radius:28px;padding:32px;box-shadow:0 18px 48px rgba(16,38,29,.12)}
+.cw-loading b{display:block;font-size:1.5rem;margin-bottom:8px}.cw-loading span{color:#647368}
+#cw-v165-source{display:none}
+</style>
+</head>
+<body>
+<div class="cw-loading"><div><b>Converging Waters</b><span>Loading approved candidate v16.6…</span></div></div>
+<iframe id="cw-v165-source" src="../v16.5/index.html" aria-hidden="true" tabindex="-1"></iframe>
+<script>
+(() => {
+  const sourceFrame = document.querySelector('#cw-v165-source');
+  const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+  const openDecisionsHTML = `<section class="section compact-section" id="open-decisions">
+<div class="container">
+<div class="section-head">
+<div>
+<div class="kicker">08 · What remains open</div>
+<h2>Important possibilities are not yet commitments</h2>
+</div>
+<p>The collaboration should distinguish enthusiasm from feasibility and turn the most important unknowns into explicit decisions, confirmations or follow-up questions.</p>
+</div>
+<div class="note wide-note">
+<b>People and organizations are not interchangeable</b>
+<p>Each person confirms their own expertise, interest, availability, boundaries and personal commitment. Organization-level priorities, resources, capacity and commitments must be confirmed at the organizational level by someone with the appropriate authority. Representation or affiliation alone does not make the two equivalent.</p>
+</div>
+<div class="open-grid">
+<article class="card"><h3>Shared purpose + first result</h3><p>What exactly should the collaboration produce during the first 60–90 days, and what would count as a useful result?</p></article>
+<article class="card"><h3>Shared vs. separate work</h3><p>What belongs to the Converging Waters collaboration layer, and what should remain entirely within Willkamayu, Amazonas Sagrada, WGA or another participating initiative?</p></article>
+<article class="card"><h3>WGA feasibility + authority</h3><p>What can WGA institutionally make available — equipment, staff time, technical support, training and data capabilities — and who is authorized to confirm or commit those resources? Simona's and Stanley's personal contributions remain a separate question.</p></article>
+<article class="card"><h3>Territorial priorities</h3><p>What does each territory most need to understand, protect, regenerate or unlock first, and which questions should be answered before proposing field action?</p></article>
+<article class="card"><h3>Consent, data + community</h3><p>Who participates, who decides, who can represent a territory or community, who accesses the data, how credit and provenance work, and who should benefit?</p></article>
+<article class="card"><h3>Resources + participation</h3><p>What is voluntary, professional or funded? What can each person realistically contribute, and what resources or support can each organization legitimately make available?</p></article>
+</div>
+</div>
+</section>`;
+
+  const firstOutcomeHTML = `<section class="section compact-section" id="first-outcome">
+<div class="container">
+<div class="section-head">
+<div>
+<div class="kicker">09 · Proposed first 60–90 day outcome</div>
+<h2>Converging Waters — 60–90 Day Readiness Package</h2>
+<p class="subhead">One jointly reviewed package can move the convergence from possibility toward informed action without forcing every territory or partner into the same level of readiness.</p>
+</div>
+<p>The purpose is not to announce a pilot prematurely. It is to make the next decisions better: what is ready, what still needs discovery, what support is real, and what should remain autonomous.</p>
+</div>
+<div class="callout">
+<div class="status">Shared convergence layer</div>
+<h3>What do we deliberately do together — and what stays autonomous?</h3>
+<ul class="clean">
+<li>Shared purpose, principles, boundaries and decision process.</li>
+<li>Clear separation between joint work and the authority of each territory, project, person and organization.</li>
+<li>Common principles for consent, data, provenance, credit and public representation.</li>
+<li>A small set of shared funding, visit or partnership questions only where they genuinely benefit more than one track.</li>
+<li>One review point with explicit go / revise / pause questions rather than assumed continuation.</li>
+</ul>
+</div>
+<div class="track-grid" style="margin-top:18px">
+<article class="panel mint">
+<div class="status">Willkamayu</div>
+<h3>Pilot Readiness Plan</h3>
+<p>Willkamayu is already moving beyond generic scoping. The first package should convert the existing river-system, evidence and citizen-science work into a realistic readiness path.</p>
+<ul class="clean">
+<li>Priority environmental questions and intended uses of evidence.</li>
+<li>Baseline and monitoring architecture, including main-river checkpoints and tributary attribution nodes.</li>
+<li>School / citizen-science pilot pathway, safe field participation and recurrent sampling versus permanent instrumentation.</li>
+<li>WGA fit, equipment dependencies, training and data requirements without making the pilot depend on an unverified equipment count.</li>
+<li>Permits, safeguards, local participation, minimum first-stage budget, funding questions and conditions to initiate or defer a pilot.</li>
+</ul>
+</article>
+<article class="panel yellow">
+<div class="status">Amazonas Sagrada</div>
+<h3>Discovery &amp; Opportunity Map</h3>
+<p>Amazonas Sagrada does not need to be forced into the same maturity stage as Willkamayu. Its first outcome can be a clearer territorial learning agenda and opportunity map.</p>
+<ul class="clean">
+<li>What the territory and initiative most want to understand, protect or regenerate first.</li>
+<li>Priority questions from Patrick, Chelsea and relevant territorial actors, kept distinct from any institutional or community mandate not yet confirmed.</li>
+<li>Where environmental evidence, monitoring, citizen science or technical pilots could add real value.</li>
+<li>Which questions require community listening, relationship-building or local validation before any pilot is proposed.</li>
+<li>Promising technical, partnership or funding pathways to explore — with a preliminary pilot option only if the evidence and territorial process justify one.</li>
+</ul>
+</article>
+<article class="panel blue">
+<div class="status">WGA</div>
+<h3>Technical Feasibility &amp; Support Note</h3>
+<p>The WGA track should convert an exciting capability landscape into verified institutional feasibility for this collaboration.</p>
+<ul class="clean">
+<li>Equipment and kits that WGA can actually make available, in what quantities and under what conditions.</li>
+<li>What each capability measures, field requirements, maintenance, training and quality-control implications.</li>
+<li>Sequencing / eDNA, environmental metadata, provenance and data architecture that can realistically be supported.</li>
+<li>Remote versus on-site support, staff capacity, possible Peru visit / timing and what remains exploratory.</li>
+<li>Who inside WGA can confirm resources or commitments. Simona's and Stanley's individual expertise, availability and interests remain separately validated personal contributions.</li>
+</ul>
+</article>
+</div>
+<div class="note wide-note">
+<b>Definition of readiness</b>
+<p>Readiness does not mean that every question is closed or that a pilot has been approved. It means the group has enough verified information, territorial clarity, authority and resource visibility to choose a responsible next action — including the option to keep learning before acting.</p>
+</div>
+</div>
+</section>`;
+
+  const whatWeNeedHTML = `<section class="section compact-section" id="what-we-need-now">
+<div class="container">
+<div class="section-head">
+<div>
+<div class="kicker">10 · What needs to be validated now</div>
+<h2>Review people and institutions on separate lanes</h2>
+</div>
+<p>The immediate ask is not a blanket commitment. It is a clean correction and validation pass so personal contributions, project priorities and organizational authority are not accidentally collapsed into one another.</p>
+</div>
+<div class="validation-grid">
+<article class="panel mint">
+<div class="status">From each person</div>
+<h3>Personal contribution + boundaries</h3>
+<div class="mini-grid">
+<div class="mini"><b>Accuracy</b><p>What is inaccurate, missing or overstated about your knowledge, experience or possible contribution?</p></div>
+<div class="mini"><b>Boundaries + availability</b><p>What should not be assumed about your role, time, resources or personal commitment?</p></div>
+<div class="mini"><b>Value</b><p>What would make this collaboration genuinely useful to you and the work you care about?</p></div>
+<div class="mini"><b>Participation</b><p>Working circle, specific contributor, advisor / ally, or staying informed for now?</p></div>
+</div>
+</article>
+<article class="panel blue">
+<div class="status">From each project or organization</div>
+<h3>Institutional priorities + authority</h3>
+<div class="mini-grid">
+<div class="mini"><b>Institutional accuracy</b><p>What is inaccurate, missing or overstated about the project or organization itself?</p></div>
+<div class="mini"><b>Priorities + boundaries</b><p>What does the initiative want to explore, and what must remain outside the collaboration or under its own governance?</p></div>
+<div class="mini"><b>Resources + feasibility</b><p>What staff time, equipment, data, funding, technical support or other resources can actually be made available?</p></div>
+<div class="mini"><b>Authority + representation</b><p>Who may confirm commitments, make decisions or represent the organization externally on each relevant matter?</p></div>
+</div>
+</article>
+</div>
+<div class="note wide-note">
+<b>How to handle dual roles</b>
+<p>A person may contribute both personally and as a representative of a project or organization, but the two answers should remain explicit. If institutional authority is not confirmed, the organizational item stays open rather than being inferred from the person's participation. The same rule applies to WGA, Amazonas Sagrada, Willkamayu and any future partner.</p>
+</div>
+<div class="callout definition">
+<div><b>What happens with the responses?</b></div>
+<div><p>Corrections update the working map. Personal preferences update the participation layer. Institutional confirmations update feasibility and authority. Unconfirmed items remain visible as open questions. Only explicit decisions become commitments.</p></div>
+</div>
+</div>
+</section>`;
+
+  const candidateCSS = `
+.subhead{margin-top:6px;color:#3c5147;max-width:800px}
+.track-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.validation-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+.panel{background:var(--paper);border:1px solid var(--line);border-radius:24px;padding:22px;box-shadow:0 10px 26px rgba(16,38,29,.05)}
+.panel h3{margin-bottom:10px}.panel p{font-size:.96rem}
+.panel.mint{background:var(--mint)}.panel.blue{background:var(--blue)}.panel.yellow{background:var(--yellow)}.panel.clay{background:var(--clay)}
+.status{display:inline-block;border:1px solid #cfe5d6;background:#eef6ef;color:#174d39;border-radius:999px;padding:.42rem .62rem;font-size:.78rem;font-weight:850;margin-bottom:10px}
+.mini-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:16px}
+.mini{border-top:1px solid rgba(19,37,29,.12);padding-top:12px}.mini b{display:block;margin-bottom:4px;color:var(--deep)}
+.definition{display:grid;grid-template-columns:.7fr 1.3fr;gap:16px;align-items:start;margin-top:18px}.definition b{font-size:1.15rem}.definition p{color:inherit}
+@media (max-width:900px){.track-grid,.validation-grid,.mini-grid,.definition{grid-template-columns:1fr}}
+`;
+
+  sourceFrame.addEventListener('load', async () => {
+    try {
+      const frameDoc = sourceFrame.contentDocument;
+      let ready = false;
+      for (let i = 0; i < 120; i += 1) {
+        if (frameDoc && frameDoc.querySelector('#system') && frameDoc.querySelector('#open-decisions') && frameDoc.querySelector('#what-we-need-now') && frameDoc.title.includes('v16.5')) {
+          ready = true;
+          break;
+        }
+        await sleep(50);
+      }
+      if (!ready) throw new Error('approved v16.5 source did not reach mounted state');
+
+      const parsed = document.implementation.createHTMLDocument('');
+      parsed.head.innerHTML = frameDoc.head.innerHTML;
+      parsed.body.innerHTML = frameDoc.body.innerHTML;
+
+      const style = parsed.createElement('style');
+      style.setAttribute('data-cw-v16-6', 'readiness-component');
+      style.textContent = candidateCSS;
+      parsed.head.appendChild(style);
+
+      const replaceSection = (id, html) => {
+        const current = parsed.querySelector('#' + id);
+        if (!current) throw new Error('missing #' + id + ' in v16.5 source');
+        const template = parsed.createElement('template');
+        template.innerHTML = html;
+        current.replaceWith(template.content.firstElementChild);
+      };
+
+      replaceSection('open-decisions', openDecisionsHTML);
+      replaceSection('first-outcome', firstOutcomeHTML);
+      replaceSection('what-we-need-now', whatWeNeedHTML);
+
+      parsed.title = 'Converging Waters — v16.6 approved candidate';
+
+      const stanley = parsed.querySelector('#stanley-update');
+      if (!stanley || stanley.querySelectorAll('img').length !== 13 || stanley.querySelectorAll('a').length !== 17) throw new Error('Stanley/WGA preservation mismatch');
+      if (parsed.querySelectorAll('a[href^="http://"],a[href^="https://"]').length !== 46) throw new Error('external href count mismatch');
+      const system = parsed.querySelector('#system');
+      if (!system || !system.textContent.includes('Pisac → Coya → Lamay → Calca → Huarán → Urubamba → Yanahuara → Pachar → Ollantaytambo') || !system.textContent.includes('Cusco–Huatanay: why the infrastructure matters')) throw new Error('approved v16.5 #system preservation mismatch');
+      const people = parsed.querySelector('#people');
+      if (!people || !people.textContent.includes('Stanley / WGA') || !people.textContent.includes('Simona / WGA') || !people.textContent.includes('Chelsea / Amazonas Sagrada') || !people.textContent.includes('Patrick / Amazonas Sagrada') || !people.textContent.includes('María Gracia') || !people.textContent.includes('Felipe')) throw new Error('people contribution map preservation mismatch');
+      const open = parsed.querySelector('#open-decisions');
+      if (!open || open.querySelectorAll('.open-grid article.card').length !== 6 || !open.textContent.includes('WGA feasibility + authority') || !open.textContent.includes('People and organizations are not interchangeable')) throw new Error('v16.6 open-decisions mismatch');
+      const outcome = parsed.querySelector('#first-outcome');
+      if (!outcome || !outcome.textContent.includes('Converging Waters — 60–90 Day Readiness Package') || !outcome.textContent.includes('Pilot Readiness Plan') || !outcome.textContent.includes('Discovery & Opportunity Map') || !outcome.textContent.includes('Technical Feasibility & Support Note')) throw new Error('v16.6 first-outcome mismatch');
+      const need = parsed.querySelector('#what-we-need-now');
+      if (!need || !need.textContent.includes('Review people and institutions on separate lanes') || !need.textContent.includes('From each person') || !need.textContent.includes('From each project or organization')) throw new Error('v16.6 what-we-need-now mismatch');
+
+      document.head.innerHTML = parsed.head.innerHTML;
+      document.body.innerHTML = parsed.body.innerHTML;
+    } catch (err) {
+      document.body.innerHTML = `<div class="cw-loading"><div><b>Candidate could not load</b><span>${String(err.message || err)}</span></div></div>`;
+    }
+  }, {once:true});
+})();
+</script>
+</body>
+</html>
