@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" role="img" aria-label="Abstract Lake Titicaca illustration">
+  <defs><radialGradient id="lake" cx="50%" cy="55%" r="60%"><stop stop-color="#69aeb3"/><stop offset="0.55" stop-color="#287e83"/><stop offset="1" stop-color="#174d39"/></radialGradient></defs>
+  <rect width="1200" height="700" fill="#f5ecd9"/>
+  <path d="M0 350 C170 250 300 280 445 210 C610 130 750 175 900 120 C1040 68 1125 70 1200 40 V700 H0 Z" fill="#8b8f62" opacity="0.68"/>
+  <ellipse cx="615" cy="410" rx="420" ry="205" fill="url(#lake)"/>
+  <path d="M240 445 C360 350 440 490 575 398 C690 320 765 415 960 300" stroke="#f6d37b" stroke-width="8" fill="none" opacity="0.7"/>
+  <path d="M395 575 L470 445 L530 575 Z" fill="#d9be76" opacity="0.88"/>
+  <path d="M725 545 L805 400 L875 545 Z" fill="#d9be76" opacity="0.8"/>
+  <text x="70" y="120" font-family="Georgia, serif" font-size="66" fill="#183425" font-weight="700">Titicaca</text>
+  <text x="72" y="168" font-family="Arial, sans-serif" font-size="26" fill="#385647">Peru · women-led lake protection</text>
+</svg>

@@ -1,0 +1,5 @@
+CW-PHOTO-PRESELECTOR-PUBLIC-REVIEW-v1
+canonical_url=https://felipeacha.github.io/converging-waters/review/photo-preselector/
+expected_payload_gzip_sha256=277700a35c7dfa03de1d575ceae93571e601b550c1206c3d3239e43a61c05c40
+expected_counts=18 needs;77 candidates;77 controls;77 images
+review_rule=Only declare ready when Photo preselector review contract is green and the durable public status records browser_contract PASS.

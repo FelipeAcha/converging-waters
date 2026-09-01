@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" role="img" aria-label="Abstract Marañón river illustration">
+  <defs><linearGradient id="g" x1="0" x2="1"><stop stop-color="#123524"/><stop offset="1" stop-color="#286c49"/></linearGradient><linearGradient id="w" x1="0" x2="1"><stop stop-color="#287e83"/><stop offset="1" stop-color="#78b8aa"/></linearGradient></defs>
+  <rect width="1200" height="700" fill="#f4ead9"/>
+  <path d="M0 0 H1200 V520 C960 600 760 540 570 615 C390 685 175 655 0 700 Z" fill="url(#g)"/>
+  <path d="M-40 500 C140 400 255 565 430 460 C560 380 665 460 795 335 C920 210 1035 290 1240 160" stroke="url(#w)" stroke-width="125" fill="none" stroke-linecap="round"/>
+  <path d="M-40 500 C140 400 255 565 430 460 C560 380 665 460 795 335 C920 210 1035 290 1240 160" stroke="#f6d37b" stroke-width="8" fill="none" stroke-linecap="round" opacity="0.75"/>
+  <text x="70" y="120" font-family="Georgia, serif" font-size="66" fill="#183425" font-weight="700">Marañón</text>
+  <text x="72" y="168" font-family="Arial, sans-serif" font-size="26" fill="#385647">Peru · river rights precedent</text>
+</svg>

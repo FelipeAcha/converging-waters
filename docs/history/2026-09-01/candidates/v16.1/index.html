@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Converging Waters — v16.1 infographic-only review</title>
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#174d39">
+<style>
+html,body{height:100%;margin:0}body{display:grid;place-items:center;background:#f5efe6;color:#10261d;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.loading{max-width:42rem;padding:2rem;text-align:center}.spinner{width:2.5rem;height:2.5rem;margin:0 auto 1rem;border:.25rem solid #d8c9ad;border-top-color:#174d39;border-radius:50%;animation:spin .8s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}.error{max-width:46rem;padding:2rem;text-align:left}.error code{overflow-wrap:anywhere}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/fflate@0.8.3/umd/index.js"></script>
+</head>
+<body>
+<div class="loading"><div class="spinner" aria-hidden="true"></div><strong>Loading Converging Waters v16.1…</strong><p>Starting from the exact v13 package and applying only the infographic placement/deduplication step.</p></div>
+<script>
+(async()=>{
+  const ZIP_URL='https://raw.githubusercontent.com/FelipeAcha/converging-waters/main/converging-waters-repository-ready.zip';
+  const EXPECTED_ZIP_SHA256='cf0a0e2f78ccf0ca370735c285cb1cbe19515c44bffabbb87424a0cda7efafb1';
+  const EXPECTED_HTML_SHA256='fcb857aa61635a800f2faef512e9a14c3d53445ec996a03603ffa939dbd4ca11';
+  const HTML_PATH='docs/releases/v13/index.html';
+  const INFOGRAPHIC_START='<figure class="visual-reference" id="purpose-visual-reference">';
+  const VISUAL_SHELL='<div class="visual-shell">';
+  const HERO_START='<section class="hero">';
+
+  const sha256=async(bytes)=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',bytes))].map(b=>b.toString(16).padStart(2,'0')).join('');
+  const response=await fetch(ZIP_URL,{cache:'no-store'});
+  if(!response.ok) throw new Error(`Unable to fetch authoritative v13 package: HTTP ${response.status}`);
+  const zipBytes=new Uint8Array(await response.arrayBuffer());
+  if(await sha256(zipBytes)!==EXPECTED_ZIP_SHA256) throw new Error('Authoritative v13 ZIP integrity check failed.');
+  if(!window.fflate) throw new Error('The decompression library did not load.');
+  const entries=fflate.unzipSync(zipBytes);
+  if(!entries[HTML_PATH]) throw new Error('The authoritative package does not contain the v13 HTML file.');
+  const decoder=new TextDecoder();
+  let html=decoder.decode(entries[HTML_PATH]);
+  if(await sha256(new TextEncoder().encode(html))!==EXPECTED_HTML_SHA256) throw new Error('Authoritative v13 HTML integrity check failed.');
+
+  const externalHrefPattern=/href=["'](https?:\/\/[^"']+)["']/g;
+  const hrefsBefore=[...html.matchAll(externalHrefPattern)].map(m=>m[1]);
+
+  const infographicStart=html.indexOf(INFOGRAPHIC_START);
+  if(infographicStart<0) throw new Error('Principal v13 infographic not found.');
+  const infographicEnd=html.indexOf('</figure>',infographicStart);
+  if(infographicEnd<0) throw new Error('Principal v13 infographic closing tag not found.');
+  const infographic=html.slice(infographicStart,infographicEnd+'</figure>'.length);
+  if((html.match(/id="purpose-visual-reference"/g)||[]).length!==1) throw new Error('Expected exactly one principal infographic in v13.');
+
+  html=html.slice(0,infographicStart)+html.slice(infographicEnd+'</figure>'.length);
+
+  if((html.match(/<div class="visual-shell">/g)||[]).length!==1) throw new Error('Expected exactly one native duplicate infographic shell in v13.');
+  html=html.replace(VISUAL_SHELL,'<div class="visual-shell" hidden aria-hidden="true">');
+
+  const heroStart=html.indexOf(HERO_START);
+  if(heroStart<0) throw new Error('Hero section not found.');
+  const heroEnd=html.indexOf('</section>',heroStart);
+  if(heroEnd<0) throw new Error('Hero closing tag not found.');
+  const insertionPoint=heroEnd+'</section>'.length;
+  const topInfographic='\n<section class="section compact-section" id="principal-infographic"><div class="container">'+infographic+'</div></section>';
+  html=html.slice(0,insertionPoint)+topInfographic+html.slice(insertionPoint);
+
+  const hrefsAfter=[...html.matchAll(externalHrefPattern)].map(m=>m[1]);
+  if(JSON.stringify(hrefsAfter)!==JSON.stringify(hrefsBefore)) throw new Error('External href preservation check failed.');
+  if((html.match(/id="purpose-visual-reference"/g)||[]).length!==1) throw new Error('Principal infographic count changed unexpectedly.');
+  if((html.match(/class="visual-shell" hidden aria-hidden="true"/g)||[]).length!==1) throw new Error('Duplicate infographic shell was not hidden exactly once.');
+  if(!html.includes('id="stanley-update"')||!html.includes('Concrete examples already on the table')||!html.includes('Small field computers')||!html.includes('Sensor + metadata nodes')) throw new Error('Untouched Stanley / WGA section markers are missing.');
+
+  const assetPrefix='docs/releases/v13/assets/';
+  for(const [path,bytes] of Object.entries(entries)){
+    if(!path.startsWith(assetPrefix)) continue;
+    const name=path.slice(assetPrefix.length);
+    const ext=name.split('.').pop().toLowerCase();
+    const mime=ext==='svg'?'image/svg+xml':ext==='webp'?'image/webp':'application/octet-stream';
+    const objectUrl=URL.createObjectURL(new Blob([bytes],{type:mime}));
+    html=html.split(`assets/${name}`).join(objectUrl);
+  }
+
+  document.open();
+  document.write(html);
+  document.close();
+})().catch(error=>{
+  document.body.innerHTML='<main class="error"><h1>Unable to load v16.1</h1><p>'+String(error.message||error)+'</p><p>No fallback reconstruction was attempted; v13 remains untouched.</p></main>';
+  console.error(error);
+});
+</script>
+</body>
+</html>

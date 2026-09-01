@@ -1,0 +1,9 @@
+Converging Waters v16.5
+Status: USER APPROVED
+Approved: 2026-08-19
+Review surface: ChatGPT Project conversation
+Baseline lineage: v16.1.1 + approved deltas v16.2 + v16.3 + v16.4 + v16.5 REV 4
+Current review frontier: #system
+Scope of v16.5: river-system and candidate monitoring architecture; explanatory Huatanay context; Coya and Lamay recurrent checkpoints; Yanahuara/Pachar/Ollantaytambo attribution nodes.
+Editorial rule carried forward: eliminate non-strategic redundancy across the full site; defer infographics/images and visual-density reduction until all content sections have been reviewed and stabilized, then design visuals to replace/explain text rather than duplicate it.
+Production promotion: NOT AUTHORIZED by this approval.
