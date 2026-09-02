@@ -1,0 +1,41 @@
+{
+  "schema_version": "1.0",
+  "baseline_label": "CW-ALLY-REV04 — Full Hub Reconciliation",
+  "candidate_label": "CW-ALLY-REV05 — Evidence → Value → Protection",
+  "delta_id": "cross-workstream-coherence-navigation",
+  "entry_html": "index.html",
+  "protected_sections": [
+    "stanley-update",
+    "alliance-architecture",
+    "people-guardians-stewardship",
+    "guardians-legal",
+    "precedents"
+  ],
+  "allowed_changed_sections": [
+    "collaboration-framework",
+    "system",
+    "evidence-to-implementation",
+    "river-economy-overview",
+    "technical-options",
+    "finance-hypotheses",
+    "deep-dives",
+    "current-roadmap-final"
+  ],
+  "allowed_removed_sections": [],
+  "allowed_added_sections": [],
+  "required_markers": [
+    "Citizen science turns repeated observation into stewardship, evidence and adaptation",
+    "Evidence becomes actionable when pressure, intervention and outcome remain separate claims",
+    "POTENTIAL ALLY",
+    "Open River Observatory ↗",
+    "Open Rights + governance deep dive ↗",
+    "cw-internal-anchor-navigation"
+  ],
+  "preserve_external_hrefs": true,
+  "preserve_unlisted_files": true,
+  "allowed_file_changes": ["index.html"],
+  "preserve_unlisted_assets": true,
+  "allowed_asset_changes": [],
+  "require_same_section_order": true,
+  "notes": "Deep-dive anchors open in new tabs; internal hash navigation opens an existing collapsed accordion before scrolling. Asset artwork remains deferred."
+}
