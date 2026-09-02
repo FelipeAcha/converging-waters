@@ -37,12 +37,21 @@ jobs:
       fail-fast: false
       matrix:
         include:
+          # Legacy/working surfaces remain monitored. They do not define the
+          # promotion gate for the active immutable review candidate.
           - surface: published-working
             url: https://felipeacha.github.io/converging-waters/
+            blocking: false
+            source_path: ''
           - surface: immutable-review-v13
             url: https://felipeacha.github.io/converging-waters/releases/v13/
+            blocking: false
+            source_path: ''
+          # The latest immutable review candidate is the fail-closed promotion gate.
           - surface: candidate-v17.0-rev02
             url: https://felipeacha.github.io/converging-waters/candidates/v17.0-rev02/
+            blocking: true
+            source_path: docs/candidates/v17.0-rev02/index.html
     steps:
       - name: Checkout exact commit
         uses: actions/checkout@v4
@@ -67,7 +76,7 @@ jobs:
           echo "bin=$chrome" >> "$GITHUB_OUTPUT"
           "$chrome" --version
 
-      - name: Run ACB fail-closed browser audit
+      - name: Run ACB browser audit
         id: audit
         continue-on-error: true
         env:
@@ -80,6 +89,8 @@ jobs:
         env:
           SURFACE: ${{ matrix.surface }}
           TARGET_URL: ${{ matrix.url }}
+          BLOCKING: ${{ matrix.blocking }}
+          SOURCE_PATH: ${{ matrix.source_path }}
         run: |
           python3 - <<'PY'
           import hashlib, json, os
@@ -90,20 +101,41 @@ jobs:
           for p in sorted(out.glob('*')):
               if p.is_file():
                   files[p.name] = hashlib.sha256(p.read_bytes()).hexdigest()
+          source_path = os.environ.get('SOURCE_PATH') or None
+          source_sha256 = None
+          source_size_bytes = None
+          if source_path:
+              source = Path(source_path)
+              if not source.is_file():
+                  raise SystemExit(f'Configured source path not found: {source_path}')
+              raw = source.read_bytes()
+              source_sha256 = hashlib.sha256(raw).hexdigest()
+              source_size_bytes = len(raw)
           meta = {
               'surface': os.environ['SURFACE'],
               'target_url': os.environ['TARGET_URL'],
+              'blocking': os.environ.get('BLOCKING') == 'true',
+              'source_path': source_path,
+              'source_sha256': source_sha256,
+              'source_size_bytes': source_size_bytes,
               'repository': os.environ.get('GITHUB_REPOSITORY'),
               'commit_sha': os.environ.get('GITHUB_SHA'),
               'ref': os.environ.get('GITHUB_REF'),
               'run_id': os.environ.get('GITHUB_RUN_ID'),
               'run_attempt': os.environ.get('GITHUB_RUN_ATTEMPT'),
               'event_name': os.environ.get('GITHUB_EVENT_NAME'),
+              'audit_outcome': os.environ.get('AUDIT_OUTCOME'),
               'artifact_file_sha256': files,
           }
           (out / 'run-metadata.json').write_text(json.dumps(meta, indent=2) + '\n', encoding='utf-8')
           print(json.dumps(meta, indent=2))
           PY
+        env:
+          SURFACE: ${{ matrix.surface }}
+          TARGET_URL: ${{ matrix.url }}
+          BLOCKING: ${{ matrix.blocking }}
+          SOURCE_PATH: ${{ matrix.source_path }}
+          AUDIT_OUTCOME: ${{ steps.audit.outcome }}
 
       - name: Upload screenshots, DOM and checklist evidence
         if: always()
@@ -114,17 +146,21 @@ jobs:
           if-no-files-found: error
           retention-days: 30
 
-      - name: Require ACB hard gates
-        if: always()
+      - name: Require active candidate ACB hard gates
+        if: always() && matrix.blocking
         run: test '${{ steps.audit.outcome }}' = success
 
+      - name: Report legacy monitor failure without promoting it
+        if: always() && !matrix.blocking && steps.audit.outcome != 'success'
+        run: echo 'MONITOR_ONLY_FAIL ${{ matrix.surface }}; active candidate promotion gate is unchanged.'
+
   watchdog-summary:
-    name: ACB watchdog enforcement
+    name: ACB active-candidate enforcement
     if: always()
     needs: [browser-qa]
     runs-on: ubuntu-latest
     steps:
-      - name: Fail closed on any browser QA failure
+      - name: Require matrix completion
         run: |
           echo 'browser-qa result: ${{ needs.browser-qa.result }}'
           test '${{ needs.browser-qa.result }}' = success
