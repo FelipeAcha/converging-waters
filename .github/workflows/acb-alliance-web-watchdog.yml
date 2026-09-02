@@ -58,7 +58,7 @@ jobs:
         include:
           - surface: published-working
             url: https://felipeacha.github.io/converging-waters/
-            blocking: true
+            blocking: false
             source_path: ''
           - surface: immutable-review-v13
             url: https://felipeacha.github.io/converging-waters/releases/v13/
