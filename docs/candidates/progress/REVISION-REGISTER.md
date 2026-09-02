@@ -9,7 +9,13 @@ This register gives every durable rollback point a short human-readable name. Us
 | **CW-ALLY-REV02 — Workstream Reality** | Current-status / WGA / implementation framing pass | `29949e907b088132d695e21b7c927033f2d03876aacd91accbc6595d02886753` | Earlier substantive checkpoint |
 | **CW-ALLY-REV03 — Alliance Status Consistency** | Amazonas Sagrada / WGA / María Gracia status reconciliation | `6badd80c1143d04f3f3dbe877273844f8efaa1f6167f412264c41f8bfcb73ac8` | Alliance matrix status correction checkpoint |
 | **CW-ALLY-REV04 — Full Hub Reconciliation** | Removed obsolete meeting/review layers and re-centered the hub on Willkamayu | `0fe164c7f71e12f6fcbdb5e4dbc44b593af51027d28880ffdfac8caeca5f630c` | Approved baseline for REV05 |
-| **CW-ALLY-REV05 — Evidence → Value → Protection** | Cross-workstream coherence, navigation behavior, new-tab deep dives and roadmap destinations | `33f4886bd8eb57a4c8ce112dcaf772f1c916255801151fb9a62fdbd1a1d7548a` | Current candidate; production not authorized |
+| **CW-ALLY-REV05 — Evidence → Value → Protection** | Cross-workstream coherence, navigation behavior, new-tab deep dives and roadmap destinations | `33f4886bd8eb57a4c8ce112dcaf772f1c916255801151fb9a62fdbd1a1d7548a` | Changed visible points: **06, 07, 07A, 10A, 12, 13, 17, 18**; current candidate; production not authorized |
+
+## Change-reporting rule
+
+Whenever a website revision or delta is described to Felipe, identify the **visible point number** first or alongside the description. Internal section IDs, hashes and code paths are supporting evidence and must not substitute for the visible point number.
+
+Example: `Point 17 · Go deeper — Deep-dive navigation updated.`
 
 ## Rollback language
 
