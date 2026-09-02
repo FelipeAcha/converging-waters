@@ -1,0 +1,169 @@
+name: Photo preselector high-resolution review
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'scripts/build_photo_preselector_highres.py'
+      - 'tests/test_build_photo_preselector_highres.py'
+      - '.github/workflows/photo-preselector-highres-deploy.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/build_photo_preselector_highres.py'
+      - 'tests/test_build_photo_preselector_highres.py'
+      - '.github/workflows/photo-preselector-highres-deploy.yml'
+  workflow_run:
+    workflows: ['Deploy and validate GitHub Pages']
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+env:
+  SOURCE_FILE_ID: 14yTW3jxECQGe8aUM5CKxE9EmXujylsG5
+  SOURCE_SHA256: bce202a8f29cdbd1fd0827f36b29f464e30d1812f9f5397cae1ef50ff8521ff8
+  REVIEW_URL: https://felipeacha.github.io/converging-waters/review/photo-preselector/
+
+jobs:
+  build_validate:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install review build dependencies
+        run: |
+          set -euo pipefail
+          python -m pip install --disable-pip-version-check beautifulsoup4 pillow requests gdown
+
+      - name: Run image-resolution regression test
+        run: |
+          set -euo pipefail
+          python -m unittest tests.test_build_photo_preselector_highres
+
+      - name: Build high-resolution review assets only
+        run: |
+          set -euo pipefail
+          root_before=$(sha256sum docs/index.html | awk '{print $1}')
+          preview_before=$(sha256sum docs/preview/index.html | awk '{print $1}')
+          release_before=$(sha256sum docs/releases/v13/index.html | awk '{print $1}')
+
+          gdown "$SOURCE_FILE_ID" -O /tmp/photo-preselector-source.html
+          echo "$SOURCE_SHA256  /tmp/photo-preselector-source.html" | sha256sum --check --strict
+
+          python scripts/build_photo_preselector_highres.py \
+            docs/review/photo-preselector \
+            /tmp/photo-preselector-source.html \
+            --max-edge 1600 \
+            --min-edge 800
+
+          test "$root_before" = "$(sha256sum docs/index.html | awk '{print $1}')"
+          test "$preview_before" = "$(sha256sum docs/preview/index.html | awk '{print $1}')"
+          test "$release_before" = "$(sha256sum docs/releases/v13/index.html | awk '{print $1}')"
+
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path('docs/review/photo-preselector')
+          manifest=json.loads((root/'assets/manifest.json').read_text())
+          assert manifest['counts'] == {'needs':18,'candidates':77,'controls':77,'images':77,'assets':77}, manifest['counts']
+          assets=manifest['assets']
+          assert len(assets)==77
+          assert min(x['long_edge'] for x in assets) >= 800
+          assert max(x['long_edge'] for x in assets) <= 1600
+          assert len(list((root/'assets').glob('*.webp'))) == 77
+          assert all(x['bytes'] > 0 for x in assets)
+          print('PASS high-resolution assets:', min(x['long_edge'] for x in assets), 'to', max(x['long_edge'] for x in assets), 'px')
+          PY
+
+      - name: Upload validated site for deployment
+        if: github.event_name != 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: highres-docs
+          path: docs
+          if-no-files-found: error
+
+  deploy:
+    if: github.event_name != 'pull_request' && (github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success')
+    needs: build_validate
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Download validated site
+        uses: actions/download-artifact@v4
+        with:
+          name: highres-docs
+          path: docs
+
+      - name: Configure GitHub Pages
+        id: configure
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: docs
+
+      - name: Deploy high-resolution review surface
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+      - name: Verify public high-resolution selector in Chrome
+        run: |
+          set -euo pipefail
+          code=000
+          for attempt in $(seq 1 36); do
+            code=$(curl -L --silent --show-error --output /tmp/review.html --write-out '%{http_code}' "$REVIEW_URL" || true)
+            if [ "$code" = 200 ] && [ -s /tmp/review.html ]; then break; fi
+            sleep 5
+          done
+          test "$code" = 200
+
+          chrome=$(command -v google-chrome || command -v google-chrome-stable || command -v chromium || command -v chromium-browser || true)
+          test -n "$chrome"
+          timeout 120s "$chrome" \
+            --headless=new \
+            --no-sandbox \
+            --disable-gpu \
+            --disable-dev-shm-usage \
+            --virtual-time-budget=45000 \
+            --dump-dom \
+            "$REVIEW_URL" > /tmp/rendered.html
+
+          grep -q 'data-selector-ready="true"' /tmp/rendered.html
+          if grep -q 'Error de transporte' /tmp/rendered.html; then
+            echo 'Public selector displayed transport error.' >&2
+            exit 1
+          fi
+
+          python - <<'PY'
+          from html.parser import HTMLParser
+          from pathlib import Path
+          class Audit(HTMLParser):
+              def __init__(self):
+                  super().__init__(); self.needs=0; self.candidates=0; self.controls=0; self.images=[]
+              def handle_starttag(self, tag, attrs):
+                  d=dict(attrs); cls=set(d.get('class','').split())
+                  if tag=='section' and 'need' in cls: self.needs+=1
+                  if tag=='article' and 'candidate' in cls: self.candidates+=1
+                  if tag=='input' and d.get('type')=='checkbox': self.controls+=1
+                  if tag=='img': self.images.append(d.get('src',''))
+          a=Audit(); a.feed(Path('/tmp/rendered.html').read_text(encoding='utf-8',errors='replace'))
+          assert (a.needs,a.candidates,a.controls,len(a.images)) == (18,77,77,77), (a.needs,a.candidates,a.controls,len(a.images))
+          assert all(src.startswith('assets/') for src in a.images), a.images[:3]
+          print('PASS public selector 18/77/77/77 with local high-resolution assets')
+          PY
