@@ -41,6 +41,8 @@ jobs:
             url: https://felipeacha.github.io/converging-waters/
           - surface: immutable-review-v13
             url: https://felipeacha.github.io/converging-waters/releases/v13/
+          - surface: candidate-v17.0-rev01
+            url: https://felipeacha.github.io/converging-waters/candidates/v17.0-rev01/
     steps:
       - name: Checkout exact commit
         uses: actions/checkout@v4
