@@ -2,7 +2,7 @@
 
 **Parent incident:** `INC-CW-WEB-20260825-002`  
 **Classification:** SCOPE_DRIFT / UNNECESSARY_REBUILD / BEHAVIOR_REGRESSION_FROM_GENERIC_STANDARD  
-**Status:** CORRECTED IN PROJECT SPEC · BEHAVIOR VERIFICATION PENDING
+**Status:** CORRECTED · PRESERVATION REGRESSIONS BEHAVIOR-VERIFIED · USER APPROVAL PENDING
 
 ## Failure
 
@@ -15,15 +15,15 @@ The same planning pass also drifted toward summarizing/removing mature homepage 
 
 ## Root cause
 
-Generic design guidance was treated as permission to refactor a mature approved implementation. The governing order should have been:
+Generic design guidance was treated as permission to refactor a mature approved implementation. The governing order is:
 
 `explicit current user decision > approved project-specific baseline/contract > generic UX preference`.
 
-This is a recurrence of the parent incident's preserve-and-repair lesson and therefore remains attached to the existing incident rather than creating a separate reliability chain.
+This is a recurrence of the parent incident's preserve-and-repair lesson and therefore remains attached to the existing incident rather than creating a second GitHub reliability chain.
 
 ## Corrected contract
 
-The project-specific authority is now:
+The project-specific authority is:
 
 `docs-governance/standards/CW_WEB_DEFINITION_OF_DONE_v1.md`
 
@@ -44,7 +44,7 @@ Hard corrections:
 
 ## Regression requirements
 
-A recovery candidate must fail if any of the following occurs without explicit authorization:
+A recovery candidate fails if any of the following occurs without explicit authorization:
 
 1. source HTML is reconstructed instead of copied from the exact mature baseline;
 2. an existing accordion/disclosure marker disappears, changes nesting or changes default behavior;
@@ -55,12 +55,35 @@ A recovery candidate must fail if any of the following occurs without explicit a
 7. a deep dive is used as justification to delete substantial homepage content;
 8. an untouched DOM/text/link/asset block changes outside the declared delta.
 
-## Acceptance evidence still required
+## Behavior-verification evidence
 
-This addendum is **corrected and persisted**, not yet behavior-verified. Verification requires the next recovery candidate to:
+Final review candidate:
 
-- start from the exact mature source;
-- pass source/candidate hash equivalence before the first patch;
-- preserve the existing disclosure structure;
-- run the project-specific Definition of Done and preservation manifest against every bounded delta;
-- pass final browser and user-preview review before promotion.
+- Drive ID: `1yqkMDDeB1DUjmktMdxk_oZMj9JsbJCrc`
+- SHA-256: `0da596869b6adcb97fd45a257bfca41f2f15f8a2441da4b21135bac41ab7a73b`
+- final QA: `docs-governance/validation/CW-WEB-ALLY-RECOVERY-FINAL-QA-2026-09-02.md`
+
+Fresh deterministic audit and exact Chromium render verified:
+
+- exact mature source was copied before the first patch;
+- section order preserved;
+- 27/27 existing disclosure structures, summary labels and default states preserved;
+- 97 external hrefs preserved in order;
+- 19 image src/alt/title records preserved;
+- CSS rules preserved, with only development comments removed;
+- Alliance matrix remains 49 rows / 269 cells and only the Amazonas Sagrada row differs from the mature source;
+- WGA and Willkamayu remain the two cards in the major initiative graphic after the authorized Amazonas core-node removal;
+- current Canchis evidence was retained without re-research;
+- desktop/mobile exact-source browser QA passed with zero document-level overflow, zero broken images and zero accordion toggle failures.
+
+The preservation regression also caught a proposed change to the existing `Invite list to confirm` disclosure label during final ally-facing cleanup. That attempted change failed the disclosure-structure audit and was reverted before checkpointing. This demonstrates that the project-specific preservation control is active rather than merely documented.
+
+## Remaining lifecycle boundary
+
+The prevention is **behavior-verified on the current recovery candidate**. It is not yet the final public release because:
+
+- `USER_APPROVED=false`;
+- `PROMOTED=false`;
+- the current main/public authoritative route has not been changed.
+
+Final user review and explicit approval remain the next gate before any promotion.
