@@ -21,6 +21,16 @@
     "deep-dives",
     "current-roadmap-final"
   ],
+  "visible_points_changed": [
+    "06",
+    "07",
+    "07A",
+    "10A",
+    "12",
+    "13",
+    "17",
+    "18"
+  ],
   "allowed_removed_sections": [],
   "allowed_added_sections": [],
   "required_markers": [
@@ -37,5 +47,7 @@
   "preserve_unlisted_assets": true,
   "allowed_asset_changes": [],
   "require_same_section_order": true,
-  "notes": "Deep-dive anchors open in new tabs; internal hash navigation opens an existing collapsed accordion before scrolling. Asset artwork remains deferred."
+  "change_reporting_rule": "Always identify the visible point number when describing a website modification.",
+  "image_status": "User-confirmed visible on current and recent review revisions; no broken-image repair remains pending.",
+  "notes": "Deep-dive anchors open in new tabs; internal hash navigation opens an existing collapsed accordion before scrolling. Only the planned first-infographic replacement remains deferred to the later visual gate."
 }
