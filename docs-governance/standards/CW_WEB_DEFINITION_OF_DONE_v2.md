@@ -120,12 +120,20 @@ Hard identities at adoption:
 
 ## 9. Review surface — mandatory human gate
 
-- [ ] R01. Felipe reviews a wireframe/Preview, not raw HTML.
-- [ ] R02. A downloadable HTML file may exist as machine evidence but is never the primary user-review artifact.
-- [ ] R03. Screenshot galleries are QA evidence, not the primary review surface.
-- [ ] R04. Wireframe/Preview must represent the exact candidate copy and component structure being proposed.
-- [ ] R05. Frozen components are visibly marked as frozen in the review surface.
-- [ ] R06. No production/public promotion before explicit approval of the review surface.
+A ChatGPT Web Preview is a **real rendered website preview**, not a wireframe. For an implemented site, Felipe must review the actual website candidate on a real web surface.
+
+Review-surface precedence:
+`EXPLICIT USER CHOICE > EXACT CHATGPT WEB PREVIEW > EXACT ISOLATED LIVE REVIEW URL WHEN REQUESTED/NEEDED > SCREENSHOTS/DIFFS AS QA EVIDENCE > WIREFRAME ONLY IF EXPLICITLY REQUESTED`
+
+- [ ] R01. The primary human gate is the exact website candidate rendered as a real website.
+- [ ] R02. ChatGPT Web Preview is a valid real-web review surface when the exact candidate can be rendered there and the Preview is user-visible.
+- [ ] R03. An isolated live review URL is equally valid when Felipe requests a stable/shareable link or when ChatGPT Web Preview is unavailable or impractical.
+- [ ] R04. A downloadable HTML file may exist as machine evidence but is not, by itself, the visual review surface.
+- [ ] R05. Screenshot galleries, hashes and diffs are QA evidence, not substitutes for reviewing the functioning website.
+- [ ] R06. Wireframes are explicit-request-only for an already implemented site and must never replace the functioning website candidate for approval.
+- [ ] R07. The review surface must represent the exact candidate copy, component structure, interactions and approved progressive-disclosure behavior being proposed.
+- [ ] R08. Frozen components are proven by raw/pixel preservation gates; the candidate itself is not modified merely to annotate them as frozen.
+- [ ] R09. No production/public promotion before explicit approval of the exact website candidate shown on the agreed real-web review surface.
 
 ## 10. Fail-closed acceptance
 
@@ -137,7 +145,8 @@ A candidate MUST FAIL if:
 - a frozen visual comparison differs;
 - an unlisted structural mutation appears;
 - a historical section reappears;
-- the review surface is raw HTML instead of wireframe/Preview;
+- the exact website candidate is not accessible on the agreed real-web review surface before approval;
+- a wireframe, screenshot gallery, raw source file or downloadable HTML is substituted for the functioning website candidate without Felipe explicitly requesting that artifact as the review surface;
 - any rejected/stale candidate is configured as a blocking ACB surface;
 - the published freeze contract is not a hard blocking gate.
 
@@ -153,6 +162,8 @@ The ACB watchdog must:
 
 ## 12. Current lifecycle
 
-`PUBLISHED_BASELINE_LOCKED -> CANDIDATE_SOURCE_VALIDATED -> PROTECTED_VISUAL_DIFF_PASS -> WIREFRAME_REVIEW -> USER_APPROVAL -> PROMOTION`
+`PUBLISHED_BASELINE_LOCKED -> CANDIDATE_SOURCE_VALIDATED -> PROTECTED_VISUAL_DIFF_PASS -> REAL_WEB_REVIEW_SURFACE_READY -> USER_APPROVAL -> PROMOTION`
+
+`REAL_WEB_REVIEW_SURFACE_READY` means either the exact ChatGPT Web Preview is user-visible or an exact isolated live review URL has been validated for the requested review mode.
 
 Skipping a state is a failure.
