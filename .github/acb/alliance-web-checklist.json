@@ -1,0 +1,43 @@
+{
+  "schema_version": "1.0",
+  "surface": "Converging Waters alliance web",
+  "purpose": "Fail-closed browser and source QA for every review candidate and published review surface.",
+  "hard_gates": [
+    "page_loads_without_error_state",
+    "document_has_nonempty_title",
+    "document_has_viewport_meta",
+    "exactly_one_visible_h1",
+    "main_landmark_present",
+    "no_duplicate_ids",
+    "no_broken_images",
+    "all_content_images_have_alt_text",
+    "no_invalid_empty_or_javascript_links",
+    "all_same_page_fragment_links_resolve",
+    "no_horizontal_page_overflow_desktop",
+    "no_horizontal_page_overflow_mobile",
+    "no_material_element_overflow_desktop",
+    "no_material_element_overflow_mobile",
+    "heading_hierarchy_has_no_level_jumps",
+    "no_loading_or_failure_placeholder_remains_visible"
+  ],
+  "visual_review_gates": [
+    "first_time_reader_understands_where_the_initiative_is_and_what_it_is_within_first_screen",
+    "main_conclusion_and_value_proposition_are_visible_without_disclosure",
+    "strategy_and_invitation_to_allies_are_not_buried",
+    "dense_cards_are_scan_friendly",
+    "icons_colors_and_chips_are_semantic_and_consistent",
+    "tables_and_matrices_are_readable_without_overlap_or_cramped_names",
+    "diagrams_do_not_clip_connectors_or_misstate_optional_vs_required_paths",
+    "visual_rhythm_supports_comprehension_instead_of_wall_of_text",
+    "substantive_topics_have_one_authoritative_home_and_avoid_unnecessary_repetition",
+    "secondary_detail_is_routed_to_deep_dive_or_progressive_disclosure_when_appropriate",
+    "mobile_layout_preserves_priority_and_does_not_collapse_into_undifferentiated_text",
+    "the_page_feels_credible_for_a_potential_ally_who_has_no_prior_project_context"
+  ],
+  "required_viewports": [
+    {"name": "desktop", "width": 1440, "height": 1100},
+    {"name": "mobile", "width": 390, "height": 844}
+  ],
+  "success_definition": "100% means every hard gate PASS plus every visual review gate explicitly reviewed and PASS for the exact candidate SHA. It never means production approval by implication.",
+  "rollback_rule": "Every materially distinct HTML candidate must remain immutable and addressable by version plus SHA-256; never overwrite the prior approved or review artifact."
+}
