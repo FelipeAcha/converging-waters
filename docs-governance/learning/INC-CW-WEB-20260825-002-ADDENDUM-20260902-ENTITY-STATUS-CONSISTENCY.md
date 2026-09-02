@@ -85,3 +85,27 @@ The cumulative review state also records:
 ## Remaining boundary
 
 This recurrence is corrected in the current source/review candidate and has deterministic prevention on the current review route. It is **not** evidence that the full visual candidate is ready: the known image-loading defect and first-infographic replacement remain intentionally deferred until the substantive reconciliation pass is complete.
+
+## 2026-09-02 follow-up — shared-wrapper destructive-removal near miss
+
+During the subsequent full-hub substantive reconciliation pass, an initial local transformation attempted to remove an obsolete orientation wrapper that contained both `emerged-since-call` and the protected `stanley-update` WGA/Stanley technical section. The section inventory regression detected that `stanley-update` had disappeared before any candidate checkpoint, review-route persistence or production mutation. The failed local artifact was discarded; the corrected candidate removes only the obsolete `emerged-since-call` section and retains the existing wrapper and complete `stanley-update` content.
+
+**Classification:** BEHAVIOR_REGRESSION_FROM_SKILL_UPDATE / SCOPE_DRIFT — prevented before persistence.  
+**First control failure:** wrapper-level deletion was chosen from the obsolete child section without enumerating every sibling/protected section inside that wrapper.  
+**Root cause:** `OBSOLETE CHILD -> REMOVE CONTAINER` was treated as safe without proving `ALL CONTAINER CONTENT -> AUTHORIZED FOR REMOVAL`.
+
+Additional hard regression for wrapper/disclosure cleanup:
+
+1. before removing any accordion/disclosure/container wrapper, enumerate every contained section ID and protected marker;
+2. a wrapper may be removed only when every substantive contained block is in the current delta's explicit removal set;
+3. when one obsolete section shares a wrapper with a retained/protected section, remove only the obsolete child node and preserve the wrapper plus retained content;
+4. immediately compare the pre/post section inventory before any persistence;
+5. fail closed if a protected WGA/Stanley, evidence, legal, Alliance Architecture, precedent or deep-dive section disappears or changes outside the current authorized delta.
+
+Behavior evidence from the corrected reconciliation candidate:
+
+- authoritative candidate SHA-256: `0fe164c7f71e12f6fcbdb5e4dbc44b593af51027d28880ffdfac8caeca5f630c`;
+- `stanley-update` is present and raw-identical to the prior candidate, SHA-256 `867001577b7b4663530b8b33e59c3965798197d704c24f5e1e39f29c40b7d751`;
+- only the five explicitly obsolete sections are removed;
+- retained section order passes;
+- exact raw candidate is checkpointed in Drive ID `1u-sTBpy6MeLSqdjCUSkGbLKahLBKnBvR`.
