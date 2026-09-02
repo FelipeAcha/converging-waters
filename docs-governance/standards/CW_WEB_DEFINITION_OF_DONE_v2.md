@@ -138,12 +138,14 @@ A candidate MUST FAIL if:
 - an unlisted structural mutation appears;
 - a historical section reappears;
 - the review surface is raw HTML instead of wireframe/Preview;
-- the blocking ACB surface points to a rejected/stale candidate.
+- any rejected/stale candidate is configured as a blocking ACB surface;
+- the published freeze contract is not a hard blocking gate.
 
 ## 11. ACB enforcement
 
 The ACB watchdog must:
-- treat the actual published-working hub as blocking for published-site health;
+- run generic browser health checks on the published-working hub as monitor-only when they surface pre-existing baseline defects;
+- treat the deterministic published freeze contract as the hard blocking preservation gate;
 - treat rejected historical candidates as monitor-only;
 - run `.github/acb/validate_published_freeze.py` against decoded `docs/payload/hub-*.txt` on every relevant web change;
 - fail on any frozen Alliance/stewardship/precedent/authority-boundary hash mismatch;
