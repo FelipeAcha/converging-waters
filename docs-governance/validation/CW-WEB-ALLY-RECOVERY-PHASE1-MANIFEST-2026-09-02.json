@@ -1,0 +1,42 @@
+{
+  "schema_version": "1.0",
+  "delta_id": "phase1-coarse-current-reality-internal-wrapper-pass",
+  "baseline_drive_id": "1tXU8wJn22k9T19hiE41k8xZDtSnZMI3c",
+  "baseline_sha256": "8a6cba580702e696594dfa7b347cb2e979fc3e966780653a1d60a6a84c894723",
+  "candidate_drive_id": "1T0kQEtEm5IenLbYPxbX3uLNlcwExBLLg",
+  "candidate_sha256": "8fdea68c4836bc04c36cfadc6e5d4a6fbe51723e9f5e3840a97295ff63b9f70f",
+  "candidate_size_bytes": 14985470,
+  "mutation_policy": "minimum-necessary-patch-existing-html",
+  "allowed_changed_sections": ["__hero__","current-session","changed-since","where-now","shared-direction","collaboration-layer","emerged-since-call","stanley-update","agenda","thesis","context","people","three-paths","rev20-roadmap-orientation","open-decisions","first-outcome","what-we-need-now","rev20-enabling-orientation","amazonas-application","technical-options","finance-hypotheses","alliance-architecture","current-roadmap-final","__head__","__footer__","__comments__"],
+  "protected_sections": ["people-authority-boundary","willkamayu","collaboration-framework","system","evidence-to-implementation","river-economy-overview","people-guardians-stewardship","guardians-legal","precedents","deep-dives"],
+  "authorized_special_dom_changes": {
+    "three-paths": "removed only the Amazonas Sagrada core initiative card; WGA and Willkamayu cards preserved exactly",
+    "alliance-architecture": "changed only Amazonas Sagrada status/timing/action row fields plus public section framing; matrix dimensions and every other row preserved"
+  },
+  "current_state": {
+    "Felipe": "project direction",
+    "WGA": "scientific-technical convergence partner",
+    "Amazonas Sagrada": "potential ally",
+    "Maria Gracia": "potential ally"
+  },
+  "preservation_results": {
+    "section_count": 33,
+    "details_count": 27,
+    "external_href_count": 97,
+    "image_count": 19,
+    "alliance_matrix_rows": 49,
+    "alliance_matrix_cells": 269,
+    "protected_sections_unchanged": true,
+    "details_structure_summary_open_state_preserved": true,
+    "external_href_sequence_preserved": true,
+    "image_src_alt_title_sequence_preserved": true,
+    "css_rules_preserved_except_development_comment_removal": true,
+    "canchis_legal_section_unchanged": true,
+    "alliance_non_amazonas_rows_unchanged": true,
+    "wga_infographic_card_unchanged": true,
+    "willkamayu_infographic_card_unchanged": true
+  },
+  "public_route_mutation": false,
+  "promotion_authorized": false,
+  "phase1_status": "PASS"
+}
