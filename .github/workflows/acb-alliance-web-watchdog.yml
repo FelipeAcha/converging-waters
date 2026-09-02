@@ -91,6 +91,7 @@ jobs:
           TARGET_URL: ${{ matrix.url }}
           BLOCKING: ${{ matrix.blocking }}
           SOURCE_PATH: ${{ matrix.source_path }}
+          AUDIT_OUTCOME: ${{ steps.audit.outcome }}
         run: |
           python3 - <<'PY'
           import hashlib, json, os
@@ -130,12 +131,6 @@ jobs:
           (out / 'run-metadata.json').write_text(json.dumps(meta, indent=2) + '\n', encoding='utf-8')
           print(json.dumps(meta, indent=2))
           PY
-        env:
-          SURFACE: ${{ matrix.surface }}
-          TARGET_URL: ${{ matrix.url }}
-          BLOCKING: ${{ matrix.blocking }}
-          SOURCE_PATH: ${{ matrix.source_path }}
-          AUDIT_OUTCOME: ${{ steps.audit.outcome }}
 
       - name: Upload screenshots, DOM and checklist evidence
         if: always()
