@@ -1,0 +1,128 @@
+name: ACB alliance web watchdog
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'docs/**'
+      - '.github/acb/**'
+      - '.github/workflows/acb-alliance-web-watchdog.yml'
+  pull_request:
+    paths:
+      - 'docs/**'
+      - '.github/acb/**'
+      - '.github/workflows/acb-alliance-web-watchdog.yml'
+  workflow_dispatch:
+  schedule:
+    # Primary enforcement is event-driven. This is a frequent recovery heartbeat,
+    # intentionally offset from the top of the hour.
+    - cron: '2-57/5 * * * *'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: acb-alliance-web-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  ACB_OUTPUT_DIR: acb-evidence
+
+jobs:
+  browser-qa:
+    name: Browser QA · ${{ matrix.surface }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - surface: published-working
+            url: https://felipeacha.github.io/converging-waters/
+          - surface: immutable-review-v13
+            url: https://felipeacha.github.io/converging-waters/releases/v13/
+    steps:
+      - name: Checkout exact commit
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Configure Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install browser audit dependency
+        run: npm install --no-save --ignore-scripts puppeteer-core@24
+
+      - name: Resolve system Chromium
+        id: chrome
+        shell: bash
+        run: |
+          set -euo pipefail
+          chrome=$(command -v google-chrome || command -v google-chrome-stable || command -v chromium || command -v chromium-browser || true)
+          test -n "$chrome"
+          echo "bin=$chrome" >> "$GITHUB_OUTPUT"
+          "$chrome" --version
+
+      - name: Run ACB fail-closed browser audit
+        id: audit
+        continue-on-error: true
+        env:
+          ACB_TARGET_URL: ${{ matrix.url }}
+          CHROME_BIN: ${{ steps.chrome.outputs.bin }}
+        run: node .github/acb/acb_web_guard.mjs
+
+      - name: Attach immutable run metadata
+        if: always()
+        env:
+          SURFACE: ${{ matrix.surface }}
+          TARGET_URL: ${{ matrix.url }}
+        run: |
+          python3 - <<'PY'
+          import hashlib, json, os
+          from pathlib import Path
+          out = Path(os.environ.get('ACB_OUTPUT_DIR', 'acb-evidence'))
+          out.mkdir(parents=True, exist_ok=True)
+          files = {}
+          for p in sorted(out.glob('*')):
+              if p.is_file():
+                  files[p.name] = hashlib.sha256(p.read_bytes()).hexdigest()
+          meta = {
+              'surface': os.environ['SURFACE'],
+              'target_url': os.environ['TARGET_URL'],
+              'repository': os.environ.get('GITHUB_REPOSITORY'),
+              'commit_sha': os.environ.get('GITHUB_SHA'),
+              'ref': os.environ.get('GITHUB_REF'),
+              'run_id': os.environ.get('GITHUB_RUN_ID'),
+              'run_attempt': os.environ.get('GITHUB_RUN_ATTEMPT'),
+              'event_name': os.environ.get('GITHUB_EVENT_NAME'),
+              'artifact_file_sha256': files,
+          }
+          (out / 'run-metadata.json').write_text(json.dumps(meta, indent=2) + '\n', encoding='utf-8')
+          print(json.dumps(meta, indent=2))
+          PY
+
+      - name: Upload screenshots, DOM and checklist evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: acb-${{ matrix.surface }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: acb-evidence/
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Require ACB hard gates
+        if: always()
+        run: test '${{ steps.audit.outcome }}' = success
+
+  watchdog-summary:
+    name: ACB watchdog enforcement
+    if: always()
+    needs: [browser-qa]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fail closed on any browser QA failure
+        run: |
+          echo 'browser-qa result: ${{ needs.browser-qa.result }}'
+          test '${{ needs.browser-qa.result }}' = success
