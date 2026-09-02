@@ -145,7 +145,14 @@ report.hard_gate_pass_count = hardNames.filter(name => report.hard_gates[name].s
 report.hard_gate_total = hardNames.length;
 report.hard_gate_percent = Math.round(10000 * report.hard_gate_pass_count / report.hard_gate_total) / 100;
 report.hard_gate_status = report.hard_gate_pass_count === report.hard_gate_total ? 'PASS' : 'FAIL';
+report.failed_hard_gates = Object.fromEntries(Object.entries(report.hard_gates).filter(([,v]) => v.status === 'FAIL'));
 
 fs.writeFileSync(path.join(outDir, 'acb-report.json'), JSON.stringify(report, null, 2) + '\n', 'utf8');
-console.log(JSON.stringify({target:report.target, hard_gate_status:report.hard_gate_status, hard_gate_percent:report.hard_gate_percent, rendered_html_sha256:report.rendered_html_sha256}, null, 2));
+console.log(JSON.stringify({
+  target: report.target,
+  hard_gate_status: report.hard_gate_status,
+  hard_gate_percent: report.hard_gate_percent,
+  rendered_html_sha256: report.rendered_html_sha256,
+  failed_hard_gates: report.failed_hard_gates
+}, null, 2));
 if (report.hard_gate_status !== 'PASS') process.exitCode = 1;
