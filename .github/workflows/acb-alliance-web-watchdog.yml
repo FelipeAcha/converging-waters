@@ -37,8 +37,8 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # Legacy/working surfaces remain monitored. They do not define the
-          # promotion gate for the active immutable review candidate.
+          # Historical / working surfaces remain monitored. The dynamic active-review
+          # job below is the only blocking review-candidate gate.
           - surface: published-working
             url: https://felipeacha.github.io/converging-waters/
             blocking: false
@@ -47,10 +47,9 @@ jobs:
             url: https://felipeacha.github.io/converging-waters/releases/v13/
             blocking: false
             source_path: ''
-          # The latest immutable review candidate is the fail-closed promotion gate.
-          - surface: candidate-v17.0-rev02
+          - surface: historical-candidate-v17.0-rev02
             url: https://felipeacha.github.io/converging-waters/candidates/v17.0-rev02/
-            blocking: true
+            blocking: false
             source_path: docs/candidates/v17.0-rev02/index.html
     steps:
       - name: Checkout exact commit
@@ -141,21 +140,106 @@ jobs:
           if-no-files-found: error
           retention-days: 30
 
-      - name: Require active candidate ACB hard gates
-        if: always() && matrix.blocking
-        run: test '${{ steps.audit.outcome }}' = success
+      - name: Report historical monitor failure without promoting it
+        if: always() && steps.audit.outcome != 'success'
+        run: echo 'MONITOR_ONLY_FAIL ${{ matrix.surface }}; dynamic active review candidate gate is unchanged.'
 
-      - name: Report legacy monitor failure without promoting it
-        if: always() && !matrix.blocking && steps.audit.outcome != 'success'
-        run: echo 'MONITOR_ONLY_FAIL ${{ matrix.surface }}; active candidate promotion gate is unchanged.'
+  active-review-candidate:
+    name: Browser QA · dynamic active review candidate
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout exact commit
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Configure Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install browser audit dependency
+        run: npm install --no-save --ignore-scripts puppeteer-core@24
+
+      - name: Resolve system Chromium
+        id: chrome
+        shell: bash
+        run: |
+          set -euo pipefail
+          chrome=$(command -v google-chrome || command -v google-chrome-stable || command -v chromium || command -v chromium-browser || true)
+          test -n "$chrome"
+          echo "bin=$chrome" >> "$GITHUB_OUTPUT"
+          "$chrome" --version
+
+      - name: Resolve active candidate contract from cumulative state
+        id: active
+        shell: bash
+        run: |
+          set -euo pipefail
+          state=docs/candidates/progress/.cumulative-progress-state.txt
+          test -f "$state"
+          route=$(grep '^REVIEW_ROUTE=' "$state" | cut -d= -f2-)
+          sha=$(grep '^SOURCE_HUB_SHA256=' "$state" | cut -d= -f2-)
+          revision=$(grep '^REVISION_NAME=' "$state" | cut -d= -f2-)
+          test -n "$route"
+          test -n "$sha"
+          url="https://felipeacha.github.io/converging-waters/${route}"
+          echo "route=$route" >> "$GITHUB_OUTPUT"
+          echo "sha=$sha" >> "$GITHUB_OUTPUT"
+          echo "revision=$revision" >> "$GITHUB_OUTPUT"
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+          echo "ACTIVE_REVIEW_URL=$url"
+
+      - name: Run active-candidate contract unit regression
+        run: node .github/acb/test_active_review_candidate_contract.mjs
+
+      - name: Wait for exact active review route deployment
+        shell: bash
+        env:
+          ACTIVE_URL: ${{ steps.active.outputs.url }}
+          EXPECTED_SHA: ${{ steps.active.outputs.sha }}
+        run: |
+          set -euo pipefail
+          code=000
+          for attempt in $(seq 1 72); do
+            code=$(curl -L --silent --show-error --output /tmp/active-review.html --write-out '%{http_code}' "$ACTIVE_URL" || true)
+            if [ "$code" = 200 ] && grep -Fq "$EXPECTED_SHA" /tmp/active-review.html; then
+              echo "PASS exact active review route deployed: $ACTIVE_URL"
+              exit 0
+            fi
+            sleep 5
+          done
+          echo "Active review route did not expose expected candidate identity after polling: HTTP $code $ACTIVE_URL" >&2
+          exit 1
+
+      - name: Run exact active-review browser contract
+        id: active_audit
+        env:
+          ACB_ACTIVE_TARGET_URL: ${{ steps.active.outputs.url }}
+          ACB_STATE_PATH: docs/candidates/progress/.cumulative-progress-state.txt
+          ACB_OUTPUT_DIR: acb-active-evidence
+          CHROME_BIN: ${{ steps.chrome.outputs.bin }}
+        run: node .github/acb/active_review_candidate_qa.mjs
+
+      - name: Upload active-review screenshots and contract evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: acb-active-review-${{ github.run_id }}-${{ github.run_attempt }}
+          path: acb-active-evidence/
+          if-no-files-found: error
+          retention-days: 30
 
   watchdog-summary:
     name: ACB active-candidate enforcement
     if: always()
-    needs: [browser-qa]
+    needs: [browser-qa, active-review-candidate]
     runs-on: ubuntu-latest
     steps:
-      - name: Require matrix completion
+      - name: Require dynamic active-candidate completion
         run: |
-          echo 'browser-qa result: ${{ needs.browser-qa.result }}'
+          echo 'historical browser-qa result: ${{ needs.browser-qa.result }}'
+          echo 'active-review-candidate result: ${{ needs.active-review-candidate.result }}'
           test '${{ needs.browser-qa.result }}' = success
+          test '${{ needs.active-review-candidate.result }}' = success
