@@ -11,9 +11,9 @@ Phase 2 completed the remaining bounded audience/status cleanup without redesign
 
 ## Changed sections
 
-`current-session`, `emerged-since-call`, `stanley-update`, `willkamayu`, `collaboration-framework`, `system`, `evidence-to-implementation`, `river-economy-overview`, `people-guardians-stewardship`, `first-outcome`, `alliance-architecture`, `guardians-legal`, `deep-dives`, plus the existing evidence-status strip outside the section elements.
+`current-session`, `emerged-since-call`, `stanley-update`, `willkamayu`, `collaboration-framework`, `system`, `evidence-to-implementation`, `river-economy-overview`, `people-guardians-stewardship`, `first-outcome`, `guardians-legal`, `deep-dives`, plus the existing evidence-status strip outside the section elements.
 
-Every change is recorded in the local Phase 2 delta ledger and was limited to the approved audience/status/internal-process corrections.
+Every change is recorded in the Phase 2 delta ledger and was limited to approved audience/status/internal-process corrections.
 
 ## Important corrections
 
@@ -22,14 +22,14 @@ Every change is recorded in the local Phase 2 delta ledger and was limited to th
 - `Research v02` and related public version markers were removed from environmental, River Economy and stewardship copy while preserving the findings.
 - Collaboration/citizen-science content retained the full process, accordions and technical depth while removing internal `HUB OWNERSHIP`, `DEEP DIVE IN DEVELOPMENT`, 60–90-day review mechanics and similar process wrappers.
 - System orientation now addresses readers unfamiliar with the Sacred Valley rather than an internal team.
-- The Alliance Architecture table remains intact except for the already-authorized Amazonas status fields from Phase 1 and one wording correction from `internal study` to `River Economy study` in the Duilio Vellutino row.
+- Alliance Architecture received **no Phase 2 matrix/content mutation**; the Duilio Vellutino row was deliberately restored to its exact Phase 1 wording to respect the stronger preservation instruction. The only Alliance matrix status change remains the explicitly authorized Amazonas Sagrada downgrade performed in Phase 1.
 - Legal/Canchis evidence itself was not re-researched or changed; only its public research-status wrapper was made durable.
 
 ## Regression
 
 ```text
 phase1_sha256=8fdea68c4836bc04c36cfadc6e5d4a6fbe51723e9f5e3840a97295ff63b9f70f
-phase2_sha256=66ae63810510a21309ad7d3288ae19141f56e529decd31d5f572f0b2e0473ee2
+phase2_sha256=6fe86690e6cc9ec7ec12d5a19e77f063e0500e07a61a64bb81c379837c311836
 details=27
 external_hrefs=97
 images=19
@@ -51,14 +51,14 @@ Verified:
 
 **Drive candidate ID:** `12C0fsVSEC2LTZlOVWJdU_56c4GdgGPCA`  
 **File:** `CW-WEB - Ally Recovery - Phase 2 Bounded Adaptation - 2026-09-02.html`  
-**Size:** `14,985,469 bytes`  
-**SHA-256:** `66ae63810510a21309ad7d3288ae19141f56e529decd31d5f572f0b2e0473ee2`
+**Size:** `14,985,464 bytes`  
+**SHA-256:** `6fe86690e6cc9ec7ec12d5a19e77f063e0500e07a61a64bb81c379837c311836`
 
 Drive raw bytes were downloaded and compared to the verified local candidate:
 
 ```text
-local_sha256=66ae63810510a21309ad7d3288ae19141f56e529decd31d5f572f0b2e0473ee2
-drive_readback_sha256=66ae63810510a21309ad7d3288ae19141f56e529decd31d5f572f0b2e0473ee2
+local_sha256=6fe86690e6cc9ec7ec12d5a19e77f063e0500e07a61a64bb81c379837c311836
+drive_readback_sha256=6fe86690e6cc9ec7ec12d5a19e77f063e0500e07a61a64bb81c379837c311836
 cmp_exit=0
 ```
 
