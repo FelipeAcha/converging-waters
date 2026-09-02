@@ -1,7 +1,7 @@
 # Converging Waters ally web recovery — corrected published-baseline QA
 
 **Date:** 2026-09-02  
-**Status:** SOURCE + PROTECTED VISUAL VALIDATED · WIREFRAME REVIEW READY · USER APPROVAL PENDING  
+**Status:** SOURCE + PROTECTED VISUAL VALIDATED · REAL-WEB REVIEW SURFACE STAGED · USER APPROVAL PENDING  
 **Public promotion:** NONE
 
 ## Baseline
@@ -20,13 +20,19 @@ Drive ID: `1EQM1iDLI0GeXTyTzWa55VnRHMC1txODh`
 SHA-256 after Drive raw readback: `ec5a629ee2f63c7ce353ea7ca97bd46eed386499be04e59121e767298c2c72ac`  
 Byte readback: PASS.
 
-## Wireframe review artifact
+## Real-web review surfaces
 
-Drive ID: `1erVDnedVhc2P7HyIazVYoiFJbH7Nrvol`  
-Local PDF: `CW-WEB-Ally-Recovery-Wireframe-Review-2026-09-02.pdf`  
-Pages: 10. Render QA completed; no broken glyphs observed.
+A ChatGPT Web Preview is a real rendered website preview, not a wireframe. It remains a valid human review surface when the exact candidate is rendered there and the Preview is visible to Felipe.
 
-This PDF is the primary human review surface. Raw HTML is machine evidence only.
+An isolated live review transport has also been staged at:
+`https://felipeacha.github.io/converging-waters/candidates/progress/`
+
+The route is `REVIEW_TRANSPORT_ONLY`; it does not replace the authoritative public root. Its loader reconstructs the exact review transport from six staged chunks and refuses to render unless the reconstructed SHA-256 equals:
+`6427c247a5bdbce5b193d9ee812b9349057ce62923be5a1ab138d0fef25059ba`.
+
+GitHub readback confirms all six staged chunk blobs match the locally computed canonical Git blob identities. GitHub Pages deployment run `33661867687` completed successfully at head `37fe87dd403a09960fa6bd08f063a190f41235ca`.
+
+The earlier wireframe PDF remains historical QA/supporting evidence only. It is not the primary human review surface and must not substitute for the functioning website candidate.
 
 ## Frozen Alliance disclosure bundle
 
@@ -82,9 +88,11 @@ Desktop 1440x1000 and mobile 390x844:
 `ALLIANCE_RAW_FREEZE=PASS`  
 `ALLIANCE_PIXEL_FREEZE=PASS`  
 `BROWSER_SMOKE=PASS`  
-`WIREFRAME_RENDER_QA=PASS`  
+`REAL_WEB_REVIEW_SURFACE_STAGED=PASS`  
+`CHATGPT_WEB_PREVIEW=VALID_REVIEW_MODE_WHEN_USER_VISIBLE`  
+`ISOLATED_REVIEW_ROUTE_DEPLOYMENT=PASS`  
 `USER_APPROVED=false`  
 `PROMOTED=false`  
 `PUBLIC_MAIN_MUTATED=false`
 
-Next gate: Felipe reviews the wireframe. No promotion occurs before explicit approval.
+Next gate: Felipe reviews the exact functioning website candidate through ChatGPT Web Preview or the validated isolated live review route. No promotion occurs before explicit approval.
