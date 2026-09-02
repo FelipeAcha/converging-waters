@@ -1,0 +1,17 @@
+{
+  "schema_version": "2.0",
+  "effective_published_baseline_sha256_at_lock": "3b296999839430c2a1029e41ff404e3de368c1a66b85d1f1503e1c539a2f0f0e",
+  "payload_dir": "docs/payload",
+  "payload_prefix": "hub-",
+  "payload_parts": 17,
+  "frozen_raw_sections": {
+    "alliance-architecture": "03adaa4acb6456d6606fa7ab9796eaa5d6af8a59a58e119f298c0ff8e406e65a",
+    "people-guardians-stewardship": "6b461310204fac3dae51ee1733865bbe6d4099c402e929ada914bd9e6a326388",
+    "precedents": "df08f3a957b073ae6572ce8a839ac1bfc02b8ca6141ff65a2c0d75fb61e3cc80",
+    "people-authority-boundary": "d74ec021281f65bcd769fc635cfd709157a9e8d314ed82f2145e15bf3dc35fbd"
+  },
+  "frozen_alliance_wrapper_sha256": "3fac530898ff763cf2e685d2908558b4622aa8385a2ba80857b00a762510de33",
+  "alliance_wrapper_start": "<div class=\"cw-section-accordion\" data-cw-section=\"14\">",
+  "alliance_wrapper_end": "</section></div></div></div>",
+  "policy": "Any mismatch in a frozen raw section or the Alliance wrapper is blocking. Status/copy corrections must occur outside the frozen Alliance disclosure bundle unless Felipe explicitly reopens that block."
+}
