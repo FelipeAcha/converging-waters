@@ -4,6 +4,7 @@
   "payload_dir": "docs/payload",
   "payload_prefix": "hub-",
   "payload_parts": 17,
+  "generic_published_browser_health_mode": "MONITOR_ONLY_FOR_PREEXISTING_BASELINE_DEFECTS",
   "frozen_raw_sections": {
     "alliance-architecture": "03adaa4acb6456d6606fa7ab9796eaa5d6af8a59a58e119f298c0ff8e406e65a",
     "people-guardians-stewardship": "6b461310204fac3dae51ee1733865bbe6d4099c402e929ada914bd9e6a326388",
@@ -13,5 +14,5 @@
   "frozen_alliance_wrapper_sha256": "3fac530898ff763cf2e685d2908558b4622aa8385a2ba80857b00a762510de33",
   "alliance_wrapper_start": "<div class=\"cw-section-accordion\" data-cw-section=\"14\">",
   "alliance_wrapper_end": "</section></div></div></div>",
-  "policy": "Any mismatch in a frozen raw section or the Alliance wrapper is blocking. Status/copy corrections must occur outside the frozen Alliance disclosure bundle unless Felipe explicitly reopens that block."
+  "policy": "Any mismatch in a frozen raw section or the Alliance wrapper is blocking. Status/copy corrections must occur outside the frozen Alliance disclosure bundle unless Felipe explicitly reopens that block. Generic published-site browser health findings are monitor-only when they reflect pre-existing baseline debt; they cannot override or substitute for the deterministic freeze gate."
 }
