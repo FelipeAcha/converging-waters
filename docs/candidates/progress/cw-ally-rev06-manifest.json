@@ -1,0 +1,49 @@
+{
+  "schema_version": "1.0",
+  "baseline_label": "CW-ALLY-REV05 — Evidence → Value → Protection",
+  "candidate_label": "CW-ALLY-REV06 — Narrative Clarity + Clean Numbering",
+  "delta_id": "narrative-clarity-clean-numbering",
+  "entry_html": "index.html",
+  "authoritative_candidate_sha256": "c61e9f1a4157d84d3cd1c07b690c6d35aeae204a88a7f6281c79e7c07af3d6da",
+  "review_route": "candidates/progress/cw-ally-rev06-narrative-clarity-clean-numbering.html",
+  "substantive_visible_points_changed": ["08", "12", "15", "19", "20"],
+  "mechanically_renumbered_visible_points": ["09", "10", "11", "13", "14", "16", "16A", "17", "18"],
+  "promoted_from_addon_to_independent_accordion": [
+    "08 · From evidence to implementation",
+    "12 · River Economy + regenerative visitor economy"
+  ],
+  "protected_sections": [
+    "stanley-update",
+    "alliance-architecture",
+    "people-guardians-stewardship",
+    "guardians-legal",
+    "precedents"
+  ],
+  "authorized_protected_delta": "Visible numbering only for Alliance Architecture / stewardship / legal / precedents; all other protected content remains preserved.",
+  "financing_hybrid": {
+    "point": "15",
+    "rule": "function first + concrete mechanism menu",
+    "mechanisms_harvested_from_existing_hub": [
+      "grants and philanthropy",
+      "river funds",
+      "restoration sponsorship",
+      "hotel / visitor contributions",
+      "green-finance pathways",
+      "earned revenue / revenue-linked conservation",
+      "joint fundraising for genuinely shared costs"
+    ]
+  },
+  "specialist_navigation_rule": "Point 19 owns deep-dive navigation; Point 20 owns roadmap / next moves and contains no duplicate navigation CTAs.",
+  "preserve_external_hrefs": true,
+  "preserve_unlisted_assets": true,
+  "image_asset_repair_pending": false,
+  "first_infographic_replacement_pending": true,
+  "details_disclosure_count": 27,
+  "image_count": 13,
+  "accordion_count": 23,
+  "tdd": {
+    "red": "REV05 fails because evidence-to-implementation is not in its own accordion",
+    "green": "REV06 passes the targeted clean-numbering / navigation / financing tests"
+  },
+  "change_reporting_rule": "Always identify the visible point number when describing a website modification."
+}
