@@ -43,5 +43,7 @@ export function validateSnapshot(snapshot, state) {
   req(snapshot.duplicateIds.length === 0, `duplicate ids: ${snapshot.duplicateIds.join(', ')}`);
   req(snapshot.invalidLinks.length === 0, `invalid links: ${JSON.stringify(snapshot.invalidLinks)}`);
   req(snapshot.brokenFragments.length === 0, `broken fragments: ${JSON.stringify(snapshot.brokenFragments)}`);
+  req((snapshot.criticalFailedResponses || []).length === 0, `critical failed responses: ${JSON.stringify(snapshot.criticalFailedResponses || [])}`);
+  req((snapshot.criticalFailedRequests || []).length === 0, `critical failed requests: ${JSON.stringify(snapshot.criticalFailedRequests || [])}`);
   return errors;
 }

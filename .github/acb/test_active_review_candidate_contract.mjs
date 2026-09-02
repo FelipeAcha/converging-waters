@@ -39,4 +39,5 @@ assert.deepEqual(validateSnapshot(good, state), []);
 assert.ok(validateSnapshot({...good, roadmapLinksPoint20: 2}, state).some(x => x.includes('Point 20')));
 assert.ok(validateSnapshot({...good, candidateHash: 'stale'}, state).some(x => x.includes('candidate hash')));
 assert.ok(validateSnapshot({...good, brokenImages: [{src:'x'}]}, state).some(x => x.includes('broken images')));
+assert.ok(validateSnapshot({...good, criticalFailedResponses: [{url:'https://example.test/missing.css', status:404}]}, state).some(x => x.includes('critical failed responses')));
 console.log('PASS active review candidate contract unit tests');

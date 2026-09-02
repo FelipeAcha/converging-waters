@@ -39,8 +39,14 @@ async function snapshotForViewport(name, width, height) {
   await page.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'reduce' }]);
   const consoleErrors = [];
   const pageErrors = [];
+  const failedResponses = [];
+  const failedRequests = [];
   page.on('console', msg => { if (msg.type() === 'error') consoleErrors.push(msg.text()); });
   page.on('pageerror', err => pageErrors.push(String(err)));
+  page.on('response', res => {
+    if (res.status() >= 400) failedResponses.push({url:res.url(), status:res.status(), resourceType:res.request().resourceType()});
+  });
+  page.on('requestfailed', req => failedRequests.push({url:req.url(), resourceType:req.resourceType(), error:req.failure()?.errorText || ''}));
   const response = await page.goto(target, { waitUntil: 'networkidle2', timeout: 120000 });
   if (!response || response.status() !== 200) throw new Error(`${name}: HTTP ${response?.status()}`);
   const hub = await findHubFrame(page);
@@ -118,6 +124,13 @@ async function snapshotForViewport(name, width, height) {
       brokenFragments
     };
   });
+  const nonCritical = x => {
+    try { return new URL(x.url).pathname.endsWith('/favicon.ico'); } catch { return false; }
+  };
+  metrics.failedResponses = failedResponses;
+  metrics.failedRequests = failedRequests;
+  metrics.criticalFailedResponses = failedResponses.filter(x => !nonCritical(x));
+  metrics.criticalFailedRequests = failedRequests.filter(x => !nonCritical(x));
   metrics.independentPoints = independentPoints;
   metrics.consoleErrors = consoleErrors;
   metrics.pageErrors = pageErrors;
