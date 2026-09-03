@@ -10,7 +10,8 @@ This register gives every durable rollback point a short human-readable name. Us
 | **CW-ALLY-REV03 — Alliance Status Consistency** | Amazonas Sagrada / WGA / María Gracia status reconciliation | `6badd80c1143d04f3f3dbe877273844f8efaa1f6167f412264c41f8bfcb73ac8` | Alliance matrix status correction checkpoint |
 | **CW-ALLY-REV04 — Full Hub Reconciliation** | Removed obsolete meeting/review layers and re-centered the hub on Willkamayu | `0fe164c7f71e12f6fcbdb5e4dbc44b593af51027d28880ffdfac8caeca5f630c` | Approved baseline for REV05 |
 | **CW-ALLY-REV05 — Evidence → Value → Protection** | Cross-workstream coherence, navigation behavior, new-tab deep dives and roadmap destinations | `33f4886bd8eb57a4c8ce112dcaf772f1c916255801151fb9a62fdbd1a1d7548a` | Changed visible points: **06, 07, 07A, 10A, 12, 13, 17, 18**; rollback checkpoint |
-| **CW-ALLY-REV06 — Narrative Clarity + Clean Numbering** | Promoted Evidence → Implementation and River Economy into independent points, cleaned numbering, separated specialist navigation from roadmap actions, and restored a concrete financing-mechanism menu within the function-first financing architecture | `c61e9f1a4157d84d3cd1c07b690c6d35aeae204a88a7f6281c79e7c07af3d6da` | Substantive visible points: **08, 12, 15, 19, 20**; downstream points mechanically renumbered; current candidate; production not authorized |
+| **CW-ALLY-REV06 — Narrative Clarity + Clean Numbering** | Promoted Evidence → Implementation and River Economy into independent points, cleaned numbering, separated specialist navigation from roadmap actions, and restored a concrete financing-mechanism menu within the function-first financing architecture | `c61e9f1a4157d84d3cd1c07b690c6d35aeae204a88a7f6281c79e7c07af3d6da` | Substantive visible points: **08, 12, 15, 19, 20**; downstream points mechanically renumbered; rollback checkpoint |
+| **CW-ALLY-REV06A — Alignment + Financing Clarity** | Corrective pass: aligns the late numbered headings and converts Point 15 financing mechanisms into four readable financing-route cards | `d5a73de694756bfc3f4efbf62cb98ba4d72a9052dca178e7d45a0ac0cd0958c0` | Changed visible points: **15, 18, 19**; current review candidate; production not authorized |
 
 ## Change-reporting rule
 
@@ -23,7 +24,7 @@ Example: `Point 19 · Specialist deep dives — Deep-dive navigation updated.`
 You can refer to a checkpoint simply by saying, for example:
 
 - “Volvamos a **CW-ALLY-REV05 — Evidence → Value → Protection**.”
-- “Compara **REV06** contra **REV05**.”
-- “Descarta REV06 y sigue desde REV05.”
+- “Compara **REV06A** contra **REV06**.”
+- “Descarta REV06A y sigue desde REV06.”
 
 The short revision name is the human authority for conversation; the SHA-256 is used only to prove exact identity.
