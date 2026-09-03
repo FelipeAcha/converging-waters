@@ -31,6 +31,7 @@ const good = {
   roadmapNextMovesPoint20: 3,
   financeRouteCardsPoint15: 4,
   financeMechanismMenuPoint15Present: false,
+  financeRouteCardsPoint15Rendered: true,
   point18_19LabelLeftDeltaPx: 0,
   independentPoints: { '08': true, '12': true },
   legacyANumberingVisible: false,
@@ -46,6 +47,7 @@ assert.ok(validateSnapshot({...good, candidateHash: 'stale'}, state).some(x => x
 assert.ok(validateSnapshot({...good, brokenImages: [{src:'x'}]}, state).some(x => x.includes('broken images')));
 assert.ok(validateSnapshot({...good, financeRouteCardsPoint15: 0}, state).some(x => x.includes('Point 15')));
 assert.ok(validateSnapshot({...good, financeMechanismMenuPoint15Present: true}, state).some(x => x.includes('legacy finance-mechanism')));
+assert.ok(validateSnapshot({...good, financeRouteCardsPoint15Rendered: false}, state).some(x => x.includes('render visibly')));
 assert.ok(validateSnapshot({...good, point18_19LabelLeftDeltaPx: 39.5}, state).some(x => x.includes('Point 18/19')));
 assert.ok(validateSnapshot({...good, criticalFailedResponses: [{url:'https://example.test/missing.css', status:404}]}, state).some(x => x.includes('critical failed responses')));
 console.log('PASS active review candidate contract unit tests');

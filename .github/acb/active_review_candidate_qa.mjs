@@ -91,6 +91,22 @@ async function snapshotForViewport(name, width, height) {
     return { '08': await check('08','07'), '12': await check('12','11') };
   });
 
+  const point15Render = await hub.evaluate(async () => {
+    const wait = ms => new Promise(r => setTimeout(r, ms));
+    const box = [...document.querySelectorAll('.cw-section-accordion')].find(x => x.dataset.cwSection === '15');
+    const button = box?.querySelector(':scope > .cw-accordion-trigger');
+    if (!box || !button) return {rendered:false, reason:'missing-point-15'};
+    if (button.getAttribute('aria-expanded') !== 'true') button.click();
+    await wait(80);
+    const cards = [...document.querySelectorAll('#finance-hypotheses .finance-route-card')];
+    const viewportWidth = document.documentElement.clientWidth;
+    const rects = cards.map(card => { const r=card.getBoundingClientRect(); return {left:r.left,right:r.right,width:r.width,height:r.height}; });
+    const rendered = cards.length === 4 && rects.every(r => r.width > 0 && r.height > 0 && r.left >= -1 && r.right <= viewportWidth + 1);
+    return {rendered, cardCount:cards.length, viewportWidth, rects};
+  });
+  const financeHandle = await hub.$('#finance-hypotheses');
+  if (financeHandle) await financeHandle.screenshot({path:path.join(outDir, `active-${name}-point15.png`)});
+
   const metrics = await hub.evaluate(() => {
     const ids = [...document.querySelectorAll('[id]')].map(x => x.id).filter(Boolean);
     const counts = ids.reduce((m,id)=>(m[id]=(m[id]||0)+1,m),{});
@@ -127,6 +143,7 @@ async function snapshotForViewport(name, width, height) {
       roadmapNextMovesPoint20: p20Moves.length,
       financeRouteCardsPoint15: financeRouteCards.length,
       financeMechanismMenuPoint15Present: !!financeMechanismMenu,
+      financeRouteCardsPoint15Rendered: false,
       point18LabelLeftPx,
       point19LabelLeftPx,
       point18_19LabelLeftDeltaPx: Math.abs(point18LabelLeftPx - point19LabelLeftPx),
@@ -141,6 +158,8 @@ async function snapshotForViewport(name, width, height) {
   const nonCritical = x => {
     try { return new URL(x.url).pathname.endsWith('/favicon.ico'); } catch { return false; }
   };
+  metrics.financeRouteCardsPoint15Rendered = point15Render.rendered === true;
+  metrics.financeRouteCardsPoint15RenderDetail = point15Render;
   metrics.failedResponses = failedResponses;
   metrics.failedRequests = failedRequests;
   metrics.criticalFailedResponses = failedResponses.filter(x => !nonCritical(x));

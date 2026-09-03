@@ -40,6 +40,8 @@ export function validateSnapshot(snapshot, state) {
         `Point 15 financing-route cards ${snapshot.financeRouteCardsPoint15} != ${state.ACTIVE_QA_EXPECTED_FINANCE_ROUTE_CARDS_POINT_15}`);
     req(snapshot.financeMechanismMenuPoint15Present === false,
         'Point 15 legacy finance-mechanism menu must be absent');
+    req(snapshot.financeRouteCardsPoint15Rendered === true,
+        'Point 15 financing-route cards must render visibly without horizontal overflow when opened');
   }
   if (state.ACTIVE_QA_MAX_POINT_18_19_LABEL_LEFT_DELTA_PX) {
     req(Number.isFinite(snapshot.point18_19LabelLeftDeltaPx) && snapshot.point18_19LabelLeftDeltaPx <= f(state, 'ACTIVE_QA_MAX_POINT_18_19_LABEL_LEFT_DELTA_PX'),
