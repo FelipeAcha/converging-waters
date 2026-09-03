@@ -87,3 +87,46 @@ The prevention is **behavior-verified on the current recovery candidate**. It is
 - the current main/public authoritative route has not been changed.
 
 Final user review and explicit approval remain the next gate before any promotion.
+
+## Later recurrence — REV06 point-level visual and comprehension gap
+
+A later named review candidate exposed a narrower recurrence that the broader preservation checks did not catch:
+
+- **Point 18** and **Point 19** were visibly misaligned in the exact review surface even though structural/browser checks had passed;
+- **Point 15** used a separate `Mechanism menu already in the work` note that was technically present but conceptually redundant and harder to understand than the established card grammar.
+
+The user screenshot is authoritative evidence of the visible defect. A source-level assumption that adjacent headings share the same layout contract is not enough when the exact rendered result differs.
+
+### Root cause extension
+
+The regression suite checked global structure, counts, links, resources and page overflow, but it did not encode the **specific observable constraint** the user was judging: the left-edge relationship between Points 18 and 19. It also did not encode the intended comprehension behavior for Point 15: financing functions and concrete mechanisms should be integrated into one readable visual structure rather than split between cards and a redundant note.
+
+### Corrected prevention
+
+For point-level visual or interaction feedback:
+
+1. convert the exact user-observable discrepancy into a browser metric or behavior assertion whenever practical;
+2. a user screenshot that contradicts a PASS invalidates the relevant PASS until reconciled;
+3. preserve the existing visual grammar when it can carry the additional information more clearly than a new standalone explanatory layer;
+4. keep the correction bounded to the named visible points and re-run preservation checks on adjacent protected blocks.
+
+REV06A implements this as:
+
+- Point 18/19 left-edge delta must be `<= 1px` on the exact live desktop/mobile review route;
+- Point 15 must expose exactly four financing-route cards and the legacy mechanism-menu note must be absent;
+- Alliance Architecture, Precedents and Specialist Deep Dives remain protected outside the authorized delta.
+
+### Verification
+
+**CW-ALLY-REV06A — Alignment + Financing Clarity**:
+
+- authoritative raw SHA-256: `d5a73de694756bfc3f4efbf62cb98ba4d72a9052dca178e7d45a0ac0cd0958c0`;
+- exact raw Drive readback: PASS;
+- ACB run: `33701191061`;
+- desktop Point 18 / Point 19 left edges: `130px / 130px`, delta `0px`;
+- mobile Point 18 / Point 19 left edges: `14px / 14px`, delta `0px`;
+- Point 15 financing-route cards: `4`;
+- legacy financing mechanism menu: absent;
+- exact live desktop/mobile active-candidate browser contract: PASS.
+
+Canonical reliability event: `REL-20260902-CW-WEB-REV06A-VISUAL-CLARITY-001`.
