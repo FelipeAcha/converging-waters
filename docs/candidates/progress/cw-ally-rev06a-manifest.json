@@ -1,0 +1,32 @@
+{
+  "schema_version": "1.0",
+  "revision_name": "CW-ALLY-REV06A — Alignment + Financing Clarity",
+  "baseline_revision": "CW-ALLY-REV06 — Narrative Clarity + Clean Numbering",
+  "baseline_sha256": "c61e9f1a4157d84d3cd1c07b690c6d35aeae204a88a7f6281c79e7c07af3d6da",
+  "candidate_sha256": "d5a73de694756bfc3f4efbf62cb98ba4d72a9052dca178e7d45a0ac0cd0958c0",
+  "review_route": "candidates/progress/cw-ally-rev06a-alignment-financing-clarity.html",
+  "review_transport_sha256": "263e0e7112f53da66549e548fc3b297c6142bd1c786f9dbba932346aead4f929",
+  "drive_raw_checkpoint_id": "1NNrotYZ6pdQ15tzjq3ZEE5R3BVy2T8Lz",
+  "drive_raw_checkpoint_size_bytes": 290102,
+  "authorized_visible_points": ["15", "18", "19"],
+  "changes": [
+    {"point": "15", "type": "clarity_and_visual_hierarchy", "description": "Replace the unclear mechanism-menu note with four graphical financing-route cards while preserving the function-first financing logic."},
+    {"point": "18", "type": "visual_alignment", "description": "Normalize accordion heading container width so Point 18 aligns with adjacent numbered points."},
+    {"point": "19", "type": "visual_alignment_reference", "description": "Use the same heading alignment contract as Point 18 and adjacent Points 15–20."}
+  ],
+  "protected": {
+    "alliance_architecture_sha256": "fb40af9bc6655ff94f8983e4e11950d8521d7647e98902baff0946433562f206",
+    "precedents_sha256": "fcddec8933d1a90853a99289905f097e209f4719fa30aa1ed0778ef310d7301a",
+    "deep_dives_sha256": "a9912eb06ca4ca41a2a0bccc7086bb5cea654a708c88d7b2fc036135555b5946"
+  },
+  "candidate": {
+    "sections": 26,
+    "accordions": 23,
+    "details": 27,
+    "images": 13,
+    "finance_route_cards": 4,
+    "finance_hypotheses_sha256": "617f64eba4a62f48858e98e41e5842bb3ed1ee8088dd98f45ee2f4ff6b72f5c1"
+  },
+  "deterministic_regression": "PASS",
+  "live_browser_regression": "PENDING"
+}
