@@ -28,5 +28,18 @@
     "finance_hypotheses_sha256": "617f64eba4a62f48858e98e41e5842bb3ed1ee8088dd98f45ee2f4ff6b72f5c1"
   },
   "deterministic_regression": "PASS",
-  "live_browser_regression": "PENDING"
+  "live_browser_regression": {
+    "status": "PASS",
+    "acb_run_id": 33701191061,
+    "head_sha": "cd6ed52ca6d73b9fa725835120c764a453840e64",
+    "artifact_id": 9873570643,
+    "artifact_sha256": "312e6872c206a3f52bffd9826d0ad9560f5c39e232e8b4cad0c26558c7acc94b",
+    "desktop": {"point_18_left_px": 130, "point_19_left_px": 130, "delta_px": 0, "images_loaded": 13, "page_overflow_px": 0},
+    "mobile": {"point_18_left_px": 14, "point_19_left_px": 14, "delta_px": 0, "images_loaded": 13, "page_overflow_px": 0},
+    "finance_route_cards_point_15": 4,
+    "legacy_finance_mechanism_menu_present": false,
+    "alliance_rows": 49,
+    "alliance_cells": 269,
+    "errors": []
+  }
 }
