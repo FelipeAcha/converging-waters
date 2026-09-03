@@ -9,6 +9,7 @@ export function parseState(text) {
 }
 
 const n = (state, key) => Number.parseInt(state[key], 10);
+const f = (state, key) => Number.parseFloat(state[key]);
 
 export function validateSnapshot(snapshot, state) {
   const errors = [];
@@ -34,6 +35,16 @@ export function validateSnapshot(snapshot, state) {
       `Point 20 links ${snapshot.roadmapLinksPoint20} != ${state.ACTIVE_QA_EXPECTED_ROADMAP_LINKS_POINT_20}`);
   req(snapshot.roadmapNextMovesPoint20 === n(state, 'ACTIVE_QA_EXPECTED_ROADMAP_NEXT_MOVES_POINT_20'),
       `Point 20 next moves ${snapshot.roadmapNextMovesPoint20} != ${state.ACTIVE_QA_EXPECTED_ROADMAP_NEXT_MOVES_POINT_20}`);
+  if (state.ACTIVE_QA_EXPECTED_FINANCE_ROUTE_CARDS_POINT_15) {
+    req(snapshot.financeRouteCardsPoint15 === n(state, 'ACTIVE_QA_EXPECTED_FINANCE_ROUTE_CARDS_POINT_15'),
+        `Point 15 financing-route cards ${snapshot.financeRouteCardsPoint15} != ${state.ACTIVE_QA_EXPECTED_FINANCE_ROUTE_CARDS_POINT_15}`);
+    req(snapshot.financeMechanismMenuPoint15Present === false,
+        'Point 15 legacy finance-mechanism menu must be absent');
+  }
+  if (state.ACTIVE_QA_MAX_POINT_18_19_LABEL_LEFT_DELTA_PX) {
+    req(Number.isFinite(snapshot.point18_19LabelLeftDeltaPx) && snapshot.point18_19LabelLeftDeltaPx <= f(state, 'ACTIVE_QA_MAX_POINT_18_19_LABEL_LEFT_DELTA_PX'),
+        `Point 18/19 heading left-edge delta ${snapshot.point18_19LabelLeftDeltaPx}px > ${state.ACTIVE_QA_MAX_POINT_18_19_LABEL_LEFT_DELTA_PX}px`);
+  }
   for (const point of String(state.ACTIVE_QA_INDEPENDENT_POINTS || '').split(',').filter(Boolean)) {
     req(snapshot.independentPoints?.[point] === true, `Point ${point} is not an independent accordion`);
   }

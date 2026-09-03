@@ -102,6 +102,15 @@ async function snapshotForViewport(name, width, height) {
     const p19 = [...document.querySelectorAll('#deep-dives a[href*="deep-dives/"]')];
     const p20 = [...document.querySelectorAll('#current-roadmap-final a')];
     const p20Moves = [...document.querySelectorAll('#current-roadmap-final .roadmap-next')];
+    const financeRouteCards = [...document.querySelectorAll('#finance-hypotheses .finance-route-card')];
+    const financeMechanismMenu = document.querySelector('#finance-hypotheses .finance-mechanism-menu');
+    const pointLabelLeft = n => {
+      const box = [...document.querySelectorAll('.cw-section-accordion')].find(x => x.dataset.cwSection === n);
+      const label = box?.querySelector(':scope > .cw-accordion-trigger .cw-accordion-label');
+      return label ? label.getBoundingClientRect().left : Number.NaN;
+    };
+    const point18LabelLeftPx = pointLabelLeft('18');
+    const point19LabelLeftPx = pointLabelLeft('19');
     const text = (document.body.innerText||'').replace(/\s+/g,' ');
     const failurePattern = /(unable to load|could not load|integrity mismatch|loading review|loading substantive review|error state)/i;
     return {
@@ -116,6 +125,11 @@ async function snapshotForViewport(name, width, height) {
       deepDiveLinksPoint19AllNewTab: p19.every(a => a.target === '_blank' && (a.rel||'').includes('noopener') && (a.rel||'').includes('noreferrer')),
       roadmapLinksPoint20: p20.length,
       roadmapNextMovesPoint20: p20Moves.length,
+      financeRouteCardsPoint15: financeRouteCards.length,
+      financeMechanismMenuPoint15Present: !!financeMechanismMenu,
+      point18LabelLeftPx,
+      point19LabelLeftPx,
+      point18_19LabelLeftDeltaPx: Math.abs(point18LabelLeftPx - point19LabelLeftPx),
       legacyANumberingVisible: /07A\s*·\s*From evidence to implementation|10A\s*·\s*River Economy/.test(text),
       pageOverflowPx: Math.max(0, document.documentElement.scrollWidth - document.documentElement.clientWidth),
       failurePlaceholderVisible: failurePattern.test(text.slice(0,3000)),
